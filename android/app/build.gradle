@@ -68,4 +68,3 @@ android {
     }
   }
 }
-tasks.configureEach { t -> if (t.name.endsWith("AarMetadata")) t.enabled = false }

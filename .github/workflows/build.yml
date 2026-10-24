@@ -1,5 +1,8 @@
-name: build-aab
-on: [workflow_dispatch]
+name: build
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -11,15 +14,19 @@ jobs:
         with: { distribution: temurin, java-version: 21 }
       - run: npm ci || npm i
       - run: npx cap sync android
+      - run: sed -i "s#__CLE__#$K#" android/app/src/main/assets/public/toole-crypt.js
+        env: { K: "${{ secrets.TOOLE_KEY }}" }
+      - run: if grep -q __CLE__ android/app/src/main/assets/public/toole-crypt.js; then echo "cle absente"; exit 1; fi
       - run: if [ -n "$G" ]; then printf "%s" "$G" > android/app/google-services.json; fi
         env: { G: "${{ secrets.GOOGLE_SERVICES_JSON }}" }
       - run: echo "$KEYSTORE_B64" | base64 -d > $HOME/cns.keystore
         env: { KEYSTORE_B64: "${{ secrets.KEYSTORE_B64 }}" }
-      - run: cd android && ./gradlew bundleRelease assembleRelease
+      - run: cd android && ./gradlew assembleRelease
         env:
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASS: ${{ secrets.KEY_PASS }}
       - uses: actions/upload-artifact@v4
-        with: { name: aab, path: android/app/build/outputs/bundle/release/*.aab }
-      - uses: actions/upload-artifact@v4
-        with: { name: apk, path: android/app/build/outputs/apk/release/*.apk }
+        with:
+          name: TOOLE-apk
+          path: android/app/build/outputs/apk/release/*.apk
+          retention-days: 2
