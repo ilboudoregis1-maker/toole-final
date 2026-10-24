@@ -224,11 +224,31 @@
     if (canManage()) act(IC.gear, "Réglages", function () { if (typeof openGroupSettings === "function") openGroupSettings(); });
     sh.appendChild(acts);
     var code = (typeof gInfo !== "undefined" && gInfo && gInfo.invite_code) || g.invite_code;
-    if (code) {
-      var cr = el("div", "gx-row"); cr.appendChild(el("span", "", "Code d'invitation")); var cb = el("button", "gx-mini", code); cb.type = "button";
-      cb.onclick = function () { try { navigator.clipboard.writeText(code); say("Code copié"); } catch (e) { say(code); } };
-      cr.appendChild(cb); sh.appendChild(cr);
+    var cr = el("div", "gx-row");
+    function codeRow(c) {
+      cr.innerHTML = "";
+      if (c) {
+        cr.appendChild(el("span", "", "Code d'invitation"));
+        var bx = el("div", "gx-cb"), cb = el("button", "gx-mini", c); cb.type = "button";
+        cb.onclick = function () { try { navigator.clipboard.writeText(c); say("Code copi\u00e9"); } catch (e) { say(c); } };
+        var sb2 = el("button", "gx-mini", "Partager"); sb2.type = "button";
+        sb2.onclick = function () {
+          var msg = "Rejoins le groupe \u00ab " + name + " \u00bb sur T\u00d5\u00d5L\u00e9 : ouvre Communaut\u00e9s > Rejoindre avec un code, puis entre " + c;
+          if (navigator.share) navigator.share({ text: msg }).catch(function () { }); else { try { navigator.clipboard.writeText(msg); say("Message copi\u00e9"); } catch (e) { say(msg); } }
+        };
+        bx.appendChild(cb); bx.appendChild(sb2); cr.appendChild(bx);
+      } else if (canManage()) {
+        var mk = el("button", "gx-mini2", "+ Cr\u00e9er un code d'invitation"); mk.type = "button";
+        mk.onclick = function () {
+          var nc = "TL-" + Math.random().toString(36).slice(2, 8).toUpperCase();
+          window.api("/rest/v1/groups?id=eq." + g.id, { method: "PATCH", headers: { Prefer: "return=minimal" }, body: JSON.stringify({ invite_code: nc }) })
+            .then(function () { g.invite_code = nc; try { if (typeof gInfo !== "undefined" && gInfo) gInfo.invite_code = nc; } catch (e) { } codeRow(nc); })
+            .catch(function (e) { say((e && e.message) || "Impossible de cr\u00e9er le code"); });
+        };
+        cr.appendChild(mk);
+      }
     }
+    codeRow(code); if (code || canManage()) sh.appendChild(cr);
     var mh = el("div", "gx-mh", "Membres"); sh.appendChild(mh);
     var ml = el("div", "gx-ml"); ml.appendChild(el("div", "gx-sub", "Chargement…")); sh.appendChild(ml);
     function paint() {
@@ -293,6 +313,27 @@
     sh.appendChild(send);
     var cc = el("button", "gx-cancel", "Annuler"); cc.type = "button"; cc.onclick = function () { o.ov.remove(); }; sh.appendChild(cc);
   }
+  function joinSheet() {
+    var o = overlay(), sh = o.sh;
+    sh.appendChild(el("div", "gx-title", "Rejoindre un groupe"));
+    sh.appendChild(el("div", "gx-sub2", "Entre le code d'invitation re\u00e7u d'un admin du groupe."));
+    var i = el("input", "gx-in gx-code"); i.placeholder = "TL-XXXXXX"; i.maxLength = 20; i.autocapitalize = "characters"; i.autocomplete = "off"; sh.appendChild(i);
+    var b = el("button", "gx-send", "Rejoindre"); b.type = "button";
+    b.onclick = function () {
+      var c = i.value.trim().toUpperCase(); if (c.length < 4) { say("Entre le code complet"); return; }
+      b.disabled = true;
+      window.api("/rest/v1/rpc/join_group_by_code", { method: "POST", body: JSON.stringify({ p_code: c }) }).then(function (r) {
+        o.ov.remove(); say("Tu as rejoint \u00ab " + ((r && r.name) || "le groupe") + " \u00bb"); GX.data = null; GX.lastFetch = 0;
+        if (typeof loadGroups === "function") loadGroups();
+      }).catch(function (e) {
+        b.disabled = false; var m = String((e && e.message) || "");
+        say(/code_invalide/.test(m) ? "Code invalide" : /non_connecte/.test(m) ? "Connecte-toi d'abord" : /function|rpc|404/i.test(m) ? "Fonction d'invitation non install\u00e9e c\u00f4t\u00e9 serveur" : (m || "Impossible de rejoindre"));
+      });
+    };
+    sh.appendChild(b);
+    var cc = el("button", "gx-cancel", "Annuler"); cc.type = "button"; cc.onclick = function () { o.ov.remove(); }; sh.appendChild(cc);
+    setTimeout(function () { i.focus(); }, 150);
+  }
   function plusMenu() {
     var o = overlay(), sh = o.sh;
     function item(ic, lb, fn) { var b = el("button", "gx-item"); b.type = "button"; b.innerHTML = "<i>" + ic + "</i><span>" + lb + "</span>"; b.onclick = function () { o.ov.remove(); fn(); }; sh.appendChild(b); }
@@ -303,6 +344,8 @@
 
   /* ---------- interface du groupe ---------- */
   function ensureUI() {
+    var nb = $("gNew");
+    if (nb && !$("gxJoin")) { var jb = el("button", "gx-join", "Rejoindre avec un code"); jb.id = "gxJoin"; jb.type = "button"; jb.onclick = joinSheet; nb.after(jb); }
     var scr = $("scrGroup"); if (!scr) return;
     var hdr = scr.querySelector(".hdr"), menu = $("gMenu");
     if (hdr && menu && !$("gxSbBtn")) {
@@ -462,6 +505,8 @@
     ".gx-mem{display:flex;align-items:center;gap:12px;padding:8px 4px}.gx-mn2{flex:1;min-width:0;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}",
     ".gx-role{font-style:normal;font-size:11.5px;color:#0a7cff;border:1px solid rgba(10,124,255,.4);border-radius:8px;padding:2px 7px}",
     ".gx-danger{display:block;width:100%;margin-top:16px;padding:13px;border:0;border-radius:12px;background:#fdecec;color:#d12c2c;font:600 15px system-ui,sans-serif}",
+    ".gx-join{display:block;width:calc(100% - 32px);margin:8px 16px 4px;padding:11px;border:1px solid rgba(10,124,255,.45);border-radius:12px;background:#fff;color:#0a7cff;font:600 15px system-ui,sans-serif}",
+    ".gx-cb{display:flex;gap:8px}.gx-sub2{font-size:14px;color:#667;margin:-6px 2px 12px}.gx-code{text-align:center;font-size:20px;letter-spacing:.14em;text-transform:uppercase}",
     ".gx-title{font-size:18px;font-weight:700;margin:2px 2px 12px}",
     ".gx-in{display:block;width:100%;box-sizing:border-box;margin:0 0 8px;padding:12px 14px;border:1px solid #dfe6f0;border-radius:12px;background:#fff;color:#0b2a3a;font:inherit;font-size:15px;outline:0}.gx-ta{min-height:110px;resize:none}",
     ".gx-mini2{border:0;background:none;color:#0a7cff;font:600 14px system-ui,sans-serif;padding:6px 2px}",
