@@ -28,6 +28,13 @@
     "html body #stv .sv-top button.sv-x{width:38px!important;padding:0!important;font-size:18px!important}",
     "html body #stv .sv-cap{left:16px!important;right:16px!important;bottom:calc(env(safe-area-inset-bottom,0px) + 96px)!important;border-radius:14px!important;background:rgba(0,0,0,.45)!important;text-align:center}",
     "html body #stv .sv-bot{position:absolute!important;left:0!important;right:0!important;bottom:0!important;z-index:7!important;padding:28px 12px calc(env(safe-area-inset-bottom,0px) + 12px)!important;background:linear-gradient(transparent,rgba(0,0,0,.72) 45%)!important;box-sizing:border-box!important;border-radius:0!important;box-shadow:none!important}",
+    "html body #stv .sv-bot{display:flex!important;flex-direction:column!important}",
+    "html body #stv .sv-barwrap{display:flex;flex-direction:column;gap:12px;width:100%}",
+    "html body #stv .sv-line{display:flex;align-items:center;gap:8px;width:100%}",
+    "html body #stv .sv-line input{flex:1 1 auto!important;min-width:0!important;width:auto!important;height:44px!important;border-radius:22px!important;padding:0 16px!important;font-size:15px!important}",
+    "html body #stv .sv-line button{flex:0 0 44px!important;width:44px!important;height:44px!important}",
+    "html body #stv .sv-emos{display:flex;align-items:center;justify-content:space-between;gap:6px;width:100%}",
+    "html body #stv .sv-emos button{flex:0 0 auto!important}",
     "html body #stv .sv-bot input{background:rgba(255,255,255,.16)!important;color:#fff!important;border:1px solid rgba(255,255,255,.35)!important}",
     "html body #stv .sv-bot input::placeholder{color:rgba(255,255,255,.75)}",
     /* bouton Télécharger : rond, dans l'en-tête */
@@ -68,23 +75,37 @@
     var x = top.querySelector(".sv-x");
     top.insertBefore(dl, x || null);
   }
-  function fixReply() {
-    var w = document.getElementById("stv"); if (!w) return;
-    var inp = w.querySelector(".sv-bot input");
-    if (!inp || inp._sv) return; inp._sv = 1;
-    var p = inp.parentElement;
-    if (p && p.querySelectorAll("button").length > 1) {
-      p.style.cssText += ";display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between";
-      inp.style.cssText += ";flex:1 1 calc(100% - 54px);min-width:0;height:42px";
-    } else if (inp.style) { inp.style.minWidth = "0"; }
+  function rebuildBar() {
+    var w = document.getElementById("stv"); if (!w || w._rb) return;
+    var inp = w.querySelector("input"); if (!inp) return;
+    var bar = inp;
+    while (bar.parentElement && bar.parentElement !== w && !bar.parentElement.classList.contains("sv-stage")) bar = bar.parentElement;
+    if (bar === inp) return;
+    var btns = [].slice.call(bar.querySelectorAll("button"));
+    if (btns.length < 2) return;
+    var pre = [], post = [];
+    btns.forEach(function (b) { (inp.compareDocumentPosition(b) & 2 ? pre : post).push(b); });
+    var send = post.length ? post.pop() : pre.pop();
+    var emos = pre.concat(post);
+    w._rb = 1;
+    var wrap = document.createElement("div"); wrap.className = "sv-barwrap";
+    var line = document.createElement("div"); line.className = "sv-line";
+    var row = document.createElement("div"); row.className = "sv-emos";
+    line.appendChild(inp); line.appendChild(send);
+    emos.forEach(function (b) { row.appendChild(b); });
+    wrap.appendChild(line); wrap.appendChild(row);
+    [].forEach.call(bar.children, function (c) { c.style.setProperty("display", "none", "important"); });
+    bar.appendChild(wrap);
+    bar.classList.add("sv-bot");
   }
-  function tagBars() {
-    var w = document.getElementById("stv");
-    if (!w) return;
-    [].forEach.call(w.children, function (c) {
-      if (c.classList.contains("sv-stage") || c.classList.contains("v9-dl") || c.classList.contains("sv-bot")) return;
-      if (c.style.position === "absolute" && (c.querySelector("input") || /Réag|Réaction/i.test(c.textContent)) && c.style.bottom !== "") c.classList.add("sv-bot");
+  function fixReactBtn() {
+    var w = document.getElementById("stv"); if (!w) return;
+    [].forEach.call(w.querySelectorAll("button"), function (b) {
+      if (b._sr || (b.textContent || "").indexOf("R\u00e9actions") < 0 || b.closest(".sv-top")) return;
+      b._sr = 1;
+      var st = { position: "absolute", left: "50%", right: "auto", width: "auto", "max-width": "90%", transform: "translateX(-50%)", bottom: "24px", "white-space": "nowrap", "z-index": "20", margin: "0" };
+      Object.keys(st).forEach(function (k) { b.style.setProperty(k, st[k], "important"); });
     });
   }
-  setInterval(function () { tag(); moveDl(); tagBars(); fixReply(); }, 250);
+  setInterval(function () { tag(); moveDl(); rebuildBar(); fixReactBtn(); }, 250);
 })();
