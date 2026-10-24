@@ -1,0 +1,44 @@
+/* ===== Bulle vocale ===== */
+.vbub{display:flex!important;align-items:center!important;gap:12px!important;
+  min-width:250px!important;padding:4px 2px!important}
+.vbub button{flex:none!important;width:46px!important;min-width:46px!important;height:46px!important;
+  padding:0!important;margin:0!important;border-radius:50%!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  color:#fff!important;border:1px solid rgba(255,255,255,.7)!important;
+  background:linear-gradient(135deg,#00e5ff,#7c3aed)!important;
+  box-shadow:0 0 14px rgba(0,229,255,.6),inset 0 0 8px rgba(255,255,255,.25)!important;
+  transition:transform .12s}
+.vbub button:active{transform:scale(.92)}
+.vbub button svg{width:22px!important;height:22px!important;display:block;
+  fill:#fff!important;stroke:#fff!important;stroke-width:2.2!important;
+  stroke-linecap:round!important;stroke-linejoin:round!important}
+/* Onde sonore */
+.vbub .vwrap{position:relative!important;flex:1!important;display:flex!important;align-items:center!important;
+  gap:2px!important;height:38px!important;background:none!important;border-radius:0!important;
+  overflow:visible!important;cursor:pointer}
+.vbub .vwrap i{display:block;flex:1;min-width:2px;max-width:4px;border-radius:3px;
+  background:rgba(0,40,90,.38);transition:background .12s}
+.vbub .vwrap i.on{background:#fff;box-shadow:0 0 6px rgba(255,255,255,.9)}
+/* Petit rond qui avance */
+.vbub .vknob{position:absolute;top:50%;left:0;width:12px;height:12px;margin:-6px 0 0 -6px;
+  border-radius:50%;background:#fff;pointer-events:none;opacity:0;transition:opacity .15s;
+  box-shadow:0 0 0 2px rgba(0,229,255,.95),0 0 10px #fff}
+.vbub .vknob.on{opacity:1}
+/* Durée */
+.vbub .vdur{min-width:40px!important;text-align:right;font-size:13px!important;
+  font-weight:700!important;color:#fff!important;font-variant-numeric:tabular-nums}
+/* Bulles claires (messages reçus) */
+.m:not(.me) .vbub .vdur{color:#0a3d91!important}
+.m:not(.me) .vbub .vwrap i{background:rgba(10,61,145,.28)}
+.m:not(.me) .vbub .vwrap i.on{background:#0a7bd6;box-shadow:0 0 6px rgba(10,123,214,.7)}
+.m:not(.me) .vbub .vknob{background:#0a7bd6;box-shadow:0 0 0 2px #fff,0 0 10px rgba(10,123,214,.8)}
+
+/* ===== Photo du contact dans l'en-tête du chat ===== */
+#scrChat .chead .cav.has-photo,
+#scrGroup .chead .cav.has-photo{
+  background-image:var(--avimg)!important;
+  background-size:cover!important;
+  background-position:center!important;
+  background-repeat:no-repeat!important;
+  border:2px solid rgba(0,229,255,.7)!important;
+  box-shadow:0 0 12px rgba(0,229,255,.45)!important}

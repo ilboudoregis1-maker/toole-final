@@ -1,0 +1,13 @@
+body,button,input,textarea,select{font-family:'Exo 2',system-ui,sans-serif;letter-spacing:.01em}
+.hdr .ttl,.ah,.sht,.cxn,.pf h2,.gcard h3{font-family:'Exo 2',sans-serif;font-weight:700;letter-spacing:.02em}
+#scrList .hdr .ttl,.wl h1,.wm,#scrCanix h2{font-family:'Orbitron','Exo 2',sans-serif!important;font-weight:800}
+#scrList .hdr .ttl{position:relative;font-size:22px!important;letter-spacing:.14em!important}
+#scrList .hdr .ttl::after{content:"";position:absolute;left:0;right:.14em;bottom:-6px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--main),transparent)}
+@supports (color:color-mix(in srgb,red,blue)){#scrList .hdr .ttl{filter:drop-shadow(0 3px 8px color-mix(in srgb,var(--main) 45%,transparent))}}
+.wl h1{font-size:30px;letter-spacing:.18em;margin-right:-.18em;background:linear-gradient(135deg,var(--main),var(--main2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent!important}
+#scrCanix h2{letter-spacing:.22em}
+.tabs button span,.chip{font-weight:600;letter-spacing:.04em}
+.gt,.sx-h{letter-spacing:.12em}
+.m .t,.sx-tm,.vdur,.vtm{font-variant-numeric:tabular-nums}
+.tabs button.on{background:color-mix(in srgb,var(--main) 18%,transparent)!important}
+.tabs button.on svg{stroke:var(--main)!important}

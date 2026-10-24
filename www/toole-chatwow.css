@@ -1,0 +1,37 @@
+html:root body #scrChat .chead{display:flex!important;align-items:center;gap:10px;padding:calc(env(safe-area-inset-top,0px) + 8px) 12px 8px 8px!important;background:var(--tf-bar)!important;background-image:none!important;box-shadow:0 1px 0 var(--tf-line),0 8px 20px rgba(10,80,200,.07)!important;position:relative;z-index:5}
+html:root body #scrChat .chead .bk{display:grid!important;place-items:center;flex:none;width:42px!important;height:42px!important;padding:0!important;border:0!important;border-radius:50%!important;background:var(--tf-tint)!important;opacity:1!important;visibility:visible!important}
+html:root body #scrChat .chead .bk svg{display:block!important;width:24px!important;height:24px!important;fill:none!important;stroke:#0a7cff!important;stroke-width:2.6!important;stroke-linecap:round;stroke-linejoin:round;opacity:1!important}
+html:root body #scrChat .chead .cav{flex:none;width:44px!important;height:44px!important;margin:0 2px!important;box-shadow:0 0 0 2px var(--tf-bar),0 0 0 4px #0a7cff!important;border:0!important}
+html:root body #scrChat .chead .cname{flex:1 1 auto;min-width:0}
+html:root body #scrChat .chead .cn{font-size:17px!important;font-weight:700!important;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html:root body #scrChat .chead .cs{font-size:12.5px!important;margin-top:1px}
+html:root body #scrChat .chead button:not(.bk){flex:none;display:grid!important;place-items:center;width:38px!important;height:38px!important;margin:0!important;padding:0!important;border:0!important;border-radius:50%!important;background:var(--tf-tint)!important;color:#0a7cff!important}
+html:root body #scrChat .chead button:not(.bk) svg{width:20px!important;height:20px!important;stroke:#0a7cff!important;fill:none}
+html:root body #chat,html:root body #gMsgs{padding:14px 12px 10px!important;gap:4px!important}
+html:root body #msgC{margin:0!important}
+html:root body #msgC:empty{display:none!important}
+html:root body #scrChat .m{max-width:78%!important;padding:8px 13px 6px!important;font-size:15.5px!important;line-height:1.38!important;border-radius:20px!important;background:var(--tf-in)!important;box-shadow:0 1px 2px rgba(10,30,60,.08)!important}
+html:root body #scrChat .m:not(.me){border-bottom-left-radius:6px!important}
+html:root body #scrChat .m.me{background:linear-gradient(160deg,#35a0ff,#0a7cff)!important;border-bottom-right-radius:6px!important;box-shadow:0 4px 12px rgba(10,124,255,.28)!important}
+html:root body #scrChat .m .t{font-size:11px!important;margin-top:2px!important}
+html:root body #scrChat .m.me .t{color:rgba(255,255,255,.85)!important;-webkit-text-fill-color:rgba(255,255,255,.85)!important}
+html:root body #scrChat .m:has(.tmv),html:root body #scrChat .m:has(> img:not(.tsimg)),html:root body #scrChat .m:has(> video),html:root body #scrChat .m:has(.tsimg){background:transparent!important;background-image:none!important;box-shadow:none!important;padding:0!important}
+html:root body #scrChat .m:has(.tmv) .t,html:root body #scrChat .m:has(> img:not(.tsimg)) .t,html:root body #scrChat .m:has(> video) .t,html:root body #scrChat .m:has(.tsimg) .t{color:var(--tf-mut)!important;-webkit-text-fill-color:var(--tf-mut)!important;padding:3px 6px 0!important;text-align:right}
+html:root body #scrChat .tmv,html:root body #scrChat .m img:not(.tsimg),html:root body #scrChat .m video{border-radius:18px!important;overflow:hidden}
+html:root body #scrChat .tf-day{background:rgba(255,255,255,.78)!important;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--tf-mut)!important;border:1px solid var(--tf-line);border-radius:999px!important;font-size:12px!important;font-weight:600;padding:4px 14px!important;box-shadow:none!important}
+html[data-theme=dark]:root body #scrChat .tf-day{background:rgba(28,40,51,.82)!important}
+html:root body #chat .m.avr::before{display:none!important}
+html:root body #chat .m.avr{margin-right:0!important}
+html:root body #scrChat .bar{background:var(--tf-bar)!important;border-top:1px solid var(--tf-line)!important;padding:8px 10px calc(env(safe-area-inset-bottom,0px) + 8px)!important;gap:6px!important;align-items:flex-end!important}
+html:root body #scrChat .bar .tsta{flex:1 1 auto!important;min-width:0!important;min-height:42px!important;padding:10px 16px!important;font-size:16px!important;line-height:22px!important;border:1.5px solid transparent!important;border-radius:22px!important;background:var(--tf-soft)!important;color:var(--tf-ink)!important;box-shadow:none!important}
+html:root body #scrChat .bar .tsta:focus{background:var(--tf-bar)!important;border-color:#0a7cff!important;box-shadow:0 0 0 3px var(--tf-tint)!important}
+html:root body #scrChat .bar button{color:#0a7cff!important}
+html:root body #scrChat .bar button svg{stroke:#0a7cff!important}
+html:root body #scrChat .bar #send{width:44px!important;height:44px!important;background:linear-gradient(135deg,#35a0ff,#0a7cff)!important;box-shadow:0 4px 12px rgba(10,124,255,.35)!important}
+html:root body #scrChat .bar #send svg{stroke:#fff!important}
+html:root body #scrChat .bar button[aria-label="Photo"],html:root body #scrGroup .bar button[aria-label="Photo"]{display:none!important}
+html:root body #wSheet>div{background:var(--tf-bar)!important;color:var(--tf-ink)!important;border-radius:26px 26px 0 0!important}
+html:root body #wSheet>div>button{background:var(--tf-soft)!important;color:var(--tf-ink)!important;border-color:var(--tf-line)!important}
+html:root body #wSheet>div button{border-radius:18px!important}
+/* TF_PHOTO */
+html:root body .has-photo,html:root body #scrList #recent .row:nth-child(n) .av.has-photo{background-image:var(--avimg)!important;background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important;color:transparent!important;font-size:0!important}

@@ -1,0 +1,62 @@
+/* TÕÕLé — mélange WhatsApp + Messenger. Sombre = choix de l'utilisateur */
+:root{--ht-a:#0a7cff;--ht-a2:#2f9bff;--ht-g:#25d366;--ht-bg:#fff;--ht-card:#fff;--ht-ink:#0b141a;--ht-mut:#667781;--ht-line:#eceff3;--ht-soft:#f0f2f5;--ht-in:#fff;--ht-chat:#eef2f7;--ht-tint:#e7f1ff}
+html[data-theme="dark"]{--ht-bg:#0f1419;--ht-card:#151c24;--ht-ink:#e9edef;--ht-mut:#8696a0;--ht-line:#222d34;--ht-soft:#1f2933;--ht-in:#1f2933;--ht-chat:#0b1117;--ht-tint:#16304f}
+html body .scr,html body #scrList .body,html body #scrCalls .body,html body #scrGroupes .body,html body #scrStatuts .body,html body #scrProfil .body,html body #scrParam .body{background:var(--ht-bg)!important;color:var(--ht-ink)}
+html body #scrList .hdr,html body #scrCalls .hdr,html body #scrGroupes .hdr,html body #scrStatuts .hdr,html body #scrProfil .hdr,html body #scrParam .hdr,html body #scrGroup .hdr,html body #scrChat .chead,html body #scrGroup .chead{background:var(--ht-card)!important;color:var(--ht-ink)!important;border:0!important;box-shadow:none!important}
+html body #scrChat .chead,html body #scrGroup .chead{border-bottom:1px solid var(--ht-line)!important}
+html body #scrCalls .hdr .ttl,html body #scrGroupes .hdr .ttl,html body #scrStatuts .hdr .ttl,html body #scrProfil .hdr .ttl,html body #scrParam .hdr .ttl,html body #scrGroup .hdr .ttl{color:var(--ht-ink)!important;-webkit-text-fill-color:var(--ht-ink)!important;font-size:26px!important;font-weight:700!important;font-family:'Exo 2',system-ui,sans-serif!important}
+html body #scrList .hdr svg,html body #scrCalls .hdr svg,html body #scrGroupes .hdr svg,html body #scrStatuts .hdr svg,html body #scrProfil .hdr svg,html body #scrParam .hdr svg,html body #scrGroup .hdr svg,html body #scrChat .chead svg,html body #scrGroup .chead svg{stroke:var(--ht-ink)!important;color:var(--ht-ink)!important}
+html body #scrChat .chead .bk svg,html body #scrChat .htgalb svg{stroke:var(--ht-a)!important}
+html body #scrChat .chead .cn,html body #scrGroup .chead .cn{color:var(--ht-ink)!important;font-weight:700}
+html body #scrChat .chead .cs{color:var(--ht-mut)!important;opacity:1}
+html body #scrList .hdr{padding:calc(env(safe-area-inset-top,0px) + 10px) 14px 8px!important;gap:10px}
+html body #scrList .hdr span.ttl{order:2;flex:1;margin:0!important;display:block!important;background:linear-gradient(90deg,#0a6cf0,#6a5cff)!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important;-webkit-text-fill-color:transparent!important;font-family:'Exo 2',system-ui,sans-serif!important;font-size:30px!important;font-weight:700!important;letter-spacing:.5px!important;line-height:1.1;filter:none}
+html body #scrList .hdr span.ttl::before,html body #scrList .hdr span.ttl::after{content:none!important;display:none!important}
+html body #scrList .hdr .grow{display:none!important}
+html body #scrList .hdr .ic{width:40px;height:40px;margin:0!important;border-radius:50%;background:var(--ht-soft)!important;border:0!important;display:flex;align-items:center;justify-content:center}
+html body #scrList .hdr .ic:nth-of-type(1){order:1}
+html body #scrList .hdr .ic:nth-of-type(4){order:3;display:flex!important}
+html body #scrList .hdr #newIc{order:4}
+html body #scrList .hdr .ic svg{width:21px;height:21px}
+html body #scrList .body{padding-top:4px}
+html body #scrList #srch{background:var(--ht-soft)!important;color:var(--ht-ink)!important;border:0!important;border-radius:999px!important;padding:12px 18px!important;font-size:15px}
+html body #scrList #srch:focus{outline:0;box-shadow:0 0 0 2px var(--ht-a)!important}
+html body #v4chips button{border-radius:999px!important;background:var(--ht-soft)!important;color:var(--ht-mut)!important;border:0!important;font-weight:600;padding:8px 16px}
+html body #v4chips button.on{background:var(--ht-tint)!important;color:var(--ht-a)!important}
+html body #v4sec,html body .gt,html body .sx-h{font-size:13px!important;letter-spacing:.2px!important;text-transform:none;font-weight:700;color:var(--ht-mut)!important;text-shadow:none!important}
+html body #scrList .row,html body #scrCalls .row,html body #scrGroupes .row{background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;margin:0!important;padding:9px 16px!important;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+html body #scrList .row:active,html body .row.ht-hold{background:var(--ht-soft)!important}
+html body #scrList .row .av,html body #scrCalls .row .av,html body #scrCalls #v4calls .av,html body #scrGroupes .row .av{width:56px!important;height:56px!important;font-size:19px}
+html body .row .rn{color:var(--ht-ink)!important;font-weight:700;font-size:16px}
+html body .row .sub{color:var(--ht-mut)!important;font-size:14px}
+html body #recent .row span[style*="border-radius:12px"]{background:var(--ht-g)!important;color:#fff!important}
+html body #scrList .row .av.has-photo,html body #scrList #recent .row .av.has-photo.has-photo,html body #scrCalls .row .av.has-photo,html body #scrCalls #v4calls .av.has-photo,html body #scrGroupes .row .av.has-photo,html body #scrStatuts .row .av.has-photo,html body #scrProfil .pf #pfAv.has-photo,html body #scrChat .chead #peerAv.has-photo{background-image:var(--avimg)!important;background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important;color:transparent!important;font-size:0!important;box-shadow:none!important}
+html body #scrList #v4st .v4s .rg{border:2.5px solid var(--ht-a)!important;box-shadow:inset 0 0 0 3px var(--ht-card)!important;background:var(--ht-soft)!important}
+html body #scrList #v4st .v4s{color:var(--ht-mut)!important}
+html body #scrCalls .v4call-go{background:var(--ht-tint)!important;border:0!important;border-radius:50%!important}
+html body #scrCalls .v4call-go svg{stroke:var(--ht-a)!important}
+html body #start,html body .newg,html body #go,html body #iGo,html body .wl .b1,html body .sx-add{background:linear-gradient(135deg,var(--ht-a2),var(--ht-a))!important;color:#fff!important;border:0!important;border-radius:999px!important;font-weight:700;box-shadow:none!important}
+html body #up,html body .wl .b2{border-radius:999px!important;border:0!important;color:var(--ht-a)!important;background:var(--ht-tint)!important}
+html body #scrWelcome.wl{background:linear-gradient(180deg,var(--ht-card) 0%,var(--ht-tint) 100%)!important;color:var(--ht-ink)!important}
+html body #scrWelcome.wl h1{font-family:'Exo 2',system-ui,sans-serif;font-weight:700;font-size:44px;letter-spacing:.5px!important;background:linear-gradient(90deg,#0a6cf0,#6a5cff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+html body #scrWelcome.wl p{color:var(--ht-mut)!important;opacity:1}
+html body #v4nav{background:var(--ht-card)!important;border-top:1px solid var(--ht-line)!important;box-shadow:none!important}
+html body #v4nav .t{color:var(--ht-mut)!important;font-size:12px}
+html body #v4nav .t svg{box-sizing:content-box;width:24px;height:24px;padding:4px 18px;border-radius:16px}
+html body #v4nav .t.on{color:var(--ht-ink)!important;font-weight:700}
+html body #v4nav .t.on svg{stroke:var(--ht-a)!important;background:var(--ht-tint)}
+html body #v4nav .mid{background:linear-gradient(135deg,var(--ht-a2),var(--ht-a))!important;box-shadow:0 6px 16px rgba(10,124,255,.4)!important}
+html body #v4nav .mid svg{stroke:#fff!important;background:none!important;padding:0!important}
+html body #scrChat,html body #scrGroup{background:var(--ht-chat)!important}
+html body #scrChat #chat,html body #scrGroup #gMsgs{background:var(--ht-chat)!important;background-image:none!important}
+html body #scrChat .m,html body #scrGroup .m{background:var(--ht-in)!important;color:var(--ht-ink)!important;border:0!important;border-radius:18px 18px 18px 6px!important;box-shadow:0 1px 2px rgba(0,0,0,.1)!important}
+html body #scrChat .m.me,html body #scrGroup .m.me{background:linear-gradient(135deg,var(--ht-a2),var(--ht-a))!important;color:#fff!important;border-radius:18px 18px 6px 18px!important;box-shadow:none!important}
+html body #scrChat .m .t,html body #scrGroup .m .t{color:var(--ht-mut)!important}
+html body #scrChat .m.me .t,html body #scrGroup .m.me .t{color:rgba(255,255,255,.85)!important}
+html body #scrChat .bar,html body #scrGroup .bar{background:var(--ht-card)!important;border-top:1px solid var(--ht-line)!important}
+html body #scrChat .bar input,html body #scrGroup .bar input{background:var(--ht-soft)!important;color:var(--ht-ink)!important;border:0!important;border-radius:999px!important}
+html body #scrChat #send,html body #scrGroup #gSend{background:linear-gradient(135deg,var(--ht-a2),var(--ht-a))!important;box-shadow:none!important}
+html body #scrChat #send svg{stroke:#fff!important}
+html body #scrProfil .stats div,html body #scrProfil .menu,html body #scrParam .card{background:var(--ht-soft)!important;border:0!important;border-radius:18px!important;box-shadow:none!important}
+html body #scrProfil .pm,html body #scrParam .row{background:transparent!important;color:var(--ht-ink)!important}
+html body #scrProfil .stats b{color:var(--ht-a)!important}

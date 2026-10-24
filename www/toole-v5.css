@@ -1,0 +1,58 @@
+/* ===== TÕÕLé V5 — système visuel unifié (s'appuie sur la palette V4 : papier chaud, ocre, latérite, vert) ===== */
+:root{
+  --v5-t-title:22px;--v5-t-row:16px;--v5-t-body:15px;--v5-t-meta:13px;
+  --v5-r-card:18px;--v5-r-pill:22px;--v5-tap:44px;--v5-ic:1.9;
+  --v5-sk:rgba(120,110,95,.14);
+}
+html[data-theme="dark"]{--v5-sk:rgba(255,255,255,.08)}
+
+/* Typographie : 2 niveaux de titres, texte lisible, métadonnées discrètes */
+html .hdr .ttl{font-size:var(--v5-t-title)}
+html .row .rn,html .chead .cn{font-size:var(--v5-t-row);font-weight:700}
+html .row .sub,html .chead .cs{font-size:var(--v5-t-meta)}
+html body{font-size:var(--v5-t-body);-webkit-font-smoothing:antialiased}
+
+/* Icônes : un seul style (trait arrondi, même épaisseur) */
+html .hdr svg,html #v4nav svg,html .bar svg,html .chead svg,html .v4call-go svg{stroke-width:var(--v5-ic)!important;stroke-linecap:round!important;stroke-linejoin:round!important;fill:none}
+
+/* Boutons : hauteur tactile, états actif / désactivé / chargement / focus */
+html button,html .sa,html .ic{min-height:var(--v5-tap);transition:transform .12s ease,opacity .12s ease,background-color .12s ease}
+html button:active:not(:disabled){transform:scale(.97)}
+html button:disabled,html button[aria-busy="true"]{opacity:.5;pointer-events:none}
+html button:focus-visible,html input:focus-visible{outline:2px solid var(--v4-main);outline-offset:2px}
+html .bar button,html .hdr .ic,html .hdr button{min-height:0}
+
+/* Cartes et feuilles : bordures discrètes, rayons cohérents, ombres limitées */
+html .sht{font-weight:800;font-size:var(--v5-t-row);color:var(--v4-ink)}
+html .sa{width:100%;min-height:48px;border-radius:14px!important;border:1px solid var(--v4-line)!important;background:var(--v4-surface)!important;color:var(--v4-ink)!important;font-weight:600;margin-top:8px}
+html .sa.dz{color:var(--v4-danger)!important}
+html .sa.cc{background:var(--v4-soft)!important}
+html .stats>div,html .menu,html #scrParam .card{border-radius:var(--v5-r-card)!important}
+
+/* Favoris par identifiant (remplace l'étoile V4 par nom) */
+html .v4star{display:none!important}
+.v5star{flex:none;width:40px;height:40px;min-height:0;border:0;background:transparent;border-radius:50%;color:var(--v4-line);font-size:20px;line-height:1;padding:0}
+.v5star.on{color:var(--v4-ochre)}
+.v5off{display:none!important}
+#v5nofav{padding:22px 6px;color:var(--v4-muted);font-size:14px}
+
+/* Chargement : liste estompée ; squelette en CSS pur (ne remplit jamais #recent, le cache local reste affichable) */
+#recent.v5busy{opacity:.45;pointer-events:none;transition:opacity .15s}
+#recent:empty{min-height:230px;background:
+  linear-gradient(var(--v5-sk),var(--v5-sk)) 66px 24px/55% 14px no-repeat,
+  linear-gradient(var(--v5-sk),var(--v5-sk)) 66px 94px/45% 14px no-repeat,
+  linear-gradient(var(--v5-sk),var(--v5-sk)) 66px 164px/60% 14px no-repeat,
+  radial-gradient(circle 26px,var(--v5-sk) 98%,transparent) 2px 10px/52px 52px no-repeat,
+  radial-gradient(circle 26px,var(--v5-sk) 98%,transparent) 2px 80px/52px 52px no-repeat,
+  radial-gradient(circle 26px,var(--v5-sk) 98%,transparent) 2px 150px/52px 52px no-repeat}
+
+/* Erreur réseau : message + action Réessayer */
+.v5retry{display:block;margin:6px 6px 0;padding:0 18px;height:44px;border:1.5px solid var(--v4-main);border-radius:var(--v5-r-pill);background:transparent;color:var(--v4-main);font:700 14px "Exo 2",sans-serif}
+
+/* Compteurs lisibles sans envahir l'écran */
+html #recent .row>span:not(.rn):not(.sub):not(.v5star){min-width:22px;height:22px;border-radius:11px;font-size:12px}
+
+/* Petit écran / clavier : la barre ne recouvre jamais la saisie */
+body.v5kb #v4nav{display:none!important}
+@media (max-width:340px){#v4nav .t span{font-size:10px}#v4chips button{padding:0 12px}}
+@media (prefers-reduced-motion:reduce){.v5sk i,.v5sk b{animation:none}}

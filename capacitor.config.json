@@ -1,0 +1,14 @@
+{
+  "appId": "com.cns.tooole",
+  "appName": "TÕÕLé",
+  "webDir": "www",
+  "android": {
+    "allowMixedContent": false
+  },
+  "backgroundColor": "#ffffff",
+  "plugins": {
+    "SystemBars": {
+      "style": "LIGHT"
+    }
+  }
+}

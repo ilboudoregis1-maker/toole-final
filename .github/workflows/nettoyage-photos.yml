@@ -1,0 +1,25 @@
+name: nettoyage-photos
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+jobs:
+  clean:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Supprimer les photos de plus de 7 jours
+        env:
+          U: ${{ secrets.SUPABASE_URL }}
+          K: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: |
+          lim=$(date -u -d '7 days ago' +%s)
+          H=(-H "apikey: $K" -H "Authorization: Bearer $K" -H "Content-Type: application/json")
+          L="$U/storage/v1/object/list/photos"
+          : > old.txt
+          for d in $(curl -s "${H[@]}" -X POST "$L" -d '{"prefix":"","limit":1000}' | jq -r '.[].name'); do
+            curl -s "${H[@]}" -X POST "$L" -d "{\"prefix\":\"$d\",\"limit\":1000}" | jq -r --arg d "$d" --argjson lim "$lim" '.[] | select(.created_at != null) | select((.created_at[0:19]+"Z"|fromdateiso8601) < $lim) | "\($d)/\(.name)"' >> old.txt
+          done
+          echo "À supprimer : $(wc -l < old.txt)"
+          if [ -s old.txt ]; then
+            jq -R -s -c '{prefixes: (split("\n")|map(select(length>0)))}' old.txt | curl -s "${H[@]}" -X DELETE "$U/storage/v1/object/photos" -d @-
+          fi

@@ -1,0 +1,15 @@
+node_modules/
+android/.gradle/
+android/app/build/
+android/build/
+node_modules
+*.apk
+*.jks
+*.keystore
+.env
+android/build
+android/.gradle
+android/app/build
+android/local.properties
+android/app/google-services.json
+android/app/src/main/assets/public

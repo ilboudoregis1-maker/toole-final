@@ -1,0 +1,45 @@
+html body #scrParam{background:#f4f8ff!important}
+html body #scrParam .hdr{position:sticky;top:0;z-index:5;display:flex!important;align-items:center;gap:12px;padding:max(12px,env(safe-area-inset-top,0px)) 14px 12px!important;background:rgba(255,255,255,.94)!important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid #e6eef8!important;box-shadow:0 6px 20px rgba(10,124,255,.07)!important}
+html body #scrParam .hdr #prBack{width:42px;height:42px;min-width:42px;border-radius:50%;background:#e8f2ff!important;display:grid!important;place-items:center;margin:0!important;padding:0!important}
+html body #scrParam .hdr #prBack svg{width:24px;height:24px;stroke:#0a7cff!important;stroke-width:3!important;fill:none!important;stroke-linecap:round;stroke-linejoin:round}
+html body #scrParam .hdr .ttl{font:800 22px/1.2 system-ui,-apple-system,Roboto,sans-serif!important;letter-spacing:0!important;color:#0b1b2b!important;text-transform:none!important}
+html body #scrParam .body{padding:12px 16px 40px!important;background:#f4f8ff!important}
+html body #scrParam .gt{margin:22px 6px 8px!important;font:800 12.5px/1 system-ui,sans-serif!important;letter-spacing:.9px;text-transform:uppercase;color:#0a7cff!important}
+html body #scrParam .card{background:#fff!important;border:0!important;border-radius:20px!important;box-shadow:0 2px 4px rgba(15,40,80,.04),0 8px 22px rgba(10,124,255,.07)!important;overflow:hidden}
+html body #scrParam .row{display:flex!important;align-items:center;gap:0;width:100%;box-sizing:border-box;min-height:58px;padding:10px 16px!important;background:transparent!important;border:0!important;border-bottom:1px solid #eef3fa!important;font:600 16px/1.3 system-ui,-apple-system,Roboto,sans-serif!important;color:#0b1b2b!important;text-align:left;-webkit-tap-highlight-color:transparent;outline:none!important}
+html body #scrParam .card>.row:last-child,html body #scrParam .card>*:last-child .row:last-child{border-bottom:0!important}
+html body #scrParam .row>span:first-of-type{flex:1;min-width:0}
+html body #scrParam .row b{font-weight:600!important;color:#6b7c93!important;font-size:14px;max-width:55%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+html body #scrParam .row .chev{color:#a9b8cc!important;font-size:22px;margin-left:8px}
+html body #scrParam .row:active{background:#f3f8ff!important}
+html body #scrParam .row.danger,html body #scrParam .row.danger span{color:#e11d48!important}
+html body #scrParam .st-ic{width:34px;height:34px;min-width:34px;border-radius:10px;display:grid;place-items:center;margin-right:13px;background:var(--c,#0a7cff)}
+html body #scrParam .st-ic svg{width:19px;height:19px;fill:none;stroke:#fff;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
+html body #scrParam input[type=checkbox]{-webkit-appearance:none;appearance:none;width:50px!important;height:30px!important;min-width:50px;border-radius:30px;background:#d3dcea!important;border:0!important;position:relative;transition:background .2s;margin:0 0 0 12px;flex:none;box-shadow:none!important}
+html body #scrParam input[type=checkbox]::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.25);transition:transform .2s}
+html body #scrParam input[type=checkbox]:checked{background:linear-gradient(135deg,#0a7cff,#2f9bff)!important}
+html body #scrParam input[type=checkbox]:checked::after{transform:translateX(20px)}
+html body #scrParam #thPick{display:none!important}
+html body #scrParam .pro-seg{display:flex!important;flex-direction:row!important;gap:0!important;margin:6px 12px 12px!important;padding:4px!important;background:#eaf1fb!important;border-radius:16px!important;width:auto!important}
+html body #scrParam .pro-seg button{flex:1;margin:0!important;padding:11px 6px!important;border:0!important;border-radius:12px!important;background:transparent!important;color:#6b7c93!important;font:700 15px/1 system-ui,sans-serif!important;text-align:center!important;box-shadow:none!important}
+html body #scrParam .pro-seg button::before,html body #scrParam .pro-seg button::after{display:none!important;content:none!important}
+html body #scrParam .pro-seg button.on,html:root body #scrParam .pro-seg[data-k=mode] button.on{background:#fff!important;color:#0a7cff!important;border:0!important;box-shadow:0 3px 10px rgba(10,124,255,.18)!important}
+html body #scrParam .lg .it{display:flex!important;align-items:center;min-height:58px;padding:10px 16px!important;border-bottom:1px solid #eef3fa;font:600 16px/1.3 system-ui,sans-serif;color:#0b1b2b}
+html body #scrParam .lg .it:last-child{border-bottom:0}
+html body #scrParam .lg .it .dot{order:2;margin-left:auto;width:24px;height:24px;border-radius:50%;border:2px solid #c9d6e8;background:#fff;box-sizing:border-box}
+html body #scrParam .lg .it .dot.on{border-color:#0a7cff;background:radial-gradient(circle,#0a7cff 0 42%,#fff 46%)}
+#stMe{display:flex;align-items:center;gap:14px;padding:18px 16px;margin:2px 0 4px;border-radius:22px;background:linear-gradient(135deg,#0a7cff,#2f9bff);color:#fff;box-shadow:0 12px 28px rgba(10,124,255,.32)}
+#stMe .st-av{width:58px;height:58px;border-radius:50%;background:rgba(255,255,255,.25);display:grid;place-items:center;font:800 22px system-ui,sans-serif;box-shadow:0 0 0 3px rgba(255,255,255,.55)}
+#stMe b{display:block;font:800 19px/1.2 system-ui,sans-serif}
+#stMe span{font:500 13px/1.3 system-ui,sans-serif;opacity:.92}
+html[data-theme=dark] body #scrParam,html[data-theme=dark] body #scrParam .body{background:#0b1320!important}
+html[data-theme=dark] body #scrParam .hdr{background:rgba(18,28,43,.95)!important;border-color:#1f2d42!important}
+html[data-theme=dark] body #scrParam .hdr .ttl,html[data-theme=dark] body #scrParam .row,html[data-theme=dark] body #scrParam .lg .it{color:#e8eef7!important}
+html[data-theme=dark] body #scrParam .hdr #prBack{background:#1c2a3d!important}
+html[data-theme=dark] body #scrParam .card{background:#121c2b!important;box-shadow:none!important}
+html[data-theme=dark] body #scrParam .row,html[data-theme=dark] body #scrParam .lg .it{border-color:#1f2d42!important}
+html[data-theme=dark] body #scrParam .row:active{background:#1c2a3d!important}
+html[data-theme=dark] body #scrParam .pro-seg{background:#1c2a3d!important}
+html[data-theme=dark] body #scrParam .pro-seg button.on,html[data-theme=dark]:root body #scrParam .pro-seg[data-k=mode] button.on{background:#0a7cff!important;color:#fff!important}
+html[data-theme=dark] body #scrParam input[type=checkbox]{background:#34475f!important}
+html[data-theme=dark] body #scrParam .lg .it .dot{background:#121c2b;border-color:#34475f}

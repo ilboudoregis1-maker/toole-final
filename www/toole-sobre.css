@@ -1,0 +1,186 @@
+/* TÕÕLé — « Sobre » : discussion type messagerie WhatsApp + profil épuré.
+   Chargé EN DERNIER : il reprend la main sur tous les anciens styles (hitech, messenger, final…). */
+html:root:root{--s-bar:#fff;--s-ac:#0a7cff;--s-send:#0a7cff;--s-bg:#fff;--s-soft:#eef5ff;--s-ink:#0b1b3a;--s-mut:#6b7c93;--s-line:#e6eef8;--s-chat:#fff;--s-in:#eef3fa;--s-out:#0a7cff;--s-tick:#fff;--s-hd:#0b1b3a;--ht-chat:#fff;--ht-a:#0a7cff;--ht-a2:#2f9bff;--ht-tint:#e7f1ff}
+html[data-theme="dark"]:root:root{--s-bar:#111b21;--s-ac:#2f9bff;--s-send:#0a7cff;--s-bg:#0b141a;--s-soft:#1c2833;--s-ink:#e8f1f7;--s-mut:#8fa3b3;--s-line:#22303b;--s-chat:#0b141a;--s-in:#26343f;--s-out:#0a7cff;--s-hd:#e8f1f7;--ht-chat:#0b141a;--ht-tint:rgba(47,155,255,.18)}
+
+/* ---------- Discussion : en-tête ---------- */
+html:root:root body :is(#scrChat .chead,#scrGroup .hdr,#scrGroup .chead){background:var(--s-bar)!important;background-image:none!important;border:0!important;box-shadow:0 1px 0 var(--s-line)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;color:var(--s-hd)!important;gap:4px!important;padding:calc(env(safe-area-inset-top,0px) + 6px) 6px 6px 4px!important;min-height:56px}
+html:root:root body #scrChat .chead .bk,html:root:root body #scrChat #back,html:root:root body #scrGroup #gBk{width:40px!important;height:40px!important;min-width:40px!important;border-radius:50%!important;background:var(--s-soft)!important;border:0!important;box-shadow:none!important;padding:0!important;margin:0!important}
+html:root:root body #scrChat .chead .bk svg,html:root:root body #scrChat .chead .bk svg *,html:root:root body #scrGroup #gBk svg,html:root:root body #scrGroup #gBk svg *{stroke:var(--s-ac)!important;stroke-width:2.2!important;width:24px!important;height:24px!important;fill:none!important}
+html:root:root body #scrChat .chead .cav{width:40px!important;height:40px!important;margin:0 8px 0 2px!important;border-radius:50%!important;box-shadow:none!important;border:0!important;background-color:var(--s-ac)!important;color:#fff!important;font-size:16px!important;font-weight:500!important}
+html:root:root body #scrChat .chead .cn,html:root:root body #scrGroup .hdr .ttl,html:root:root body #scrGroup #gTt{color:var(--s-hd)!important;-webkit-text-fill-color:var(--s-hd)!important;font-size:17px!important;font-weight:700!important;letter-spacing:0!important}
+html:root:root body #scrChat .chead .cs{color:var(--s-mut)!important;-webkit-text-fill-color:var(--s-mut)!important;font-size:12.5px!important;font-weight:400!important;margin-top:1px}
+html:root:root body :is(#scrChat .chead,#scrGroup .hdr) button:not(.bk):not(#gBk),html:root:root body :is(#scrChat .chead,#scrGroup .hdr) .ic{width:40px!important;height:40px!important;min-width:0!important;margin:0!important;padding:0!important;border:0!important;border-radius:50%!important;background:var(--s-soft)!important;background-image:none!important;box-shadow:none!important;color:var(--s-ac)!important;display:grid!important;place-items:center}
+html:root:root body :is(#scrChat .chead,#scrGroup .hdr) button:not(.bk) svg,html:root:root body :is(#scrChat .chead,#scrGroup .hdr) button:not(.bk) svg *,html:root:root body :is(#scrChat .chead,#scrGroup .hdr) .ic svg,html:root:root body :is(#scrChat .chead,#scrGroup .hdr) .ic svg *{stroke:var(--s-ac)!important;width:22px!important;height:22px!important}
+html:root:root body :is(#scrChat .chead,#scrGroup .hdr) .v7-more svg,html:root:root body :is(#scrChat .chead,#scrGroup .hdr) .v7-more svg *{fill:var(--s-ac)!important;stroke:none!important}
+html:root:root body #scrChat .chead #starBtn{color:var(--s-ac)!important;font-size:21px!important}
+
+/* ---------- Discussion : fil des messages ---------- */
+html:root:root body :is(#scrChat,#scrGroup){background:var(--s-chat)!important}
+html:root:root body :is(#chat,#gMsgs){background:var(--s-chat)!important;background-image:none!important;padding:10px 10px 6px!important;gap:2px!important}
+html:root:root body :is(#scrChat,#scrGroup) .m{max-width:80%!important;padding:8px 12px 5px!important;border:0!important;border-radius:18px!important;background:var(--s-in)!important;background-image:none!important;color:var(--s-ink)!important;-webkit-text-fill-color:var(--s-ink)!important;box-shadow:none!important;font-size:15.5px!important;font-weight:400!important;line-height:1.35!important;margin:0!important}
+html:root:root body :is(#scrChat,#scrGroup) .m.me{background:var(--s-out)!important;color:#fff!important;-webkit-text-fill-color:#fff!important;border-bottom-right-radius:5px!important}
+html:root:root body :is(#scrChat,#scrGroup) .m:not(.me){border-bottom-left-radius:5px!important}
+html:root:root body :is(#scrChat,#scrGroup) .m+.m.me,html:root:root body :is(#scrChat,#scrGroup) .m.me+.m:not(.me){margin-top:6px!important}
+html:root:root body :is(#scrChat,#scrGroup) .m::before,html:root:root body :is(#scrChat,#scrGroup) .m::after{display:none!important;content:none!important}
+html:root:root body :is(#scrChat,#scrGroup) .m .t,html:root:root body :is(#scrChat,#scrGroup) .m.me .t,html:root:root body :is(#scrChat,#scrGroup) .m:not(.me) .t{display:flex!important;justify-content:flex-end;align-items:center;gap:3px;margin:2px 0 0 14px!important;font-size:11px!important;line-height:1.1!important;font-weight:400!important;color:var(--s-mut)!important;-webkit-text-fill-color:var(--s-mut)!important;opacity:1!important}
+html:root:root body :is(#scrChat,#scrGroup) .m .t .tk{font-size:12px;letter-spacing:-2px!important;margin-right:2px;color:var(--s-mut)!important;-webkit-text-fill-color:var(--s-mut)!important}
+html:root:root body :is(#scrChat,#scrGroup) .m .t .tk.rd{color:var(--s-tick)!important;-webkit-text-fill-color:var(--s-tick)!important}
+html:root:root body :is(#scrChat,#scrGroup) .tf-day{align-self:center;background:var(--s-in)!important;color:var(--s-mut)!important;-webkit-text-fill-color:var(--s-mut)!important;font-size:12.5px!important;font-weight:400!important;padding:4px 12px!important;border-radius:8px!important;box-shadow:0 1px .5px rgba(11,20,26,.13)!important;margin:8px 0!important}
+
+/* ---------- Discussion : barre d'écriture ---------- */
+html:root:root body :is(#scrChat,#scrGroup) .bar{background:var(--s-chat)!important;background-image:none!important;border:0!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;padding:6px 6px calc(env(safe-area-inset-bottom,0px) + 8px)!important;gap:2px!important;align-items:flex-end!important}
+html:root:root body :is(#scrChat,#scrGroup) .bar :is(.tsta,input[type=text],#txt,#gTxt){background:var(--s-in)!important;color:var(--s-ink)!important;-webkit-text-fill-color:var(--s-ink)!important;border:0!important;border-radius:24px!important;padding:12px 16px!important;font-size:16px!important;min-height:46px;box-shadow:none!important;outline:0!important}
+html:root:root body :is(#scrChat,#scrGroup) .bar :is(.tsta,input)::placeholder{color:var(--s-mut)!important;-webkit-text-fill-color:var(--s-mut)!important}
+html:root:root body :is(#scrChat,#scrGroup) .bar button{background:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important;color:var(--s-mut)!important;width:36px!important;height:46px!important;min-width:0!important;padding:0!important;margin:0!important;border-radius:50%!important;display:flex!important;align-items:center;justify-content:center}
+html:root:root body :is(#scrChat,#scrGroup) .bar button svg,html:root:root body :is(#scrChat,#scrGroup) .bar button svg *{stroke:var(--s-mut)!important}
+html:root:root body :is(#scrChat,#scrGroup) .bar button svg{width:23px!important;height:23px!important}
+html:root:root body :is(#scrChat,#scrGroup) .bar button.tsplus{font-size:28px!important;font-weight:300!important;color:var(--s-mut)!important}
+html:root:root body :is(#scrChat,#scrGroup) .bar :is(#send,#gSend){background:var(--s-send)!important;width:46px!important;height:46px!important;border-radius:50%!important}
+html:root:root body :is(#scrChat,#scrGroup) .bar :is(#send,#gSend) svg,html:root:root body :is(#scrChat,#scrGroup) .bar :is(#send,#gSend) svg *{stroke:#fff!important}
+html:root:root body :is(#scrChat,#scrGroup) .bar :is(#send,#gSend) svg{width:21px!important;height:21px!important}
+
+/* ---------- Profil : simple et épuré ---------- */
+html:root:root body :is(#scrProfil .hdr){background:var(--s-bar)!important;background-image:none!important;border:0!important;box-shadow:none!important;color:#fff!important}
+html:root:root body #scrProfil .hdr .ttl{color:#fff!important;-webkit-text-fill-color:#fff!important;font-size:20px!important;font-weight:500!important}
+html:root:root body #scrProfil .hdr .gear{background:transparent!important;border:0!important;box-shadow:none!important}
+html:root:root body #scrProfil .hdr .gear svg,html:root:root body #scrProfil .hdr .gear svg *{stroke:#fff!important}
+html:root:root body #scrProfil,html:root:root body #scrProfil .body{background:var(--s-bg)!important;background-image:none!important}
+html:root:root body #scrProfil .body{padding:0 0 92px!important;display:block}
+html:root:root body #scrProfil .pf{background:transparent!important;border:0!important;box-shadow:none!important;padding:26px 16px 14px!important;text-align:center}
+html:root:root body #scrProfil .pf .big{width:96px!important;height:96px!important;margin:0 auto 12px!important;font-size:34px!important;font-weight:400!important;box-shadow:none!important;border:0!important;background-color:var(--s-ac)!important;background-image:none!important}
+html:root:root body #scrProfil .pf h2{color:var(--s-ink)!important;-webkit-text-fill-color:var(--s-ink)!important;font-size:21px!important;font-weight:500!important;margin:0 0 2px!important}
+html:root:root body #scrProfil .pf .em{color:var(--s-mut)!important;font-size:14px!important}
+html:root:root body #scrProfil .stats{display:flex!important;gap:0!important;padding:0!important;margin:6px 0 10px!important;border-top:1px solid var(--s-line);border-bottom:1px solid var(--s-line)}
+html:root:root body #scrProfil .stats>div{flex:1;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;padding:12px 4px!important;text-align:center}
+html:root:root body #scrProfil .stats>div+div{border-left:1px solid var(--s-line)!important}
+html:root:root body #scrProfil .stats b{display:block;color:var(--s-ink)!important;-webkit-text-fill-color:var(--s-ink)!important;font-size:18px!important;font-weight:500!important}
+html:root:root body #scrProfil .stats span{color:var(--s-mut)!important;font-size:12.5px!important}
+html:root:root body #scrProfil .menu{background:transparent!important;border-radius:0!important;box-shadow:none!important;border:0!important}
+html:root:root body #scrProfil .menu .pm{display:flex!important;align-items:center;justify-content:space-between;width:100%;height:54px;padding:0 18px!important;background:transparent!important;background-image:none!important;border:0!important;border-bottom:1px solid var(--s-line)!important;border-radius:0!important;box-shadow:none!important;color:var(--s-ink)!important;-webkit-text-fill-color:var(--s-ink)!important;font-size:16px!important;font-weight:400!important;text-align:left}
+html:root:root body #scrProfil .menu .pm::after{content:"\203A";color:var(--s-mut);font-size:22px;line-height:1}
+html:root:root body #scrProfil #pfOut,html:root:root body #scrProfil #pfOut{color:#d6453d!important;-webkit-text-fill-color:#d6453d!important}
+html:root:root body #scrProfil #pfOut::after{content:none}
+/* bouton « Soutenir » : une ligne discrète au lieu du gros dégradé */
+html:root:root body #scrProfil :is(#supportStatic,#supportBtn){display:block;width:calc(100% - 36px)!important;margin:14px 18px 4px!important;height:46px;padding:0 16px!important;background:transparent!important;background-image:none!important;border:1.5px solid var(--s-ac)!important;border-radius:23px!important;box-shadow:none!important;color:var(--s-ac)!important;-webkit-text-fill-color:var(--s-ac)!important;font-size:15px!important;font-weight:500!important}
+/* lignes ajoutées (présence en ligne, saisie…) : plates, comme des réglages */
+html:root:root body #scrProfil :is(#tsTyp,#tsOnl){margin:0!important;padding:0 18px!important;min-height:54px;background:transparent!important;border:0!important;border-bottom:1px solid var(--s-line)!important;border-radius:0!important;box-shadow:none!important;color:var(--s-ink)!important;font-size:16px!important}
+html:root:root body #scrProfil :is(#tsTyp,#tsOnl) input[type=checkbox]{accent-color:var(--s-ac)}
+html:root:root body #scrProfil #cnsLink{color:var(--s-mut)!important;font-size:12.5px!important;text-align:center;padding:14px 0}
+/* touches finales : plus de bleu résiduel */
+html:root:root body #v4nav button.mid{background:var(--s-send)!important;box-shadow:0 2px 6px rgba(0,0,0,.25)!important}
+html:root:root body #pfAv .av-cam{background:var(--s-send)!important;box-shadow:none!important}
+
+/* bulles bleues : heure et coches en blanc doux */
+html:root:root body :is(#scrChat,#scrGroup) .m.me .t{color:rgba(255,255,255,.8)!important;-webkit-text-fill-color:rgba(255,255,255,.8)!important}
+html:root:root body :is(#scrChat,#scrGroup) .m.me .t .tk{color:rgba(255,255,255,.7)!important;-webkit-text-fill-color:rgba(255,255,255,.7)!important}
+html:root:root body :is(#scrChat,#scrGroup) .m.me .t .tk.rd{color:#fff!important;-webkit-text-fill-color:#fff!important}
+html:root:root body :is(#scrChat,#scrGroup) .tf-day{background:var(--s-soft)!important;box-shadow:none!important;border-radius:14px!important}
+/* barre d'écriture : pastille douce */
+html:root:root body :is(#scrChat,#scrGroup) .bar{box-shadow:0 -1px 0 var(--s-line)!important}
+html:root:root body :is(#scrChat,#scrGroup) .bar :is(.tsta,input[type=text],#txt,#gTxt){background:var(--s-soft)!important}
+html:root:root body :is(#scrChat,#scrGroup) .bar button svg,html:root:root body :is(#scrChat,#scrGroup) .bar button svg *{stroke:var(--s-ac)!important}
+html:root:root body :is(#scrChat,#scrGroup) .bar button.tsplus{color:var(--s-ac)!important}
+html:root:root body :is(#scrChat,#scrGroup) .bar :is(#send,#gSend) svg,html:root:root body :is(#scrChat,#scrGroup) .bar :is(#send,#gSend) svg *{stroke:#fff!important}
+html:root:root body #v4nav button.mid{background:var(--s-ac)!important}
+html:root:root body #pfAv .av-cam{background:var(--s-ac)!important}
+/* profil : en-tête blanc, cartes douces */
+html:root:root body #scrProfil .hdr{background:var(--s-bar)!important;box-shadow:0 1px 0 var(--s-line)!important;color:var(--s-hd)!important}
+html:root:root body #scrProfil .hdr .ttl{color:var(--s-hd)!important;-webkit-text-fill-color:var(--s-hd)!important;font-weight:700!important}
+html:root:root body #scrProfil .hdr .gear{background:var(--s-soft)!important;border-radius:50%!important}
+html:root:root body #scrProfil .hdr .gear svg,html:root:root body #scrProfil .hdr .gear svg *{stroke:var(--s-ac)!important}
+html:root:root body #scrProfil .stats{border:0!important;gap:8px!important;padding:0 14px!important}
+html:root:root body #scrProfil .stats>div,html:root:root body #scrProfil .stats>div+div{background:var(--s-soft)!important;border:0!important;border-radius:16px!important}
+html:root:root body #scrProfil .stats b{color:var(--s-ac)!important;-webkit-text-fill-color:var(--s-ac)!important;font-weight:700!important}
+html:root:root body #scrProfil .pf h2{font-weight:700!important}
+html:root:root body #scrProfil .menu .pm::after{color:var(--s-ac)}
+
+/* ================= ACCUEIL (liste des discussions) — comme la capture de référence ================= */
+html:root:root body #scrList,html:root:root body #scrList .body{background:var(--s-bg)!important;background-image:none!important}
+html:root:root body #scrList .body{padding:0 0 100px!important}
+html:root:root body #scrList .hdr{background:var(--s-bg)!important;background-image:none!important;border:0!important;box-shadow:none!important;color:var(--s-hd)!important;padding:calc(env(safe-area-inset-top,0px) + 12px) 16px 6px!important;min-height:0;gap:12px!important;align-items:center}
+html:root:root body #scrList .hdr>.ic:first-child{width:54px!important;height:54px!important;border-radius:17px!important;background:linear-gradient(135deg,#2f9bff,#0a7cff)!important;display:grid!important;place-items:center;flex:none}
+html:root:root body #scrList .hdr>.ic:first-child svg,html:root:root body #scrList .hdr>.ic:first-child svg *{stroke:#fff!important;width:28px!important;height:28px!important}
+html:root:root body #scrList .hdr .ttl{filter:none!important;letter-spacing:0!important;display:flex!important;flex-direction:column;align-items:flex-start;font-size:34px!important;line-height:1.05!important;font-weight:800!important;color:var(--s-ac)!important;-webkit-text-fill-color:var(--s-ac)!important}
+html:root:root body #scrList .hdr .ttl::after{content:"Toujours plus proche de vous"!important;display:block!important;position:static!important;height:auto!important;font-size:13.5px!important;font-weight:400!important;line-height:1.3!important;color:var(--s-mut)!important;-webkit-text-fill-color:var(--s-mut)!important;padding-bottom:8px!important;background:linear-gradient(90deg,var(--s-ac),#9cc9ff 70%,transparent) left bottom/74px 3px no-repeat!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;white-space:nowrap!important;filter:none!important;border-radius:0!important}
+html:root:root body #scrList .hdr>.ic:not(:first-child){width:48px!important;height:48px!important;border-radius:50%!important;background:var(--s-soft)!important;display:grid!important;place-items:center;flex:none}
+html:root:root body #scrList .hdr>.ic:not(:first-child) svg,html:root:root body #scrList .hdr>.ic:not(:first-child) svg *{stroke:var(--s-hd)!important;width:24px!important;height:24px!important}
+/* statut */
+html:root:root body #scrList #v4st{display:flex;gap:16px;padding:14px 16px 8px!important;background:transparent!important;overflow:visible}
+html:root:root body #scrList #v4st .v4s.v7-none,html:root:root body #scrList #v4st #v4stAll.v7-none{display:none!important}
+html:root:root body #scrList #v4st .v4s{width:auto!important;text-align:left;display:flex;flex-direction:column;align-items:flex-start;color:var(--s-hd)!important;font-size:17px!important;font-weight:700!important}
+html:root:root body #scrList #v4st .v4s .rg{width:74px!important;height:74px!important;margin:0 0 8px!important;border:3px solid var(--s-ac)!important;border-style:solid!important;background:var(--s-soft)!important;border-radius:50%!important}
+html:root:root body #scrList #v4st .v4s.me::after{content:"Voir mon statut";font-size:14.5px;font-weight:400;color:var(--s-mut);margin-top:1px}
+html:root:root body #scrList #v4st .v4s .plus{background:var(--s-ac)!important;border-color:var(--s-bg)!important}
+html:root:root body #scrList #v4st .v4s .rg svg,html:root:root body #scrList #v4st .v4s .rg svg *{stroke:var(--s-mut)!important}
+/* recherche avec loupe */
+html:root:root body #scrList #srch{height:50px!important;margin:10px 16px!important;width:calc(100% - 32px)!important;padding:0 18px 0 52px!important;border-radius:25px!important;background-color:var(--s-soft)!important;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230a7cff' stroke-width='2.2' stroke-linecap='round'><circle cx='11' cy='11' r='7'/><path d='M21 21l-4.3-4.3'/></svg>")!important;background-repeat:no-repeat!important;background-position:16px center!important;background-size:24px!important;font-size:16px!important}
+/* filtres en pastilles avec icône et compteur */
+html:root:root body #scrList #v4chips{display:flex;gap:10px;padding:4px 16px 10px!important}
+html:root:root body #scrList #v4chips button[data-c="grp"]{display:none!important}
+html:root:root body #scrList #v4chips button{height:46px!important;padding:0 16px!important;border-radius:23px!important;background:var(--s-soft)!important;color:#3d5a8a!important;font-size:16px!important;font-weight:600!important;display:inline-flex!important;align-items:center;gap:8px}
+html:root:root body #scrList #v4chips button.on{background:var(--s-ac)!important;color:#fff!important}
+html:root:root body #scrList #v4chips button svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+html:root:root body #scrList #v4chips .cnt{min-width:24px;height:24px;border-radius:12px;padding:0 6px;background:var(--s-ac);color:#fff;font-size:13px;font-weight:700;display:inline-grid;place-items:center;line-height:1}
+html:root:root body #scrList #v4chips button.on .cnt{background:#fff;color:var(--s-ac)}
+/* titre de section + icône de filtre */
+html:root:root body #scrList #v4sec{display:flex!important;align-items:center;justify-content:space-between;padding:12px 18px 6px!important;font-size:26px!important;font-weight:800!important;color:var(--s-hd)!important;-webkit-text-fill-color:var(--s-hd)!important}
+html:root:root body #scrList #v4sec::after{content:"";width:26px;height:26px;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230a7cff' stroke-width='2.2' stroke-linecap='round'><path d='M10 6h11M10 12h11M10 18h11M3 6h2M3 12h2M3 18h2'/></svg>") center/contain no-repeat}
+/* lignes de discussion en cartes douces */
+html:root:root body #scrList #recent .row{box-sizing:border-box!important;width:auto!important;max-width:calc(100% - 24px)!important;display:flex!important;align-items:center;gap:14px;margin:8px 12px!important;padding:12px 14px!important;min-height:84px;background:var(--s-soft)!important;background-image:none!important;border:0!important;border-radius:24px!important;box-shadow:none!important;position:relative}
+html:root:root body #scrList #recent .row .av{width:60px!important;height:60px!important;font-size:20px!important;background:linear-gradient(135deg,#2f9bff,#0a7cff)!important;color:#fff!important}
+html:root:root body #scrList #recent .row .rn{font-size:20px!important;font-weight:800!important;color:var(--s-hd)!important}
+html:root:root body #scrList #recent .row .sub{font-size:15.5px!important;color:var(--s-mut)!important}
+html:root:root body #scrList #recent .row .v4star{margin-left:auto;font-size:24px!important;color:#b9cdea!important;background:none!important;border:0!important;box-shadow:none!important}
+html:root:root body #scrList #recent .row .v4star.on{color:var(--s-ac)!important}
+html:root:root body #v4nav button.t.on{color:var(--s-ac)!important;font-weight:700!important}
+
+/* ===== Accueil : tailles réduites pour petits écrans (ajustement) ===== */
+html:root:root body #scrList{overflow-x:hidden!important}
+html:root:root body #scrList .hdr{padding:calc(env(safe-area-inset-top,0px) + 8px) 12px 4px!important;gap:10px!important}
+html:root:root body #scrList .hdr>.ic:first-child{width:42px!important;height:42px!important;border-radius:13px!important}
+html:root:root body #scrList .hdr>.ic:first-child svg,html:root:root body #scrList .hdr>.ic:first-child svg *{width:22px!important;height:22px!important}
+html:root:root body #scrList .hdr .ttl{font-size:25px!important;min-width:0}
+html:root:root body #scrList .hdr .ttl::after{font-size:11.5px!important;padding-bottom:6px!important;background-size:56px 2.5px!important}
+html:root:root body #scrList .hdr>.ic:not(:first-child){width:38px!important;height:38px!important}
+html:root:root body #scrList .hdr>.ic:not(:first-child) svg,html:root:root body #scrList .hdr>.ic:not(:first-child) svg *{width:20px!important;height:20px!important}
+html:root:root body #scrList #v4st{padding:8px 14px 4px!important}
+html:root:root body #scrList #v4st .v4s{font-size:14.5px!important}
+html:root:root body #scrList #v4st .v4s .rg{width:60px!important;height:60px!important;margin-bottom:6px!important;border-width:2.5px!important}
+html:root:root body #scrList #v4st .v4s.me::after{font-size:12.5px}
+html:root:root body #scrList #srch{height:42px!important;margin:8px 14px!important;width:calc(100% - 28px)!important;padding:0 14px 0 44px!important;font-size:14.5px!important;background-position:14px center!important;background-size:20px!important;border-radius:21px!important}
+html:root:root body #scrList #v4chips{gap:7px!important;padding:2px 14px 6px!important;overflow-x:auto;flex-wrap:nowrap}
+html:root:root body #scrList #v4chips button{height:38px!important;padding:0 11px!important;border-radius:19px!important;font-size:13.5px!important;gap:6px!important;flex:none}
+html:root:root body #scrList #v4chips button svg{width:18px!important;height:18px!important}
+html:root:root body #scrList #v4chips .cnt{min-width:20px;height:20px;font-size:11.5px;border-radius:10px}
+html:root:root body #scrList #v4sec{font-size:20px!important;padding:8px 16px 4px!important}
+html:root:root body #scrList #v4sec::after{width:22px;height:22px}
+html:root:root body #scrList #recent .row{margin:6px 12px!important;padding:10px 12px!important;min-height:70px!important;gap:12px!important;border-radius:20px!important}
+html:root:root body #scrList #recent .row .av{width:50px!important;height:50px!important;font-size:17px!important}
+html:root:root body #scrList #recent .row .rn{font-size:16.5px!important}
+html:root:root body #scrList #recent .row .sub{font-size:13.5px!important}
+html:root:root body #scrList #recent .row .v4star{font-size:20px!important}
+/* menu du bas : textes compacts */
+html:root:root body #v4nav button.t span{font-size:11px!important;font-weight:600!important;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+html:root:root body #v4nav button.t.on{font-weight:600!important}
+html:root:root body #v4nav button.t{min-width:0!important;padding:2px 0!important}
+html:root:root body #v4nav button.t svg{width:22px!important;height:22px!important;padding:3px 14px!important}
+html:root:root body #v4nav button.mid{width:46px!important;height:46px!important;margin-top:-18px!important}
+
+
+/* === Correctifs 2026-10-23 === */
+html:root:root:root body :is(#scrChat,#scrGroup) .bar button.tsplus{display:none!important;width:0!important;min-width:0!important;margin:0!important;padding:0!important;overflow:hidden!important}
+html:root:root:root body #v4nav.on{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 60px minmax(0,1fr) minmax(0,1fr)!important;align-items:end!important;column-gap:0!important;padding-left:4px!important;padding-right:4px!important}
+html:root:root:root body #v4nav button.t{width:100%!important;min-width:0!important;max-width:100%!important;flex:none!important;padding:2px 2px!important;overflow:visible!important;box-sizing:border-box!important}
+html:root:root:root body #v4nav button.t span{display:block!important;width:100%!important;max-width:100%!important;font-size:10.5px!important;line-height:1.2!important;letter-spacing:-.1px!important;text-align:center!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+html:root:root:root body #v4nav button.t svg{width:22px!important;height:22px!important;padding:3px 0!important;flex:none!important}
+html:root:root:root body #v4nav button.t.on svg{padding:3px 14px!important;box-sizing:content-box!important}
+html:root:root:root body #v4nav button.mid{justify-self:center!important;margin:-18px 0 0 0!important;width:46px!important;height:46px!important}
+
+
+/* === Profil : ordre et espacements 2026-10-23 === */
+html:root:root:root body #scrProfil .body{padding-bottom:96px!important}
+html:root:root:root body #scrProfil #tsTyp,html:root:root:root body #scrProfil #tsOnl{min-height:48px!important;padding-top:0!important;padding-bottom:0!important;margin:0!important}
+html:root:root:root body #scrProfil #tsMaj{margin:12px 16px 0!important}
+html:root:root:root body #scrProfil #supportStatic{margin:0!important}
+html:root:root:root body #scrProfil #cnsLink{margin:4px 0 0!important;padding:0!important;height:auto!important;line-height:1.2!important}

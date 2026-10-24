@@ -1,0 +1,30 @@
+html:root{--main:#0a7cff;--main2:#2f9bff;--accent:#0a7cff;--tf-bg:#fff;--tf-bar:#fff;--tf-soft:#f0f2f5;--tf-ink:#0b141a;--tf-mut:#65676b;--tf-line:#e4e6eb;--tf-in:#e9ebee;--tf-tint:rgba(10,124,255,.12);
+--wa-ac:#0a7cff;--wa-bar:#fff;--wa-bg:#fff;--wa-soft:#f0f2f5;--wa-ink:#0b141a;--wa-mut:#65676b;--wa-line:#e4e6eb;--wa-chat:#fff;--wa-in:#e9ebee;--wa-out:#0a7cff;
+--ht-a:#0a7cff;--ht-a2:#2f9bff;--ht-tint:#e7f1ff;--c-main:#0a7cff;--v4-main:#0a7cff;--v4-out:#0a7cff;--s-main:#0a7cff;--n1:#2f9bff;--n2:#0a7cff;--ng:linear-gradient(135deg,#2f9bff,#0a7cff);--c1:#0a7cff;--c2:#0a6cf0;accent-color:#0a7cff}
+html[data-theme=dark]:root{--tf-bg:#0b141a;--tf-bar:#111b21;--tf-soft:#1c2833;--tf-ink:#e8f1f7;--tf-mut:#8fa3b3;--tf-line:#22303b;--tf-in:#26343f;--tf-tint:rgba(47,155,255,.18);
+--wa-bar:#111b21;--wa-bg:#0b141a;--wa-soft:#1c2833;--wa-ink:#e8f1f7;--wa-mut:#8fa3b3;--wa-line:#22303b;--wa-chat:#0b141a;--wa-in:#26343f;--wa-out:#0a7cff}
+html:root body #chat,html:root body #gMsgs{background-color:var(--tf-bg)!important}
+html:root body #scrChat .m,html:root body #scrGroup .m{background:var(--tf-in)!important;background-image:none!important;color:var(--tf-ink)!important;-webkit-text-fill-color:var(--tf-ink)!important;border-radius:18px!important;box-shadow:none!important}
+html:root body #scrChat .m:not(.me),html:root body #scrGroup .m:not(.me){border-bottom-left-radius:5px!important}
+html:root body #scrChat .m.me,html:root body #scrGroup .m.me{background:#0a7cff!important;background-image:none!important;color:#fff!important;-webkit-text-fill-color:#fff!important;border-bottom-right-radius:5px!important}
+html:root body #scrChat .m.me .t,html:root body #scrGroup .m.me .t{color:rgba(255,255,255,.8)!important}
+html:root body #scrChat .m:not(.me) .t,html:root body #scrGroup .m:not(.me) .t{color:var(--tf-mut)!important}
+html:root body .hdr,html:root body #scrChat .chead,html:root body #scrGroup .chead,html:root body .top,html:root body .c2-top{background:var(--tf-bar)!important;background-image:none!important;color:var(--tf-ink)!important;box-shadow:0 1px 0 var(--tf-line)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html:root body .hdr .ttl,html:root body #scrChat .chead .cn,html:root body #scrGroup .chead .cn{background:none!important;color:var(--tf-ink)!important;-webkit-text-fill-color:var(--tf-ink)!important}
+html:root body #scrList .hdr .ttl,html:root body #scrList .hdr span.ttl{background:linear-gradient(90deg,#0a7cff,#0a6cf0)!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important;-webkit-text-fill-color:transparent!important}
+html:root body #scrChat .chead .cs,html:root body #scrGroup .chead .cs{color:var(--tf-mut)!important}
+html:root body .hdr svg,html:root body .hdr .ic,html:root body .chead .bk svg,html:root body #scrChat #back svg,html:root body .chead button svg{stroke:#0a7cff!important;color:#0a7cff!important}
+html:root body #scrChat #starBtn,html:root body #wBtnU,html:root body #wBtnG{color:#0a7cff!important}
+html:root body .chead .cav:not(.has-photo),html:root body .av:not(.has-photo){background:linear-gradient(135deg,#3aa0ff,#0a7cff)!important;color:#fff!important}
+html:root body #scrList #recent .row:nth-child(n) .av:not(.has-photo){background:linear-gradient(135deg,#3aa0ff,#0a7cff)!important}
+html:root body #v4nav,html:root body .tabs{background:var(--tf-bar)!important;border-top:1px solid var(--tf-line)!important}
+html:root body #v4nav button.t,html:root body .tabs button{color:var(--tf-mut)!important}
+html:root body #v4nav button.t.on,html:root body .tabs button.on{color:#0a7cff!important}
+html:root body #v4nav button.t.on svg{background:var(--tf-tint)!important;stroke:#0a7cff!important}
+html:root body #v4nav button.mid,html:root body #fab,html:root body .fab,html:root body .b1,html:root body #go,html:root body #up,html:root body #start,html:root body #send,html:root body .newg,html:root body .addst,html:root body .chip.on{background:#0a7cff!important;background-image:none!important;color:#fff!important}
+html:root body .pro-seg button.on,html:root body #scrParam .pro-seg[data-k=mode] button.on{background:var(--tf-tint)!important;color:#0a7cff!important;border-color:#0a7cff!important}
+html:root body #thPick{display:none!important}
+html:root body #scrParam .pro-seg[data-k=mode] button[data-v=auto]{display:none!important}
+html:root body #scrParam .pro-seg[data-k=mode] button::before{content:none!important;display:none!important}
+html:root body #scrParam .pro-seg[data-k=mode] button.on::after{content:"✓";margin-left:auto;font-weight:800;color:#0a7cff}
+html:root body input,html:root body textarea{caret-color:#0a7cff}
