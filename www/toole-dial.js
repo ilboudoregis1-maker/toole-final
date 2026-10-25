@@ -87,3 +87,11 @@
   ].join("\n");
   document.head.appendChild(css);
 })();
+(function(){var s=document.createElement("style");s.textContent=[
+"html body .auth .tdl-row{display:flex!important;flex-direction:row!important;gap:8px;align-items:center;width:100%;box-sizing:border-box}",
+"html body .auth .tdl-row input{flex:1 1 0!important;width:auto!important;min-width:0!important;margin:6px 0!important;box-sizing:border-box}",
+"html body .auth .tdl-row button.tdl-b{flex:0 0 auto!important;width:auto!important;min-width:0!important;height:54px!important;padding:0 12px!important;margin:6px 0!important;border-radius:16px!important;border:1.5px solid #e3eaf2!important;background:#f7f9fc!important;color:inherit!important;font-size:15px!important;font-weight:600!important;white-space:nowrap!important;box-shadow:none!important}",
+"html[data-theme=dark] body .auth .tdl-row button.tdl-b{background:#1c2a3d!important;border-color:#2a3b52!important;color:#e8eef7!important}",
+".tdl-r{display:block!important;width:100%!important;height:auto!important;border-radius:0!important}",
+".tdl-x{width:100%!important;height:auto!important}"
+].join("\n");document.head.appendChild(s)})();
