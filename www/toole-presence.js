@@ -1,7 +1,7 @@
 /* TÕÕLé — présence « en ligne » (point vert) + « écrit… » fiables */
 (function () {
   "use strict";
-  if (window.__tsp) return; window.__tsp = 1;
+  if (window.__tpres) return; window.__tpres = 1;
   var on = {}, typUntil = 0;
   function TR() { return window.__trt || null; }
   function ls(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
