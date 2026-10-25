@@ -4,7 +4,7 @@ android {
     namespace = "com.cns.tooole"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.cns.tooole"
+        applicationId "com.cns.tooole.nopush"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 64

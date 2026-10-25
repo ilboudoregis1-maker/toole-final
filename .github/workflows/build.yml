@@ -17,7 +17,6 @@ jobs:
       - run: sed -i "s#__CLE__#$K#" android/app/src/main/assets/public/toole-crypt.js
         env: { K: "${{ secrets.TOOLE_KEY }}" }
       - run: if grep -q __CLE__ android/app/src/main/assets/public/toole-crypt.js; then echo "cle absente"; exit 1; fi
-      - run: if [ -n "$G" ]; then printf "%s" "$G" > android/app/google-services.json; fi
         env: { G: "${{ secrets.GOOGLE_SERVICES_JSON }}" }
       - run: echo "$KEYSTORE_B64" | base64 -d > $HOME/cns.keystore
         env: { KEYSTORE_B64: "${{ secrets.KEYSTORE_B64 }}" }

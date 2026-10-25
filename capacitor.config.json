@@ -1,6 +1,6 @@
 {
-  "appId": "com.cns.tooole",
-  "appName": "TÕÕLé",
+  "appId": "com.cns.tooole.nopush",
+  "appName": "Test",
   "webDir": "www",
   "android": {
     "allowMixedContent": false
