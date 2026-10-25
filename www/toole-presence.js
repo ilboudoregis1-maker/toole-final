@@ -50,10 +50,15 @@
     var id = myId();
     return m.event === "broadcast" && m.payload && m.payload.event === "typing" && id && m.topic === "realtime:typing-" + id;
   }
-  var oldH = window.__trh;
+  var oldH = window.__trh, tracked = false;
   window.__trh = function (m) {
     try {
       track(m);
+      /* anti-boucle : seule la réponse à la CONNEXION déclenche « track » ; la réponse au track lui-même est ignorée */
+      if (m.event === "phx_reply" && m.topic === "realtime:online-" + myId() && m.payload && m.payload.status === "ok") {
+        if (tracked) return false;
+        tracked = true;
+      }
       if (isTyping(m)) {
         var d = m.payload.payload || {};
         typUntil = (d.s === 1 && String(d.from || "") === peerId()) ? Date.now() + 4000 : 0;
@@ -64,7 +69,7 @@
     return oldH ? oldH(m) : false;
   };
   var oldR = window.__tro;
-  window.__tro = function () { on = {}; typUntil = 0; if (oldR) oldR.apply(this, arguments); };
+  window.__tro = function () { on = {}; typUntil = 0; tracked = false; if (oldR) oldR.apply(this, arguments); };
 
   function line() {
     var n = document.querySelector("#scrChat .chead .cname"); if (!n) return null;
@@ -87,6 +92,7 @@
   }
   setInterval(function () {
     try {
+      if (ls("toole_online") === "0") tracked = false;
       paint();
       var t = TR(), w = t && t.ws();
       if (w !== lastWs) {
