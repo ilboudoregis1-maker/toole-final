@@ -4,8 +4,8 @@ if(!T)return;
 function en(){return localStorage.getItem("toole_online")!=="0"}
 function open_(){var s=T.ws();return !!s&&s.readyState===1}
 function jn(t,key){var r=T.nr();T.tx({topic:"realtime:"+t,event:"phx_join",ref:r,join_ref:r,
-payload:{config:{broadcast:{ack:false,self:false},presence:{key:key},postgres_changes:[]},
-access_token:KEY}})}
+payload:{config:{broadcast:{ack:false,self:false},presence:{key:key,enabled:true},postgres_changes:[]},
+access_token:(function(){try{var s=sess();return s&&s.access_token||KEY}catch(e){return KEY}})()}})}
 function lv(t){T.tx({topic:"realtime:"+t,event:"phx_leave",ref:T.nr(),payload:{}})}
 function pres(t,ev,p){T.tx({topic:"realtime:"+t,event:"presence",ref:T.nr(),
 payload:{type:"presence",event:ev,payload:p||{}}})}

@@ -9,7 +9,26 @@
   function peerId() { try { var t = TR(); return t ? t.cur() : null; } catch (e) { return null; } }
   function chat() { var s = document.getElementById("scrChat"); return s && !s.classList.contains("hide") ? s : null; }
 
+  var LOG = [], lastWs = null;
+  function lg(x) { LOG.push(new Date().toTimeString().slice(0, 8) + " " + x); if (LOG.length > 40) LOG.shift(); }
+  function sum(m) {
+    var p = m.payload || {}, r = p.response || {};
+    return String(m.topic || "").replace("realtime:", "").slice(0, 22) + " " + m.event + (p.status ? " " + p.status : "") +
+      (r.reason ? " " + String(r.reason).slice(0, 60) : "") + (m.event === "presence_state" ? " n=" + Object.keys(p).length : "");
+  }
+  var lastErr = 0;
+  function warn(m) {
+    var t = String(m.topic || "");
+    var bad = (m.event === "phx_reply" && m.payload && m.payload.status === "error" && /realtime:(online|typing)-/.test(t)) ||
+      (m.event === "system" && m.payload && m.payload.status === "error");
+    if (!bad || Date.now() - lastErr < 120000) return;
+    lastErr = Date.now();
+    var r = (m.payload.response && (m.payload.response.reason || JSON.stringify(m.payload.response))) || m.payload.message || "erreur";
+    try { toast("Présence indisponible : " + String(r).slice(0, 80)); } catch (e) { }
+  }
   function track(m) {
+    if (m.topic !== "phoenix") lg(sum(m));
+    warn(m);
     var t = String(m.topic || "");
     if (t.indexOf("realtime:online-") !== 0) return;
     var k = t.slice(16), p = m.payload || {};
@@ -66,7 +85,56 @@
     o.n.classList.toggle("ts-live", !!txt);
     if (av) av.classList.toggle("ts-on", online);
   }
-  setInterval(function () { try { paint(); } catch (e) { } }, 500);
+  setInterval(function () {
+    try {
+      paint();
+      var t = TR(), w = t && t.ws();
+      if (w !== lastWs) {
+        lastWs = w; lg(w ? "ws créé (état " + w.readyState + ")" : "ws absent");
+        if (w && !w.__d) {
+          w.__d = 1;
+          w.addEventListener("open", function () { lg("ws ouvert"); });
+          w.addEventListener("close", function (e) { lg("ws fermé " + e.code + " " + (e.reason || "")); });
+          w.addEventListener("error", function () { lg("ws erreur"); });
+        }
+      }
+    } catch (e) { }
+  }, 500);
+  /* jeton à jour : rafraîchi toutes les 10 min, connexion recyclée toutes les 25 min (le serveur coupe un jeton expiré) */
+  setInterval(function () {
+    if (document.visibilityState === "hidden") return;
+    try { if (typeof api === "function") api("/rest/v1/profiles?select=id&limit=1").catch(function () { }); } catch (e) { }
+  }, 600000);
+  setInterval(function () {
+    try { var t = TR(), s = t && t.ws(); if (s && s.readyState === 1) s.close(); } catch (e) { }
+  }, 1500000);
+
+  function diag() {
+    var t = TR(), w = t && t.ws(), tok = "jeton ?";
+    try {
+      var a = sess().access_token, pl = JSON.parse(atob(a.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")));
+      var left = Math.round((pl.exp * 1000 - Date.now()) / 60000); tok = left > 0 ? "jeton ok (" + left + " min)" : "JETON EXPIRÉ";
+    } catch (e) { }
+    var st = w ? ["connexion…", "OUVERT", "fermeture", "fermé"][w.readyState] : "pas de connexion";
+    var info = ["Connexion : " + st, tok, "Moi : " + String(myId()).slice(0, 8), "Contact : " + String(peerId()).slice(0, 8),
+      "Ma présence : " + (ls("toole_online") !== "0" ? "oui" : "non") + " · écrit : " + (ls("toole_typing") !== "0" ? "oui" : "non"),
+      "Vu en ligne : " + JSON.stringify(on).slice(0, 140), "---"].concat(LOG.slice(-25)).join("\n");
+    var sh = sheetEl('<div class="sht">Diagnostic présence</div><pre id="dgP" style="white-space:pre-wrap;font:11px/1.4 monospace;max-height:55vh;overflow:auto;user-select:text"></pre><button class="sa" id="dgR">Reconnecter</button><button class="sa cc" id="dgX">Fermer</button>');
+    sh.querySelector("#dgP").textContent = info;
+    sh.querySelector("#dgR").onclick = function () { try { var x = TR().ws(); if (x) x.close(); lg("reconnexion demandée"); } catch (e) { } closeSheet(); };
+    sh.querySelector("#dgX").onclick = closeSheet;
+  }
+  var dq = 0;
+  new MutationObserver(function () {
+    if (dq) return; dq = 1;
+    requestAnimationFrame(function () {
+      dq = 0; var p = document.getElementById("scrProfil");
+      if (!p || document.getElementById("tsDiag")) return;
+      var b = document.createElement("button"); b.id = "tsDiag"; b.type = "button"; b.textContent = "Diagnostic présence";
+      b.style.cssText = "display:block;width:calc(100% - 32px);margin:10px 16px;padding:12px;border-radius:14px;border:1px solid rgba(0,168,200,.35);background:transparent;font-size:15px;color:inherit";
+      b.onclick = diag; p.appendChild(b);
+    });
+  }).observe(document.body, { childList: true, subtree: true });
 
   var css = document.createElement("style");
   css.textContent = [

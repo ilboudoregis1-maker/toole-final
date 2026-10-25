@@ -144,7 +144,7 @@
     if (document.visibilityState !== "hidden") { tick(); catchUp(); }
   }
   function start() {
-    if (window.__trt) return; window.__trt = 1;
+    if (window.__trin) return; window.__trin = 1;
     setInterval(tick, 1000); tick();
     window.addEventListener("online", wake);
     document.addEventListener("visibilitychange", wake);

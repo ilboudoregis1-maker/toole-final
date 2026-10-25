@@ -9,7 +9,7 @@ function tx(o){try{if(ws&&ws.readyState===1)ws.send(JSON.stringify(o))}catch(e){
 function cur(){try{return peer&&peer.id?String(peer.id):null}catch(e){return null}}
 function join(t){var r=nr();rdy[t]=false;
 tx({topic:"realtime:"+t,event:"phx_join",ref:r,join_ref:r,payload:{config:{
-broadcast:{ack:false,self:false},presence:{key:""},postgres_changes:[]},access_token:KEY}})}
+broadcast:{ack:false,self:false},presence:{key:"",enabled:true},postgres_changes:[]},access_token:(function(){try{var s=sess();return s&&s.access_token||KEY}catch(e){return KEY}})()}})}
 function bad(){closeWs();fails++;retryAt=Date.now()+Math.min(600000,5000*Math.pow(2,fails))}
 function closeWs(){clearInterval(hb);var s=ws;ws=null;rdy={};pnd={};
 try{if(s)s.close()}catch(e){}}
