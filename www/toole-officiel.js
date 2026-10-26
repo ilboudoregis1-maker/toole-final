@@ -1,5 +1,5 @@
 (function(){
-if(window.__toff)return;window.__toff=1;
+if(window.__tofficiel)return;window.__tofficiel=1;
 var D=document,SEEN='toole_off_seen',OFF=[],REP=[],busy=0;
 function $(i){return D.getElementById(i)}
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
