@@ -56,7 +56,7 @@
           +'<div class="sub" style="display:flex;align-items:center;gap:6px"><span class="v4call-ic'+(missed?' miss':'')+'">'+svg(out?S.out:S.inn)+'</span>'+esc(kind)+' · '+esc(ago(r.created_at))+'</div></div>'
           +'<button class="v4call-go" aria-label="'+T.call+'">'+svg(S.phone)+'</button>';
         var avv=avs[o];if(avv){var ae=row.querySelector('.av');if(ae){ae.style.setProperty('--avimg',"url('"+AVB()+"/storage/v1/object/public/avatars/"+o+"/thumb.jpg?v="+avv+"')");ae.classList.add('has-photo')}}
-        row.onclick=function(){openChat(o,name)};
+        row.onclick=function(e){if(e&&e.target&&e.target.closest&&e.target.closest('.v4call-go')){try{peer={id:o,pseudo:name||'Contact'}}catch(x){}var b=document.getElementById('callBtn');if(b){b.click();return}Promise.resolve(openChat(o,name)).then(function(){setTimeout(function(){var c=document.getElementById('callBtn');if(c)c.click()},400)});return}openChat(o,name)};
         box.appendChild(row);
       });
     }catch(e){box.innerHTML='<div id="v4empty">'+T.callsErr+'</div>'}
