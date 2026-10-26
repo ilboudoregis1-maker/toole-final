@@ -3,7 +3,7 @@ var ar=0,ew=0;
 function $(i){return document.getElementById(i)}
 function cur(){var a=["scrWelcome","scrInscr","scrLogin","scrList","scrChat","scrProfil","scrParam","scrGroupes","scrGroup","scrStatuts","scrCanix","scrSpecial","scrGame"];for(var i=0;i<a.length;i++){var e=$(a[i]);if(e&&!e.classList.contains("hide"))return a[i]}return "scrList"}
 function arm(){try{history.pushState({b:1},"");ar=1}catch(e){}}
-function ov(){var s=["#shBg","#stv","#vprev","#tsEd","#tlegal"];for(var i=0;i<s.length;i++){var e=document.querySelector(s[i]);if(e){e.remove();return 1}}return 0}
+function ov(){var s=["#shBg","#stv","#vprev","#tsEd","#tlegal"];for(var i=0;i<s.length;i++){var e=document.querySelector(s[i]);if(e){window.__tmStop=1;e.remove();return 1}}return 0}
 function home(){var cd=$("scrContactDet");if(cd&&!cd.classList.contains("hide")&&window.openContactsPage){window.openContactsPage();return 1}var ct=$("scrContacts");if(ct&&!ct.classList.contains("hide")&&typeof goList=="function"){goList();return 1}var s=cur(),m={scrChat:"back",scrGroup:"gBk",scrParam:"prBack",scrGame:"gBack"};
 if(m[s]&&$(m[s])){$(m[s]).click();return 1}
 if(s=="scrList"||s=="scrWelcome"||s=="scrLogin")return 0;
