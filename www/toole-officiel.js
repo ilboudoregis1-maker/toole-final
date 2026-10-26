@@ -33,11 +33,11 @@ function fmt(d){try{var x=new Date(d);return x.toLocaleDateString('fr-FR',{day:'
 function wait(){var m=0;REP.forEach(function(r){var t=new Date(r.created_at).getTime();if(t>m)m=t});return m?Math.max(0,m+864e5-Date.now()):0}
 function left(ms){var h=Math.floor(ms/36e5),n=Math.ceil((ms%36e5)/6e4);if(n===60){h++;n=0}return h>0?h+' h '+(n<10?'0':'')+n+' min':n+' min'}
 function rowHtml(){var l=lastOff();return '<img src="logo.png" alt=""><div style="flex:1;min-width:0"><div class="on">TÕÕLé '+BADGE+'</div><div class="op">'+esc(l?l.texte:'Bienvenue sur TÕÕLé !')+'</div></div>'+(unread()||!l?'<span class="od"></span>':'')}
-function inject(){var rc=$('recent'),sl=$('scrList');if(!rc||!sl)return;var ex=$('offRow');
+function inject(){var sl=$('scrList'),rc=$('recent');if(!sl||!rc||!rc.parentNode)return;var ex=$('offRow');
 if(!logged()||sl.classList.contains('hide')){if(ex)ex.remove();return}
-var ch=sl.querySelectorAll('.chip'),q=$('srch'),show=(!ch[0]||ch[0].classList.contains('on'))&&!(q&&q.value);
-if(!show){if(ex)ex.remove();return}
-if(!ex){ex=D.createElement('div');ex.id='offRow';ex.onclick=open;rc.insertBefore(ex,rc.firstChild)}else if(rc.firstChild!==ex)rc.insertBefore(ex,rc.firstChild);
+var q=$('srch');if(q&&q.value){if(ex)ex.remove();return}
+if(!ex){ex=D.createElement('div');ex.id='offRow';ex.onclick=open}
+if(ex.parentNode!==rc.parentNode||ex.nextSibling!==rc)rc.parentNode.insertBefore(ex,rc);
 var h=rowHtml();if(ex.__h!==h){ex.__h=h;ex.innerHTML=h}}
 function paint(){var box=$('offMsgs');if(!box)return;var it=[];
 if(!OFF.length)it.push({k:'o',t:WELCOME,d:''});
@@ -62,7 +62,7 @@ paint();load();inject()}
 function load(){if(!logged())return Promise.resolve();
 return Promise.all([call('/rest/v1/official_messages?select=id,texte,created_at&order=created_at.desc&limit=100'),call('/rest/v1/official_replies?select=id,texte,created_at&order=created_at.desc&limit=100')])
 .then(function(r){OFF=(r[0]||[]).slice().reverse();REP=(r[1]||[]).slice().reverse();var l=lastOff();if($('offScr')&&l)try{localStorage.setItem(SEEN,String(l.id))}catch(e){}inject();paint()}).catch(function(){inject()})}
-function boot(){inject();setTimeout(load,1200);setInterval(load,90000);setInterval(inject,2000);setInterval(function(){if($('offScr'))paint()},60000);
+function boot(){inject();setTimeout(load,1200);setInterval(load,90000);setInterval(inject,800);setInterval(function(){if($('offScr'))paint()},60000);
 D.addEventListener('visibilitychange',function(){if(!D.hidden)load()});
 var rc=$('recent');if(rc)try{new MutationObserver(inject).observe(rc,{childList:true})}catch(e){}}
 if(D.readyState==='loading')D.addEventListener('DOMContentLoaded',boot);else boot();
