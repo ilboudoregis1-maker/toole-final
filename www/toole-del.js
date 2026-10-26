@@ -24,4 +24,9 @@ function wrapMenu(name,kind,P){var f=window[name];if(typeof f!=="function"||f.__
 var w=function(m,mine){var r=f.apply(this,arguments);try{patch(m,kind,P)}catch(e){}return r};
 w.__tdel=1;window[name]=w}
 wrapMenu("openSheet","u","sm");wrapMenu("gOpenMenu","g","gm");
+var rn=0;
+function wrapRender(){var f=window.renderMsgRows;if(rn>=3||typeof f!=="function"||f.__tdel)return;rn++;
+var w=function(){var a=Array.prototype.slice.call(arguments);a[0]=keep("u",a[0]);return f.apply(this,a)};
+w.__tdel=1;window.renderMsgRows=w}
+wrapRender();setTimeout(wrapRender,1500);setTimeout(wrapRender,4000);
 })();
