@@ -804,7 +804,7 @@ var map={};profs.forEach(function(p){map[p.id]=p.pseudo});
 var list=others.map(function(o){var m=last[o];return {id:o,name:map[o]||"Inconnu",sub:(m.sender===id?"Toi : ":"")+(m.audio_path?"(vocal)":m.body)}});
 var h=hiddenIds();list=list.filter(function(x){return h.indexOf(x.id)<0});
 homeRender(list);localStorage.setItem(key,JSON.stringify(list))}catch(e){if(!cached.length&&rc)err("msgL",e.message)}}
-function homeRender(list){var rc=document.getElementById("recent");if(!rc)return;rc.innerHTML="";
+function homeRender(list){var rc=document.getElementById("recent");if(!rc)return;try{var _hh=hiddenIds();list=(list||[]).filter(function(x){return _hh.indexOf(x.id)<0})}catch(e){}rc.innerHTML="";
 if(!list.length){rc.innerHTML='<div class="sx-s" style="padding:14px">Aucune discussion pour l\'instant.</div>';return}
 list.forEach(function(x){var row=document.createElement("div");row.className="row";row.style.cursor="pointer";row.onclick=function(){openChat(x.id,x.name)};
 var av=document.createElement("div");av.className="av";av.textContent=(x.name||"?").slice(0,2).toUpperCase();
@@ -835,7 +835,7 @@ var map={};profs.forEach(function(p){map[p.id]=p.pseudo});
 var list=others.map(function(o){var m=last[o];return {id:o,name:map[o]||"Inconnu",sub:(m.sender===id?"Toi : ":"")+(m.audio_path?"(vocal)":m.body)}});
 var h=hiddenIds();list=list.filter(function(x){return h.indexOf(x.id)<0});
 homeRender(list);localStorage.setItem(key,JSON.stringify(list))}catch(e){if(!cached.length&&rc)err("msgL",e.message)}}
-function homeRender(list){var rc=document.getElementById("recent");if(!rc)return;rc.innerHTML="";
+function homeRender(list){var rc=document.getElementById("recent");if(!rc)return;try{var _hh=hiddenIds();list=(list||[]).filter(function(x){return _hh.indexOf(x.id)<0})}catch(e){}rc.innerHTML="";
 if(!list.length){rc.innerHTML='<div class="sx-s" style="padding:14px">Aucune discussion pour l\'instant.</div>';return}
 list.forEach(function(x){var row=document.createElement("div");row.className="row";row.style.cursor="pointer";row.onclick=function(){openChat(x.id,x.name)};
 var av=document.createElement("div");av.className="av";av.textContent=(x.name||"?").slice(0,2).toUpperCase();
@@ -866,7 +866,7 @@ var map={};profs.forEach(function(p){map[p.id]=p.pseudo});
 var list=others.map(function(o){var m=last[o];return {id:o,name:map[o]||"Inconnu",sub:(m.sender===id?"Toi : ":"")+(m.audio_path?"(vocal)":m.body)}});
 var h=hiddenIds();list=list.filter(function(x){return h.indexOf(x.id)<0});
 homeRender(list);localStorage.setItem(key,JSON.stringify(list))}catch(e){if(!cached.length&&rc)err("msgL",e.message)}}
-function homeRender(list){var rc=document.getElementById("recent");if(!rc)return;rc.innerHTML="";
+function homeRender(list){var rc=document.getElementById("recent");if(!rc)return;try{var _hh=hiddenIds();list=(list||[]).filter(function(x){return _hh.indexOf(x.id)<0})}catch(e){}rc.innerHTML="";
 if(!list.length){rc.innerHTML='<div class="sx-s" style="padding:14px">Aucune discussion pour l\'instant.</div>';return}
 list.forEach(function(x){var row=document.createElement("div");row.className="row";row.style.cursor="pointer";row.onclick=function(){openChat(x.id,x.name)};
 var av=document.createElement("div");av.className="av";av.textContent=(x.name||"?").slice(0,2).toUpperCase();
@@ -897,7 +897,7 @@ var map={};profs.forEach(function(p){map[p.id]=p.pseudo});
 var list=others.map(function(o){var m=last[o];return {id:o,name:map[o]||"Inconnu",sub:(m.sender===id?"Toi : ":"")+(m.audio_path?"(vocal)":m.body)}});
 var h=hiddenIds();list=list.filter(function(x){return h.indexOf(x.id)<0});
 homeRender(list);localStorage.setItem(key,JSON.stringify(list))}catch(e){if(!cached.length&&rc)err("msgL",e.message)}}
-function homeRender(list){var rc=document.getElementById("recent");if(!rc)return;rc.innerHTML="";
+function homeRender(list){var rc=document.getElementById("recent");if(!rc)return;try{var _hh=hiddenIds();list=(list||[]).filter(function(x){return _hh.indexOf(x.id)<0})}catch(e){}rc.innerHTML="";
 if(!list.length){rc.innerHTML='<div class="sx-s" style="padding:14px">Aucune discussion pour l\'instant.</div>';return}
 list.forEach(function(x){var row=document.createElement("div");row.className="row";row.style.cursor="pointer";row.onclick=function(){openChat(x.id,x.name)};
 var av=document.createElement("div");av.className="av";av.textContent=(x.name||"?").slice(0,2).toUpperCase();
