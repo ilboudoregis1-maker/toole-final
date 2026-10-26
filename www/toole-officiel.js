@@ -67,3 +67,4 @@ D.addEventListener('visibilitychange',function(){if(!D.hidden)load()});
 var rc=$('recent');if(rc)try{new MutationObserver(inject).observe(rc,{childList:true})}catch(e){}}
 if(D.readyState==='loading')D.addEventListener('DOMContentLoaded',boot);else boot();
 })();
+(function(){var s=document.createElement('style');s.textContent='body:has(#offScr) .v9-dl{display:none!important}';document.head.appendChild(s)})();
