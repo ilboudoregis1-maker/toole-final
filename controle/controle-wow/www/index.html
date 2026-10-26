@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src https://jbjeqxubpqqypysfsubd.supabase.co; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>CNS.corp-TÕÕLé Contrôle</title>
+<link rel="stylesheet" href="ctl.css"></head>
+<body>
+<div id="login" class="sec">
+  <img class="logo" src="ctl-logo.webp" alt="">
+  <h1>CNS.corp-TÕÕLé · Contrôle</h1>
+  <p class="sub">Centre d'opérations de sécurité</p>
+  <div id="stepPw">
+    <input id="em" type="email" placeholder="Email administrateur" autocomplete="username">
+    <input id="pw" type="password" placeholder="Mot de passe" autocomplete="current-password">
+    <button id="go">Se connecter</button>
+  </div>
+  <div id="step2fa" class="hide">
+    <p class="sub">Authentification à deux facteurs : saisis le code à 6 chiffres de ton application d'authentification.</p>
+    <input id="code" inputmode="numeric" maxlength="6" placeholder="000000" autocomplete="one-time-code">
+    <button id="go2">Valider</button>
+  </div>
+  <p id="msg" class="err"></p>
+</div>
+
+<div id="app" class="hide">
+  <div class="top">
+    <div class="brand"><img src="ctl-logo.webp" alt=""><h1>CNS.corp · Contrôle<small id="who"></small></h1></div>
+    <span id="live" class="pill live"><i class="dot"></i><span id="liveT">En ligne</span></span>
+  </div>
+  <div id="view"></div>
+</div>
+<div id="sheet" class="hide"><div class="in"><div class="grab"></div><div id="sheetBody"></div></div></div>
+<div id="toast" class="toast hide"></div>
+<script src="app.js"></script>
+<script src="verif.js"></script>
+</body></html>

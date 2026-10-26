@@ -1,0 +1,4 @@
+CONTRÔLE WOW - 3 étapes (Termux, sans nano)
+1) Supabase > SQL Editor : coller supabase/security.sql puis Run.
+2) Dans ton dépôt Contrôle :  unzip -o ~/storage/downloads/controle-wow.zip
+3) sh controle-wow/scripts/apply.sh && git add -A && git commit -m "Controle wow" && git push
