@@ -1,0 +1,26 @@
+/* TÕÕLé — habillage global (à charger EN DERNIER) */
+html body{font-family:"Exo 2",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif!important;-webkit-font-smoothing:antialiased}
+html body .top{background:linear-gradient(135deg,var(--main,#0a3d91),#1565d8)!important;color:#fff!important;box-shadow:0 4px 18px rgba(10,61,145,.28)!important;border-radius:0 0 20px 20px!important;letter-spacing:.2px}
+html body .body{background:linear-gradient(#f4f8ff,#eaf1fc)!important}
+html body .card{background:#fff!important;border-radius:20px!important;border:1px solid rgba(10,61,145,.07)!important;box-shadow:0 6px 20px rgba(10,61,145,.08)!important;overflow:hidden}
+html body .gt{font-size:12px!important;font-weight:800!important;text-transform:uppercase;letter-spacing:1.2px;color:var(--main,#0a3d91)!important;opacity:.8;margin:16px 6px 8px!important}
+html body .row{background:#fff!important;border-radius:16px!important;padding:12px 14px!important;box-shadow:0 2px 8px rgba(10,61,145,.06)!important;transition:transform .12s,box-shadow .12s}
+html body .row:active{transform:scale(.985)}
+html body .chip{border-radius:999px!important;padding:7px 15px!important;font-weight:700!important;border:1px solid rgba(10,61,145,.15)!important;background:#fff!important;color:var(--main,#0a3d91)!important;transition:all .15s}
+html body .chip.on{background:var(--main,#0a3d91)!important;color:#fff!important;border-color:transparent!important;box-shadow:0 4px 12px rgba(10,61,145,.3)}
+html body .b1,html body .fab{background:linear-gradient(135deg,var(--main,#0a3d91),#1a73e8)!important;color:#fff!important;border:0!important;border-radius:16px!important;font-weight:800!important;box-shadow:0 8px 22px rgba(10,61,145,.32)!important}
+html body .fab{border-radius:50%!important}
+html body input:not([type=checkbox]):not([type=radio]),html body textarea,html body select{border-radius:14px!important;border:1.5px solid rgba(10,61,145,.15)!important;background:#fff!important;padding:11px 14px!important;outline:0;transition:border-color .15s,box-shadow .15s}
+html body input:not([type=checkbox]):not([type=radio]):focus,html body textarea:focus{border-color:var(--main,#0a3d91)!important;box-shadow:0 0 0 4px rgba(10,61,145,.12)!important}
+html body .shbg{backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);background:rgba(5,12,30,.55)!important}
+html body .sh{border-radius:26px 26px 0 0!important;box-shadow:0 -12px 40px rgba(0,0,0,.35)!important;animation:tbUp .22s ease-out}
+html body .grip{width:44px!important;height:5px!important;border-radius:3px!important;background:rgba(255,255,255,.3)!important;margin:6px auto 12px!important}
+@keyframes tbUp{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+/* Cases à cocher 100 % vectorielles (SVG) */
+html body input[type=checkbox]{-webkit-appearance:none!important;appearance:none!important;flex:none;width:26px!important;height:26px!important;margin:0!important;border:0!important;padding:0!important;cursor:pointer;
+background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='none' stroke='%239db4d8' stroke-width='2'/%3E%3C/svg%3E") center/100% no-repeat!important;transition:transform .15s}
+html body input[type=checkbox]:checked{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='11' fill='%230a3d91'/%3E%3Cpath d='M7 12.5l3.3 3.3L17 9' fill='none' stroke='%23fff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")!important;transform:scale(1.06)}
+/* Pastille d'icône vectorielle (ajoutée par toole-beau.js) */
+.tb-ic{flex:none;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#e8f1ff,#d5e5ff);color:var(--main,#0a3d91)}
+.tb-ic svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+html body label.row>span:not(.tb-ic){flex:1;font-weight:600}
