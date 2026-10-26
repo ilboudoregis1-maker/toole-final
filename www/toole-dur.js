@@ -31,6 +31,6 @@ b.style.color=on?"#fff":"#007a8c"})}
 var b=document.createElement("button");b.type="button";b.textContent=x[1];b.dataset.h=x[0];
 b.style.cssText="padding:6px 10px;border-radius:14px;border:1px solid rgba(0,168,200,.5);font-size:13px";
 b.onclick=function(){window.__tsHours=x[0];paint()};c.appendChild(b)});
-t.parentNode.insertBefore(c,t);window.__tsHours=0;paint()}
+t.parentNode.insertBefore(c,t);paint()}
 new MutationObserver(add).observe(document.body,{childList:true,subtree:true});
 })();

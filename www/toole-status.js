@@ -55,7 +55,7 @@ BG.forEach(function(g,i){var d=document.createElement("div");d.style.cssText="wi
 w.oninput=function(){$("tsP").textContent=w.value.length+"/280"};
 $("tsX").onclick=function(){ed.remove()};
 $("tsU").onclick=async function(){var v=w.value.trim();if(!v){toast("Écris quelque chose");return}this.disabled=true;
-try{await api("/rest/v1/statuts",{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify({author:me(),body:v+M+JSON.stringify({k:"t",bg:bi})})});ed.remove();toast("Statut publié");loadStatuts()}catch(e){this.disabled=false;toast("Erreur d'envoi")}}}
+try{await api("/rest/v1/statuts",{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify({author:me(),body:v+M+JSON.stringify({k:"t",bg:bi,h:window.__tsHours||0})})});ed.remove();toast("Statut publié");loadStatuts()}catch(e){this.disabled=false;toast("Erreur d'envoi")}}}
 function studio(mode){
 var ph=mode==="photo";S={mode:mode,L:ph?15:30,v:null,p:null,m:null,ms:0,a:0,b:30,dur:0,st:[],sel:null};au=null;
 var ed=document.createElement("div");ed.id="tsEd";
@@ -101,7 +101,7 @@ try{var d={v:null,p:null,m:null,l:S.L,a:Math.round(S.a*10)/10,b:Math.round(S.b*1
 if(ph)d.p=(await up(S.p,function(p){P.textContent="Envoi photo "+p+"%"},"image")).replace("/upload/","/upload/w_1080,c_limit,q_auto/");
 else d.v=await up(S.v,function(p){P.textContent="Envoi vidéo "+p+"%"});
 if(S.m)d.m=await up(S.m,function(p){P.textContent="Envoi musique "+p+"%"});
-await api("/rest/v1/statuts",{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify({author:me(),body:cap+M+JSON.stringify(d)})});
+await api("/rest/v1/statuts",{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify({author:me(),body:cap+M+JSON.stringify(Object.assign({},d,{h:window.__tsHours||0}))})});
 close();toast("Statut publié");loadStatuts()}catch(e){u.disabled=false;P.textContent="Échec : "+(e&&e.message||"envoi impossible");toast("Erreur d'envoi")}}}
 var ov=window.openViewer;
 window.openViewer=function(st,mine,name){var body=st.body||"",i=body.indexOf(M);if(i<0)return ov.apply(this,arguments);
