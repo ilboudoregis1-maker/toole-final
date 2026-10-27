@@ -108,7 +108,7 @@ body.kbd-open #tabs,body.kbd-open .tabs{display:none!important}.lang-sw{position
 <div class="grp"><div class="gt">Confidentialité</div><div class="card"><label class="row"><span>Confirmer la lecture</span><input type="checkbox" id="tRead"></label></div></div>
 <div class="grp"><div class="gt">Notifications</div><div class="card"><label class="row"><span>Vibration à l'appui long</span><input type="checkbox" id="tVib"></label></div></div>
 <div class="grp"><div class="gt">Apparence</div><div class="card"><div class="th" id="thPick"><button data-c="#0f8a3c" style="background:#0f8a3c" aria-label="vert"></button><button data-c="#d6336c" style="background:#d6336c" aria-label="rose"></button><button data-c="#0a3d91" style="background:#0a3d91" aria-label="bleu"></button><button data-c="#f2c200" style="background:#f2c200" aria-label="jaune"></button><button data-c="#e8590c" style="background:#e8590c" aria-label="orange"></button><button data-c="#c92a2a" style="background:#c92a2a" aria-label="rouge"></button><button data-c="#7048e8" style="background:#7048e8" aria-label="violet"></button></div></div></div>
-<div class="grp"><div class="gt">Langue</div><div class="card lg"><div class="it" data-l="fr"><span class="dot"></span><span>Français</span></div><div class="it" data-l="en"><span class="dot"></span><span>English</span></div><div class="it" data-l="mos"><span class="dot"></span><span>Mooré</span></div></div></div>
+<div class="grp"><div class="gt">Langue</div><div class="card lg"><div class="it" data-l="fr"><span class="dot"></span><span>Français</span></div><div class="it" data-l="en"><span class="dot"></span><span>English</span></div></div></div>
 </div></section>
 <section id="scrCanix" class="scr hide">
 <div class="c2-top"><button id="cxBack" class="c2-back" aria-label="Retour">&#8249;</button><div class="c2-brand"><b>TÕÕLé</b><small>CNS.corp · Burkina Faso</small></div></div>
@@ -1270,7 +1270,7 @@ setTimeout(ensurePolicyUI,800);
 function setLangPre(l){localStorage.setItem("toole_lang",l);document.documentElement.lang=l;if(typeof applyLang==="function")applyLang(l);else if(typeof tp==="function")tp(l);document.querySelectorAll(".lang-sw").forEach(function(b){b.querySelectorAll("button").forEach(function(x){x.classList.toggle("on",x.dataset.l===l)})})}
 function addLangSwitch(){["scrWelcome","scrInscr","scrLogin"].forEach(function(id){var sec=document.getElementById(id);if(!sec||sec.querySelector(".lang-sw"))return;
   var w=document.createElement("div");w.className="lang-sw";
-  w.innerHTML='<button data-l="fr">FR</button><button data-l="en">EN</button><button data-l="mos">MO</button>';
+  w.innerHTML='<button data-l="fr">FR</button><button data-l="en">EN</button>';
   w.querySelectorAll("button").forEach(function(b){b.onclick=function(){setLangPre(b.dataset.l)}});
   sec.insertBefore(w,sec.firstChild)});
   setLangPre(localStorage.getItem("toole_lang")||"fr")}
@@ -1431,7 +1431,7 @@ if(_s){setLangPre=function(l){_s(l);run()}}
 document.addEventListener("click",function(ev){var b=ev.target.closest&&ev.target.closest(".lang-sw button");if(b)setTimeout(run,0)},true);
 run();
 })();</script>
-<link rel="stylesheet" href="ui.css"><link rel="stylesheet" href="tech.css"><script src="ui.js"></script><link rel="stylesheet" href="toole-pro.css"><script src="toole-pro.js"></script><script src="toole-lang-en.js"></script><script src="toole-mos.js"></script><script src="toole-i18n.js"></script><script src="toole-fix.js"></script><script src="toole-photo.js"></script><script src="toole-offline.js"></script><script src="toole-realtime.js"></script><script src="toole-chat.js"></script><script src="toole-days.js"></script><script src="toole-push.js"></script><script src="toole-send.js"></script><script src="toole-reply.js"></script>
+<link rel="stylesheet" href="ui.css"><link rel="stylesheet" href="tech.css"><script src="ui.js"></script><link rel="stylesheet" href="toole-pro.css"><script src="toole-pro.js"></script><script src="toole-i18n.js"></script><script src="toole-fix.js"></script><script src="toole-photo.js"></script><script src="toole-offline.js"></script><script src="toole-realtime.js"></script><script src="toole-chat.js"></script><script src="toole-days.js"></script><script src="toole-push.js"></script><script src="toole-send.js"></script><script src="toole-reply.js"></script>
 <script src="toole-avatar.js"></script>
 <script src="cloudinary-voice.js"></script>
 <link rel="stylesheet" href="toole-voice-style.css">

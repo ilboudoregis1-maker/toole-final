@@ -1,9 +1,0 @@
-TÕÕLé — langues FR / English / Mooré
-====================================
-Installation (une fois) :   bash langues/appliquer.sh
-Remplir le mooré :          nano langues/mos.txt   puis   bash langues/mos-vers-js.sh
-Anglais manquant :          ajoute une ligne  "Texte français": "English text",  dans langues/toole-lang-en.js puis relance  bash langues/appliquer.sh
-Un texte sans traduction reste en français (rien ne casse).
-Au passage vers/depuis l'anglais, l'appli se recharge (RELOAD_ON_EN dans toole-i18n.js).
-Dans la console de l'appli : TOOLE_missing() liste les textes encore en français à l'écran.
-Retour arrière : git checkout -- .   (avant le commit) ou git revert (après).
