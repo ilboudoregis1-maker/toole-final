@@ -260,7 +260,7 @@
       var par = t.parentNode, s = t.nodeValue; if (!par) return;
       var inBubble = par.classList && par.classList.contains("m") && s.indexOf(PO) === 0;
       if (!inBubble) {
-        t.nodeValue = s.replace(RX, function (x) { return parse(x).kind === "vid" ? "👁 Vidéo à vue unique" : "👁 Photo à vue unique"; });
+        t.nodeValue = s.replace(RX, function (x) { var en=false;try{en=localStorage.getItem("toole_lang")==="en"}catch(e){} return parse(x).kind === "vid" ? (en?"👁 View-once video":"👁 Vidéo à vue unique") : (en?"👁 View-once photo":"👁 Photo à vue unique"); });
         return;
       }
       var p = parse(s), isVid = p.kind === "vid", own = mine(p.path);

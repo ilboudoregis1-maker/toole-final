@@ -1,6 +1,9 @@
 /* TÕÕLé — compléments de traduction anglaise (FR -> EN). Ajoute ici les textes qui restent en français en mode English. */
 (function(){window.TOOLE_LANG=window.TOOLE_LANG||{};
 window.TOOLE_LANG.en={dict:{
+"Compte vérifié": "Account verified",
+"Photo à vue unique": "View-once photo",
+"👁 Photo à vue unique": "👁 View-once photo",
 "Spécial": "Special",
 "Appui long sur un message, puis Copier. Le texte est alors dans le presse-papiers.": "Long-press a message, then Copy. The text is now on the clipboard.",
 "Chargement": "Loading",
