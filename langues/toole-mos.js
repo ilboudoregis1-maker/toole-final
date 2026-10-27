@@ -4,7 +4,7 @@ window.TOOLE_LANG=window.TOOLE_LANG||{};(function(){var TXT=`
 # Une ligne sans traduction (rien après le « = ») reste affichée en français : rien ne casse.
 # Interdit dans ce fichier : accent grave, antislash, dollar suivi d'accolade. Après modification : bash langues/mos-vers-js.sh
 
-# ===== DÉJÀ REMPLI (salutations courantes — à faire relire par un locuteur) =====
+# ===== DÉJÀ REMPLI (sources : Wikipédia Mooré, lexique Montivilliers-Nasséré, dictionnaire SIM — à faire relire par un locuteur) =====
 Bonjour = Ne y windga
 Bon matin = Ne y yibeoogo
 Bonsoir = Ne y zaabre
@@ -16,6 +16,28 @@ Comment ça va ? = Kibare ?
 Pas de problème = Yel ka be
 C'est bon = Yaa sõma
 Mes condoléances = Yako
+Ouvrir = 
+Aide = 
+Photo = 
+Appels = 
+Appeler = 
+Rechercher = 
+Aujourd'hui = 
+Hier = 
+Demain = 
+Bienvenue = Yeela
+Pardon = 
+Au revoir = 
+À bientôt = 
+Aucun = 
+Musique = 
+Problème = 
+Question = 
+Heure = 
+Date = 
+Envoyer = Tʋm
+Groupes = Sulli
+Amis = Zoa-rãmba
 
 # ===== À TRADUIRE EN PRIORITÉ (navigation, connexion, discussions) =====
 Numéro (+226 70 12 34 56) = 
@@ -24,7 +46,6 @@ Accéder à CNS.corp =
 Nouveau message = 
 Chargement… = 
 Voulez-vous vraiment vous déconnecter ? = 
-Groupes = 
 Statuts = 
 Profil = 
 Paramètres = 
@@ -70,7 +91,6 @@ Inconnu =
 Nouveaux messages = 
 Discussion = 
 Écrire un message = 
-Envoyer = 
 Retour = 
 Vocal = 
 Écouter = 
@@ -178,7 +198,6 @@ Sécurité =
 Déconnexion = 
 Oui, me déconnecter = 
 Messages = 
-Amis = 
 ♥ Soutenir TÕÕLé = 
 Soutenir TÕÕLé = 
 Site CNS.corp = 
@@ -462,5 +481,7 @@ Collègues =
 Cuisine & Tô = 
 Fête = 
 Nuit étoilée = 
+Mise à jour indisponible (hors connexion) = 
+Diagnostic présence = 
 
 `;var d={};TXT.split("\n").forEach(function(l){l=l.trim();if(!l||l.charAt(0)==="#")return;var i=l.indexOf(" = ");if(i<1)return;var k=l.slice(0,i).trim(),v=l.slice(i+3).trim();if(k&&v)d[k]=v});window.TOOLE_LANG.mos={dict:d,pat:[]}})();
