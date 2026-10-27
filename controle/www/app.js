@@ -2,6 +2,12 @@
 /* ===== Config ===== */
 var URL_='https://jbjeqxubpqqypysfsubd.supabase.co',KEY='sb_publishable_bYKnve2bIrsZu1XG_g-syw_8CnA8qPR';
 var $=function(i){return document.getElementById(i)};
+/* ----- Identité par numéro de téléphone (TÕÕLé) ----- */
+function tel2mail(v){v=String(v||'').trim();if(v.indexOf('@')>-1)return v;var d=v.replace(/[^0-9]/g,'');if(d.length===8)d='226'+d;if(d.length<8)return v;return d+'@phone.tooole.app'}
+function mail2tel(e){e=String(e||'');var m=/^([0-9]{8,15})@phone[.]tooole[.]app$/i.exec(e);if(!m)return e;var d=m[1];if(d.indexOf('226')===0&&d.length===11)return '+226 '+d.slice(3).replace(/([0-9]{2})(?=[0-9])/g,'$1 ');return '+'+d}
+function isTel(v){v=String(v||'').trim();return v.indexOf('@')<0&&/^[+0-9][0-9 .()-]{6,}$/.test(v)}
+try{var _em=document.getElementById('em');if(_em){_em.type='text';_em.placeholder='Numéro de téléphone ou e-mail'}}catch(_e){}
+
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){return null}}
 function fmt(d){return d?new Date(d).toLocaleString('fr-FR'):'—'}
@@ -64,9 +70,9 @@ async function afterLogin(){
     await userInfo();
     try{ME.role=await rpc('ctl_my_role',{});SQLOK=true}catch(e){SQLOK=!missing(e);ME.role='super'}
     if(!ME.role)ME.role='lecteur';
-    $('login').classList.add('hide');$('app').classList.remove('hide');$('who').textContent=ME.email+' · '+ME.role;
+    $('login').classList.add('hide');$('app').classList.remove('hide');$('who').textContent=mail2tel(ME.email)+' · '+ME.role;
     route();startWatch();bumpIdle()}catch(e){$('msg').textContent=e.message}}
-$('go').onclick=async function(){$('msg').textContent='';var em=$('em').value.trim(),pw=$('pw').value;if(!em||!pw){$('msg').textContent="Écris l'e-mail et le mot de passe";return}
+$('go').onclick=async function(){$('msg').textContent='';var em=tel2mail($('em').value.trim()),pw=$('pw').value;if(!em||!pw){$('msg').textContent="Écris le numéro (ou l'e-mail) et le mot de passe";return}
   try{var r=await fetch(URL_+'/auth/v1/token?grant_type=password',{method:'POST',headers:{'Content-Type':'application/json',apikey:KEY},body:JSON.stringify({email:em,password:pw})});var j=await r.json();
     if(!j.access_token){$('msg').textContent=j.msg||j.error_description||'Connexion impossible';return}
     saveS(j);$('pw').value='';var ok=await rpc('is_admin',{});if(ok!==true){$('msg').textContent='Accès refusé : compte non administrateur';ls('ctl_s',null);return}
@@ -127,16 +133,16 @@ VIEWS.dash=async function(el){
   await draw();timers.push(setInterval(function(){if(!document.hidden&&CUR==='dash')draw()},30000))};
 
 /* ----- Utilisateurs ----- */
-var USERS=[];
+var USERS=[];async function resolvePseudo(v){v=String(v||'').trim();var em=v.indexOf('@')>-1?v.toLowerCase():(isTel(v)?tel2mail(v).toLowerCase():'');if(!em)return v;var L=(USERS&&USERS.length)?USERS:await rpc('ctl_comptes',{});var u=(L||[]).filter(function(x){return String(x.email||'').toLowerCase()===em})[0];return u?u.pseudo:''}
 VIEWS.users=async function(el){
-  el.innerHTML=head('users')+'<input id="q" placeholder="Rechercher par pseudo ou e-mail…"><div id="ul"><p class="ok">Chargement…</p></div>';
+  el.innerHTML=head('users')+'<input id="q" placeholder="Rechercher par pseudo, numéro ou e-mail…"><div id="ul"><p class="ok">Chargement…</p></div>';
   USERS=await rpc('ctl_comptes',{});
   try{var _vm=await rpc('ctl_verif_map',{}),_mp={};(_vm||[]).forEach(function(x){if(x.pseudo&&(!_mp[x.pseudo]||x.phone))_mp[x.pseudo]=x});USERS.forEach(function(u){var x=_mp[u.pseudo];if(x){u.phone=x.phone;u.verified=x.verified;u.canal=x.channel}})}catch(e){}
-  function show(){var f=($('q').value||'').toLowerCase().trim();var rs=USERS.filter(function(u){return !f||((u.pseudo||'')+' '+(u.email||'')+' '+(u.phone||'')+(u.verified?' #verifie':' #nonverifie')).toLowerCase().indexOf(f)>-1});
-    $('ul').innerHTML='<p class="sub">'+rs.length+' compte(s)</p>'+rs.slice(0,100).map(function(u){var i=USERS.indexOf(u);return '<button class="item" data-act="user" data-i="'+i+'">'+esc(u.pseudo||'—')+'<span class="sub">'+esc(u.email||'—')+(u.phone?' · '+esc(u.phone):'')+(u.verified?' · ✓ vérifié':' · non vérifié')+' · créé '+fmtD(u.cree_le)+' · connexion '+fmtD(u.derniere_connexion)+'</span></button>'}).join('')}
+  function show(){var f=($('q').value||'').toLowerCase().trim();if(isTel(f))f=f.replace(/[^0-9]/g,'');var rs=USERS.filter(function(u){return !f||((u.pseudo||'')+' '+(u.email||'')+' '+(u.phone||'')+(u.verified?' #verifie':' #nonverifie')).toLowerCase().indexOf(f)>-1});
+    $('ul').innerHTML='<p class="sub">'+rs.length+' compte(s)</p>'+rs.slice(0,100).map(function(u){var i=USERS.indexOf(u);return '<button class="item" data-act="user" data-i="'+i+'">'+esc(u.pseudo||'—')+'<span class="sub">'+esc(mail2tel(u.email)||'—')+(u.phone?' · '+esc(u.phone):'')+(u.verified?' · ✓ vérifié':' · non vérifié')+' · créé '+fmtD(u.cree_le)+' · connexion '+fmtD(u.derniere_connexion)+'</span></button>'}).join('')}
   $('q').oninput=show;show()};
 ACT.user=async function(d){var u=USERS[+d.i];if(!u)return;
-  sheet('<h3>'+esc(u.pseudo||u.email)+'</h3><p class="sub">'+esc(u.email||'')+(u.phone?' · '+esc(u.phone)+' ('+esc(u.canal||'')+')':'')+(u.verified?' · ✓ vérifié':' · non vérifié')+'</p><div id="ud"><p class="ok">Chargement…</p></div>');
+  sheet('<h3>'+esc(u.pseudo||mail2tel(u.email))+'</h3><p class="sub">'+esc(mail2tel(u.email)||'')+(u.phone?' · '+esc(u.phone)+' ('+esc(u.canal||'')+')':'')+(u.verified?' · ✓ vérifié':' · non vérifié')+'</p><div id="ud"><p class="ok">Chargement…</p></div>');
   var uid=null;try{uid=await rpc('id_by_pseudo',{p:u.pseudo})}catch(e){}
   if(!uid){$('ud').innerHTML='<p class="err">Compte introuvable</p>';return}
   var st={};try{st=(await rpc('admin_statut',{uid:uid}))[0]||{}}catch(e){}
@@ -182,10 +188,10 @@ VIEWS.audit=async function(el){var rows=[],legacy=false;
   try{rows=await rpc('ctl_audit_list',{lim:300})}catch(e){if(!missing(e))throw e;legacy=true;rows=(await rpc('bilan_journal',{})).map(function(r){return {at:r.cree_le,actor_mail:'',action:r.action,target:r.cible,detail:{}}})}
   AUD=rows;
   el.innerHTML=head('audit')+(legacy?'<div class="sec"><p class="err">Journal inviolable non installé : lance supabase/security.sql. Affichage de l\'ancien journal.</p></div>':'<div class="grid"><button class="ghost" data-act="verify">🔗 Vérifier l\'intégrité</button><button class="ghost" data-act="auditcsv">Exporter CSV</button></div><p id="vr" class="sub"></p>')+
-   '<div class="sec">'+(rows.length?rows.map(function(r){return '<div class="row"><span>'+esc(r.action)+'<br><small>'+esc(r.actor_mail||'')+' · '+esc(r.target||'')+'</small></span><span>'+fmt(r.at)+'</span></div>'}).join(''):'<p class="sub">Journal vide.</p>')+'</div>'};
+   '<div class="sec">'+(rows.length?rows.map(function(r){return '<div class="row"><span>'+esc(r.action)+'<br><small>'+esc(mail2tel(r.actor_mail))+' · '+esc(r.target||'')+'</small></span><span>'+fmt(r.at)+'</span></div>'}).join(''):'<p class="sub">Journal vide.</p>')+'</div>'};
 var AUD=[];
 ACT.verify=async function(){try{var r=(await rpc('ctl_audit_verify',{}))[0];$('vr').className=r.ok?'ok':'err';$('vr').textContent=r.ok?('Chaîne intacte ✓ ('+r.lignes+' entrées)'):('⚠ Rupture détectée à l\'entrée #'+r.premiere_rupture)}catch(e){$('vr').className='err';$('vr').textContent=e.message}};
-ACT.auditcsv=function(){csv('audit',['Date','Acteur','Action','Cible'],AUD.map(function(r){return [fmt(r.at),r.actor_mail,r.action,r.target]}))};
+ACT.auditcsv=function(){csv('audit',['Date','Acteur','Action','Cible'],AUD.map(function(r){return [fmt(r.at),mail2tel(r.actor_mail),r.action,r.target]}))};
 
 /* ----- Sécurité ----- */
 VIEWS.sec=async function(el){
@@ -210,7 +216,7 @@ VIEWS.sec=async function(el){
    '<h2>Authentification forte</h2><div class="sec">'+(ME.mfa?'<p class="ok">2FA active ✓</p><button class="ghost" data-act="mfaoff">Désactiver la 2FA</button>':'<p class="sub">Mot de passe + code à usage unique (Google Authenticator, Aegis, etc.).</p><button data-act="mfaon">Activer la 2FA</button>')+
    '<div class="row"><span>Déconnexion automatique</span><span><select id="idle" style="width:auto;margin:0"><option value="5">5 min</option><option value="10">10 min</option><option value="30">30 min</option></select></span></div></div>'+
    '<h2>Anomalies détectées</h2><div class="sec">'+(anom.length?anom.map(function(a){return '<div class="item '+(a.niveau==='haut'?'h':'m')+'">'+esc(a.type)+'<span class="sub">'+esc(a.sujet)+' — '+esc(a.detail)+'</span></div>'}).join(''):'<p class="ok">Aucune anomalie.</p>')+'</div>'+
-   '<h2>Sessions récentes</h2><div class="sec">'+(sessions.length?sessions.map(function(s){return '<div class="row"><span>'+esc(s.email)+'<br><small>'+esc(s.ip||'')+' · '+esc((s.appareil||'').slice(0,40))+'</small></span><span>'+fmt(s.maj_le)+'</span></div>'}).join(''):'<p class="sub">—</p>')+'</div>'+
+   '<h2>Sessions récentes</h2><div class="sec">'+(sessions.length?sessions.map(function(s){return '<div class="row"><span>'+esc(mail2tel(s.email))+'<br><small>'+esc(s.ip||'')+' · '+esc((s.appareil||'').slice(0,40))+'</small></span><span>'+fmt(s.maj_le)+'</span></div>'}).join(''):'<p class="sub">—</p>')+'</div>'+
    '<h2>Protection de la vie privée</h2><div class="sec priv"><div class="ic">🔒</div><p style="margin:0;font-size:14px">Contrôle ne porte que sur les métadonnées techniques et les événements de sécurité. Les contenus de messages privés ne sont jamais lus ; si TÕÕLé utilise le chiffrement de bout en bout, ce panneau ne peut pas le contourner.</p></div>';
   var s=$('idle');if(s){s.value=String(idleMin());s.onchange=function(){ls('ctl_idle',s.value);bumpIdle();toast('Délai enregistré')}}};
 ACT.mfaon=async function(){try{var f=await api('POST','/auth/v1/factors',{factor_type:'totp',friendly_name:'controle-'+Date.now(),issuer:'TOOLE Controle'});ACT._f=f;
@@ -235,8 +241,8 @@ VIEWS.tech=async function(el){
 
 /* ----- Listes (statuts, messages, réception) ----- */
 var LCFG={
- statuts:{t:'Statuts (sans contenu)',cols:['Date','Heure','Pseudo','E-mail','Expire le'],load:async function(){return (await rpc('ctl_statuts',{})).map(function(x){return [fmtD(x.date_pub),fmtH(x.date_pub),x.pseudo||'—',x.email||'—',fmtD(x.expire)]})}},
- messages:{t:'Messages (sans contenu)',cols:['Date','Heure','Type','Expéditeur','E-mail exp.','Destinataire','Lu'],load:async function(){return (await rpc('ctl_messages',{})).map(function(x){return [fmtD(x.date_envoi),fmtH(x.date_envoi),x.type,x.expediteur||'—',x.email_exp||'—',x.destinataire||'—',x.lu===null?'—':(x.lu?'Lu':'Non lu')]})}},
+ statuts:{t:'Statuts (sans contenu)',cols:['Date','Heure','Pseudo','Numéro','Expire le'],load:async function(){return (await rpc('ctl_statuts',{})).map(function(x){return [fmtD(x.date_pub),fmtH(x.date_pub),x.pseudo||'—',mail2tel(x.email)||'—',fmtD(x.expire)]})}},
+ messages:{t:'Messages (sans contenu)',cols:['Date','Heure','Type','Expéditeur','Numéro exp.','Destinataire','Lu'],load:async function(){return (await rpc('ctl_messages',{})).map(function(x){return [fmtD(x.date_envoi),fmtH(x.date_envoi),x.type,x.expediteur||'—',mail2tel(x.email_exp)||'—',x.destinataire||'—',x.lu===null?'—':(x.lu?'Lu':'Non lu')]})}},
  reception:{t:'Réception',cols:['Type','Date','Motif / montant','Pseudo','Détail'],load:async function(){var rep=await rpc('bilan_signalements',{});var dons=[];try{dons=await api('GET','/rest/v1/donations?select=created_at,montant,operateur,telephone,reference,statut&order=created_at.desc')}catch(e){}
    return rep.map(function(x){return ['Signalement',fmtD(x.cree_le),x.motif,x.auteur||'—',x.copie||'']}).concat(dons.map(function(d){return ['Don',fmtD(d.created_at),d.montant+' FCFA · '+d.operateur,d.telephone||'—',d.statut]}))}}};
 var LDATA=[],LK='';
@@ -250,19 +256,19 @@ ACT.lcsv=function(){csv(LK,LCFG[LK].cols,LDATA);audit('export_csv',LK,{par:ME.em
 VIEWS.misc=async function(el){
   el.innerHTML=head('misc')+(can('super')?
    '<div class="sec"><h3>Annonce officielle</h3><textarea id="annTxt" rows="3" maxlength="1000" placeholder="Texte de l\'annonce"></textarea><select id="annDur"><option value="6">6 h</option><option value="24" selected>24 h</option><option value="72">3 jours</option></select><div class="grid"><button data-act="annpub">Publier</button><button class="ghost" data-act="annret">Retirer</button></div><p id="annMsg" class="err"></p></div>'+
-   '<div class="sec"><h3>Créer un compte</h3><input id="nEmail" type="email" placeholder="E-mail"><input id="nPseudo" placeholder="Pseudo"><input id="nPw" type="password" placeholder="Mot de passe (12 car. min)" autocomplete="new-password"><button data-act="newacc">Créer</button><p id="accMsg" class="err"></p></div>'+
-   '<div class="sec"><h3>Mot de passe perdu</h3><p class="sub">Donne un nouveau mot de passe à une personne qui a perdu le sien.</p><input id="rPseudo" placeholder="Pseudo du compte" autocapitalize="none"><input id="rPw" type="text" placeholder="Nouveau mot de passe (12 car. min)" autocomplete="off" autocapitalize="none"><button class="ghost" data-act="genpw">Générer un mot de passe</button><button data-act="rstpw">Réinitialiser</button><p id="rstMsg" class="err"></p></div>':'<div class="sec"><p class="sub">Réservé au rôle « super ».</p></div>')};
+   '<div class="sec"><h3>Créer un compte</h3><input id="nEmail" type="tel" inputmode="tel" placeholder="Numéro de téléphone"><input id="nPseudo" placeholder="Pseudo"><input id="nPw" type="password" placeholder="Mot de passe (12 car. min)" autocomplete="new-password"><button data-act="newacc">Créer</button><p id="accMsg" class="err"></p></div>'+
+   '<div class="sec"><h3>Mot de passe perdu</h3><p class="sub">Donne un nouveau mot de passe à une personne qui a perdu le sien.</p><input id="rPseudo" placeholder="Numéro de téléphone (ou pseudo)" autocapitalize="none"><input id="rPw" type="text" placeholder="Nouveau mot de passe (12 car. min)" autocomplete="off" autocapitalize="none"><button class="ghost" data-act="genpw">Générer un mot de passe</button><button data-act="rstpw">Réinitialiser</button><p id="rstMsg" class="err"></p></div>':'<div class="sec"><p class="sub">Réservé au rôle « super ».</p></div>')};
 function msg(id,t,ok){var e=$(id);e.className=ok?'ok':'err';e.textContent=t}
 ACT.annpub=async function(){var t=($('annTxt').value||'').trim();if(!t){msg('annMsg',"Écris le texte de l'annonce");return}
   try{await api('POST','/rest/v1/statuts_admin',{texte:t,expire_le:new Date(Date.now()+parseInt($('annDur').value,10)*3600000).toISOString(),actif:true},{Prefer:'return=minimal'});await audit('annonce_publiee','statuts_admin',{par:ME.email});$('annTxt').value='';msg('annMsg','Annonce publiée',1)}catch(e){msg('annMsg',e.message)}};
 ACT.annret=async function(){try{await api('PATCH','/rest/v1/statuts_admin?actif=eq.true',{actif:false},{Prefer:'return=minimal'});await audit('annonce_retiree','statuts_admin',{par:ME.email});msg('annMsg','Annonce retirée',1)}catch(e){msg('annMsg',e.message)}};
 
 ACT.genpw=function(){var c='abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789',a=new Uint32Array(14),o='';crypto.getRandomValues(a);for(var i=0;i<14;i++)o+=c[a[i]%c.length];$('rPw').value=o};
-ACT.rstpw=async function(){var ps=($('rPseudo').value||'').trim(),pw=$('rPw').value;if(!ps){msg('rstMsg','Écris le pseudo');return}if(pw.length<12){msg('rstMsg','Mot de passe : 12 caractères minimum');return}
+ACT.rstpw=async function(){var ps=($('rPseudo').value||'').trim(),pw=$('rPw').value;if(!ps){msg('rstMsg','Écris le numéro ou le pseudo');return}ps=await resolvePseudo(ps);if(!ps){msg('rstMsg','Aucun compte avec ce numéro');return}if(pw.length<12){msg('rstMsg','Mot de passe : 12 caractères minimum');return}
   if(!(await confirmPw('Réinitialiser le mot de passe de '+ps)))return;
   try{await fnCall({action:'reset',pseudo:ps,password:pw});await audit('reset_mdp',ps,{par:ME.email});msg('rstMsg','Mot de passe réinitialisé. Transmets-le à la personne : '+pw+'',1);$('rPw').value=''}catch(e){msg('rstMsg',e.message)}};
 ACT.newacc=async function(){if($('nPw').value.length<12){msg('accMsg','Mot de passe : 12 caractères minimum');return}if(!(await confirmPw('Créer un compte')))return;
-  try{await fnCall({action:'create',email:$('nEmail').value,pseudo:$('nPseudo').value,password:$('nPw').value});await audit('compte_cree',$('nPseudo').value,{par:ME.email});$('nPw').value='';msg('accMsg','Compte créé.',1)}catch(e){msg('accMsg',e.message)}};
+  try{await fnCall({action:'create',email:tel2mail($('nEmail').value),pseudo:$('nPseudo').value,password:$('nPw').value});await audit('compte_cree',$('nPseudo').value,{par:ME.email});$('nPw').value='';msg('accMsg','Compte créé.',1)}catch(e){msg('accMsg',e.message)}};
 
 /* ===== Veille : badge + vibration sur nouvelle alerte ===== */
 var LASTN=null,wTimer;
