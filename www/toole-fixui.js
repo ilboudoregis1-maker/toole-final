@@ -65,3 +65,4 @@ var pend=0;
 new MutationObserver(function(){if(pend)return;pend=1;requestAnimationFrame(function(){pend=0;tr()})}).observe(document.body,{childList:true,subtree:true,characterData:true});
 tr();
 })();
+/*CANIXCARD*/setInterval(function(){document.querySelectorAll('#gList .gcard').forEach(function(c){var h=c.querySelector('h3');if(h&&h.textContent.trim()==='CANIX')c.remove()})},1500);

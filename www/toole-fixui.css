@@ -20,3 +20,5 @@ html body #scrParam .row{zoom:1!important}
 /* TRAD-EN */
 html:root:root[lang=en] body #scrList .hdr .ttl::after{content:"Always closer to you"!important}
 html:root:root[lang=en] body #scrList #v4st .v4s.me::after{content:"View my status"!important}
+/* PROD-CLEAN */
+#v4nav [data-n=calls],#callBtn,.v4call-go,#tcBanner,#scrCalls,#cxBtn,#scrCanix{display:none!important}
