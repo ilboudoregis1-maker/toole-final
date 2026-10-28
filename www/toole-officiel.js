@@ -8,7 +8,7 @@ function call(p,o){var f=window.api||(typeof api==='function'?api:null);return f
 var BADGE='<svg viewBox="0 0 24 24" width="16" height="16" style="flex:none"><circle cx="12" cy="12" r="11" fill="#1d9bf0"/><path d="M7 12.5l3.3 3.3L17 9" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 var SEND='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg>';
 var BACK='<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
-var WELCOME='Bienvenue sur TÕÕLé ! Ici, l’équipe TÕÕLé te parle directement : annonces, nouveautés et informations importantes. Tu peux nous écrire un message toutes les 24 heures.';
+var WELCOME_FR="TÕÕLé vous souhaite la bienvenue !\n\nTrop longtemps, nous avons dépendu des créations européennes et asiatiques. Aujourd’hui, la terre des hommes intègres entre dans une nouvelle ère : une messagerie pensée ici, pour nous.\n\nIci, vos données sont chiffrées pendant leur transfert et leur stockage, puis supprimées de nos serveurs dans un délai de moins d’un mois.\n\nMerci de faire partie de cette aventure.";var WELCOME_EN="TÕÕLé welcomes you!\n\nFor too long, we have depended on creations from Europe and Asia. Today, the land of upright people enters a new era: a messaging app built here, for us.\n\nHere, your data is encrypted in transit and at rest, then deleted from our servers in less than a month.\n\nThank you for being part of this journey.";function isEn(){try{return localStorage.getItem('toole_lang')==='en'}catch(e){return false}}function welcomeText(){return isEn()?WELCOME_EN:WELCOME_FR}
 var st=D.createElement('style');st.textContent=
 '#offRow{display:flex;align-items:center;gap:12px;padding:11px 12px;margin:6px 0 10px;border-radius:18px;background:linear-gradient(135deg,#eaf3ff,#f6faff);border:1px solid #cfe2ff;box-shadow:0 4px 14px rgba(10,61,145,.1);cursor:pointer}'+
 '#offRow img,#offScr .oh img{width:46px;height:46px;border-radius:50%;object-fit:cover;background:#fff;flex:none}'+
@@ -32,7 +32,7 @@ function unread(){var l=lastOff();if(!l)return false;var s=0;try{s=+localStorage
 function fmt(d){try{var x=new Date(d);return x.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'})+' '+x.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}catch(e){return''}}
 function wait(){var m=0;REP.forEach(function(r){var t=new Date(r.created_at).getTime();if(t>m)m=t});return m?Math.max(0,m+864e5-Date.now()):0}
 function left(ms){var h=Math.floor(ms/36e5),n=Math.ceil((ms%36e5)/6e4);if(n===60){h++;n=0}return h>0?h+' h '+(n<10?'0':'')+n+' min':n+' min'}
-function rowHtml(){var l=lastOff();return '<img src="logo.png" alt=""><div style="flex:1;min-width:0"><div class="on">TÕÕLé '+BADGE+'</div><div class="op">'+esc(l?l.texte:'Bienvenue sur TÕÕLé !')+'</div></div>'+(unread()||!l?'<span class="od"></span>':'')}
+function rowHtml(){var l=lastOff();return '<img src="logo.png" alt=""><div style="flex:1;min-width:0"><div class="on">TÕÕLé '+BADGE+'</div><div class="op">'+esc(l?l.texte:(isEn()?'Welcome to TÕÕLé!':'TÕÕLé vous souhaite la bienvenue !'))+'</div></div>'+(unread()||!l?'<span class="od"></span>':'')}
 function inject(){var sl=$('scrList'),rc=$('recent');if(!sl||!rc||!rc.parentNode)return;var ex=$('offRow');
 if(!logged()||sl.classList.contains('hide')){if(ex)ex.remove();return}
 var q=$('srch');if(q&&q.value){if(ex)ex.remove();return}
@@ -40,7 +40,7 @@ if(!ex){ex=D.createElement('div');ex.id='offRow';ex.onclick=open}
 if(ex.parentNode!==rc.parentNode||ex.nextSibling!==rc)rc.parentNode.insertBefore(ex,rc);
 var h=rowHtml();if(ex.__h!==h){ex.__h=h;ex.innerHTML=h}}
 function paint(){var box=$('offMsgs');if(!box)return;var it=[];
-if(!OFF.length)it.push({k:'o',t:WELCOME,d:''});
+if(!OFF.length)it.push({k:'o',t:welcomeText(),d:''});
 OFF.forEach(function(m){it.push({k:'o',t:m.texte,d:m.created_at})});
 REP.forEach(function(m){it.push({k:'u',t:m.texte,d:m.created_at})});
 it.sort(function(a,b){return(a.d?new Date(a.d):0)-(b.d?new Date(b.d):0)});
