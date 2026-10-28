@@ -1,7 +1,7 @@
 /* TÕÕLé PRO — réglages avancés, mode sombre, taille du texte, navigation propre, robustesse */
 (function () {
   'use strict';
-  var VERSION = '2.0.0';
+  var VERSION = '2.1.0';
   function ls(k, d) { try { var v = localStorage.getItem(k); return v === null ? d : v; } catch (e) { return d; } }
   function lss(k, v) { try { localStorage.setItem(k, v); } catch (e) { } }
   function lang() { return ls('toole_lang', /^en/i.test(navigator.language || '') ? 'en' : 'fr'); }
