@@ -1,6 +1,6 @@
 (function(){
 if(window.__tofficiel)return;window.__tofficiel=1;
-var D=document,SEEN='toole_off_seen',OFF=[],REP=[],busy=0;
+var D=document,SEEN='toole_off_seen',OFF=[],REP=[],busy=0,SHOW_REPLIES=false;
 function $(i){return D.getElementById(i)}
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function logged(){try{return !!JSON.parse(localStorage.getItem('toole_session')).access_token}catch(e){return false}}
@@ -25,7 +25,7 @@ var st=D.createElement('style');st.textContent=
 '#offScr .of{padding:8px 10px calc(10px + env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid #dbe7fb}'+
 '#offNote{font-size:12px;color:#4a5f80;padding:0 6px 6px;min-height:14px}'+
 '#offScr .ob{display:flex;gap:8px;align-items:center}#offIn{flex:1;border:1.5px solid #cfe0fb;border-radius:22px;padding:11px 15px;font-size:15px;outline:0;background:#f6f9ff}#offIn:disabled{opacity:.55}'+
-'#offGo{width:44px;height:44px;border:0;border-radius:50%;background:linear-gradient(135deg,#0a3d91,#1a73e8);display:grid;place-items:center;flex:none}#offGo:disabled{opacity:.45}';
+'#offGo{width:44px;height:44px;border:0;border-radius:50%;background:linear-gradient(135deg,#0a3d91,#1a73e8);display:grid;place-items:center;flex:none}#offGo:disabled{opacity:.45}'+"#offMsgs .hero{align-self:stretch;background:#fff;border:1px solid #dbe7fb;border-radius:22px;padding:18px 16px 12px;box-shadow:0 6px 20px rgba(10,61,145,.1)}#offMsgs .hero img{display:block;width:64px;height:64px;border-radius:50%;margin:0 auto 10px;object-fit:cover}#offMsgs .hero h3{margin:0 0 10px;font-size:18px;line-height:1.3;color:#0a2a66;font-weight:800;text-align:center}#offMsgs .hero p{margin:0 0 10px;font-size:14.5px;line-height:1.55;color:#26384f}#offMsgs .tip{align-self:stretch;border-radius:18px;padding:13px 14px;background:linear-gradient(135deg,#eaf3ff,#f6faff);border:1px solid #cfe2ff}#offMsgs .tip b{display:block;color:#0a2a66;margin-bottom:4px;font-size:15px}#offMsgs .tip span{display:block;font-size:13.5px;line-height:1.45;color:#4a5f80}#offMsgs .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}#offMsgs .chips button{border:1.5px solid #bcd6fb;background:#fff;color:#0a3d91;border-radius:999px;padding:8px 12px;font-size:13.5px;font-weight:700;font-family:inherit}#offMsgs .chips button:active{background:#e8f1ff}";
 D.head.appendChild(st);
 function lastOff(){return OFF.length?OFF[OFF.length-1]:null}
 function unread(){var l=lastOff();if(!l)return false;var s=0;try{s=+localStorage.getItem(SEEN)||0}catch(e){}return l.id>s}
@@ -39,24 +39,29 @@ var q=$('srch');if(q&&q.value){if(ex)ex.remove();return}
 if(!ex){ex=D.createElement('div');ex.id='offRow';ex.onclick=open}
 if(ex.parentNode!==rc.parentNode||ex.nextSibling!==rc)rc.parentNode.insertBefore(ex,rc);
 var h=rowHtml();if(ex.__h!==h){ex.__h=h;ex.innerHTML=h}}
+function heroHtml(){var en=isEn();var w=welcomeText().split('\n\n'),t=w.shift();
+return '<div class="hero"><img src="logo.png" alt=""><h3>'+esc(t)+'</h3>'+w.map(function(x){return '<p>'+esc(x)+'</p>'}).join('')+'</div>'}
+function tipHtml(){var en=isEn();
+return '<div class="tip"><b>'+(en?'Help us improve TÕÕLé':'Aide-nous à améliorer TÕÕLé')+'</b><span>'+(en?'Found a problem or have an idea? Write to us here. Your message helps us improve TÕÕLé.':'Un problème, une idée, une amélioration ? Écris-nous ici. Ton message nous aide à faire grandir TÕÕLé.')+'</span>'
++'<div class="chips"><button data-p="'+(en?'Problem: ':'Problème : ')+'">🐞 '+(en?'Report a problem':'Signaler un problème')+'</button><button data-p="'+(en?'Idea: ':'Idée : ')+'">💡 '+(en?'Suggest an idea':'Proposer une idée')+'</button><button data-p="">💬 '+(en?'Other':'Autre')+'</button></div></div>'}
+function chipClick(e){var b=e.target.closest&&e.target.closest('.chips button');if(!b)return;var i=$('offIn');if(!i||i.disabled)return;i.value=b.getAttribute('data-p')||'';i.focus()}
 function paint(){var box=$('offMsgs');if(!box)return;var it=[];
-it.push({k:'o',t:welcomeText(),d:''});
 OFF.forEach(function(m){it.push({k:'o',t:m.texte,d:m.created_at})});
-REP.forEach(function(m){it.push({k:'u',t:m.texte,d:m.created_at})});
+if(SHOW_REPLIES)REP.forEach(function(m){it.push({k:'u',t:m.texte,d:m.created_at})});
 it.sort(function(a,b){return(a.d?new Date(a.d):0)-(b.d?new Date(b.d):0)});
-var h=it.map(function(m){return '<div class="b '+m.k+'">'+esc(m.t)+(m.d?'<small>'+fmt(m.d)+'</small>':'')+'</div>'}).join('');
-if(box.__h!==h){box.__h=h;box.innerHTML=h;box.scrollTop=box.scrollHeight}
+var h=heroHtml()+it.map(function(m){return '<div class="b '+m.k+'">'+esc(m.t)+(m.d?'<small>'+fmt(m.d)+'</small>':'')+'</div>'}).join('')+tipHtml();
+if(box.__h!==h){box.__h=h;box.innerHTML=h;box.scrollTop=it.length?box.scrollHeight:0}
 var i=$('offIn'),g=$('offGo'),n=$('offNote'),w=wait(),s=w>0;
-if(i){i.disabled=s;i.placeholder=s?'Disponible dans '+left(w):'Écrire à TÕÕLé…'}
+if(i){i.disabled=s;i.placeholder=s?'Disponible dans '+left(w):(isEn()?'Describe the issue or your idea…':'Décris le problème ou ton idée…')}
 if(g)g.disabled=s;if(n&&!n.__e)n.textContent=s?'Prochain message possible dans '+left(w):'1 message toutes les 24 h'}
 function note(t){var n=$('offNote');if(n){n.__e=1;n.textContent=t;setTimeout(function(){n.__e=0;paint()},3500)}}
 function send(){var i=$('offIn');if(!i||busy)return;var t=i.value.trim();if(!t)return;busy=1;
-call('/rest/v1/rpc/send_official_reply',{method:'POST',body:JSON.stringify({p_texte:t})}).then(function(r){i.value='';REP.push(r&&r.id?r:{id:Date.now(),texte:t,created_at:new Date().toISOString()})})
+call('/rest/v1/rpc/send_official_reply',{method:'POST',body:JSON.stringify({p_texte:t})}).then(function(r){i.value='';note(isEn()?'✓ Thank you! Your message was sent to the team.':'✓ Merci ! Ton message a bien été envoyé à l’équipe.');REP.push(r&&r.id?r:{id:Date.now(),texte:t,created_at:new Date().toISOString()})})
 .catch(function(e){var m=String(e&&e.message||'');note(/LIMIT/.test(m)?'Tu dois attendre 24 h entre deux messages.':'Envoi impossible. Vérifie ta connexion.');if(/LIMIT/.test(m))load()})
 .then(function(){busy=0;paint()})}
 function open(){if($('offScr'))return;var o=D.createElement('div');o.id='offScr';
 o.innerHTML='<div class="oh"><button id="offBk" aria-label="Retour">'+BACK+'</button><img src="logo.png" alt=""><div><div class="on2">TÕÕLé '+BADGE+'</div><div class="os">Compte officiel</div></div></div><div id="offMsgs"></div><div class="of"><div id="offNote"></div><div class="ob"><input id="offIn" maxlength="1000" autocomplete="off"><button id="offGo" aria-label="Envoyer">'+SEND+'</button></div></div>';
-D.body.appendChild(o);$('offBk').onclick=function(){o.remove()};$('offGo').onclick=send;$('offIn').onkeydown=function(e){if(e.key==='Enter')send()};
+D.body.appendChild(o);$('offBk').onclick=function(){o.remove()};$('offGo').onclick=send;$('offIn').onkeydown=function(e){if(e.key==='Enter')send()};$('offMsgs').addEventListener('click',chipClick);
 var l=lastOff();if(l)try{localStorage.setItem(SEEN,String(l.id))}catch(e){}
 paint();load();inject()}
 function load(){if(!logged())return Promise.resolve();
