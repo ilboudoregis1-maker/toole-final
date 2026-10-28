@@ -40,7 +40,7 @@ if(!ex){ex=D.createElement('div');ex.id='offRow';ex.onclick=open}
 if(ex.parentNode!==rc.parentNode||ex.nextSibling!==rc)rc.parentNode.insertBefore(ex,rc);
 var h=rowHtml();if(ex.__h!==h){ex.__h=h;ex.innerHTML=h}}
 function paint(){var box=$('offMsgs');if(!box)return;var it=[];
-if(!OFF.length)it.push({k:'o',t:welcomeText(),d:''});
+it.push({k:'o',t:welcomeText(),d:''});
 OFF.forEach(function(m){it.push({k:'o',t:m.texte,d:m.created_at})});
 REP.forEach(function(m){it.push({k:'u',t:m.texte,d:m.created_at})});
 it.sort(function(a,b){return(a.d?new Date(a.d):0)-(b.d?new Date(b.d):0)});
