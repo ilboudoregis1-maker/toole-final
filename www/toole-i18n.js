@@ -164,7 +164,7 @@
      - Mooré         : toole-mos.js          (window.TOOLE_LANG.mos) — un texte non traduit reste en français.
      - Débogage      : TOOLE_missing() liste les textes encore en français à l'écran. */
   var LANGS = { fr: 1, en: 1, mos: 1 };
-  var RELOAD_ON_EN = true; /* recharge l'appli quand on passe vers/depuis l'anglais (certains écrans figent la langue au démarrage) */
+  var RELOAD_ON_EN = false; /* recharge l'appli quand on passe vers/depuis l'anglais (certains écrans figent la langue au démarrage) */
   var X = window.TOOLE_LANG || {};
   var XEN = X.en || {}, XMOS = X.mos || {};
   Object.keys(XEN.dict || {}).forEach(function (k) { if (D[k] === undefined) D[k] = XEN.dict[k]; });
