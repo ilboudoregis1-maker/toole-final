@@ -13,3 +13,7 @@ html body #lgLinks a::before{content:none!important;display:none!important}
 html body #lgLinks a{white-space:normal!important}
 /* Inscription : texte de la case à cocher */
 html body #scrInscr .ck span{white-space:normal!important;overflow-wrap:anywhere}
+/* TAILLE-GLOBALE : le réglage A-/A/A+/A++ s'applique partout */
+html body #recent .row,html body #gRows .row,html body #v4calls .row,html body #sxBox .sx-row,html body .m,html body .sa,html body .pm,html body .gcard{zoom:var(--fs,1)}
+html body #scrChat .m,html body #scrGroup .m{font-size:15.5px!important}
+html body #scrParam .row{zoom:1!important}
