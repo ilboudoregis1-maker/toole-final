@@ -9,3 +9,10 @@ html:root:root:root:root body #v4nav button.mid svg{width:26px!important;height:
 html:root:root:root:root body #scrList #v4chips{gap:6px!important;padding:2px 12px 6px!important}
 html:root:root:root:root body #scrList #v4chips button{height:42px!important;padding:0 12px!important;font-size:15px!important;gap:6px!important}
 html:root:root:root:root body #scrList #v4chips button svg{width:20px!important;height:20px!important}
+html:root:root body #scrCalls:not(.hide){display:flex!important;flex-direction:column!important}
+#scrCalls .apw{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px 28px calc(env(safe-area-inset-bottom,0px) + 90px)}
+#scrCalls .api{width:88px;height:88px;border-radius:50%;background:var(--s-soft,#eef5ff);display:grid;place-items:center;margin-bottom:20px}
+#scrCalls .api svg{width:42px;height:42px;stroke:var(--s-ac,#0a7cff);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#scrCalls .apw h2{font-size:22px;margin:0 0 10px;color:var(--s-ink,#0b1b3a)}
+#scrCalls .apw p{font-size:15.5px;line-height:1.55;color:var(--s-mut,#6b7c93);margin:0;max-width:320px}
+#scrCalls .apw .app{margin-top:18px;padding:8px 16px;border-radius:999px;background:var(--s-soft,#eef5ff);color:var(--s-ac,#0a7cff);font-weight:600;font-size:13.5px}
