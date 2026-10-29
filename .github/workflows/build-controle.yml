@@ -2,6 +2,7 @@ name: build-controle
 on:
   push:
     branches: [main]
+    paths: ["controle/**"]
   workflow_dispatch:
 permissions:
   contents: write
