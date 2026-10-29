@@ -19,9 +19,10 @@ async function load(){
     BL=new Set((r||[]).map(function(x){return x.blocked}));loadedFor=u}catch(e){}
 }
 setInterval(load,3000);load();
+window.__tblkReload=function(){loadedFor=null;load()};
 async function block(id,src){
   try{
-    await A('/rest/v1/blocks',{method:'POST',headers:{Prefer:'resolution=ignore-duplicates,return=minimal'},body:JSON.stringify({blocked:id})});
+    await A('/rest/v1/blocks',{method:'POST',headers:{Prefer:'resolution=ignore-duplicates,return=minimal'},body:JSON.stringify({blocker:uid(),blocked:id})});
     BL.add(id);closeSheet();
     if(typeof toast==='function')toast('Utilisateur bloqué');
     if(src==='g'&&typeof loadGroupMsgs==='function')loadGroupMsgs();
