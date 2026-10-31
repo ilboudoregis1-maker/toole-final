@@ -1,0 +1,24 @@
+/* Paramètres : supprime l'icône en double qui écrase le texte */
+html body #scrParam .tb-ic{display:none!important}
+html body #scrParam .row>span:not(.st-ic):not(.tb-ic){flex:1 1 auto!important;min-width:0!important;white-space:normal!important;overflow-wrap:anywhere;font-size:calc(16px*var(--fs,1))!important}
+html body #scrParam .row .st-ic{flex:none!important}
+html body #scrParam input[type=checkbox]{flex:none!important}
+/* Mode / Taille du texte : titres bien lisibles */
+html body #scrParam .pro-note{font-size:calc(14px*var(--fs,1))!important;font-weight:700!important;color:#4a5b73!important;padding:10px 16px 4px!important}
+html[data-theme=dark] body #scrParam .pro-note{color:#b8c6da!important}
+html body #scrParam .pro-seg button{font-size:calc(15px*var(--fs,1))!important}
+/* Connexion : liens du bas jamais coupés */
+html body #lgLinks,html body #scrLogin #lgLinks{display:flex!important;flex-direction:column!important;align-items:center!important;gap:6px!important;white-space:normal!important;box-sizing:border-box!important;padding:14px 16px calc(env(safe-area-inset-bottom,0px) + 16px)!important;font-size:14px!important;text-align:center!important}
+html body #lgLinks a::before{content:none!important;display:none!important}
+html body #lgLinks a{white-space:normal!important}
+/* Inscription : texte de la case à cocher */
+html body #scrInscr .ck span{white-space:normal!important;overflow-wrap:anywhere}
+/* TAILLE-GLOBALE : le réglage A-/A/A+/A++ s'applique partout */
+html body #recent .row,html body #gRows .row,html body #v4calls .row,html body #sxBox .sx-row,html body .m,html body .sa,html body .pm,html body .gcard{zoom:var(--fs,1)}
+html body #scrChat .m,html body #scrGroup .m{font-size:15.5px!important}
+html body #scrParam .row{zoom:1!important}
+/* TRAD-EN */
+html:root:root[lang=en] body #scrList .hdr .ttl::after{content:"Always closer to you"!important}
+html:root:root[lang=en] body #scrList #v4st .v4s.me::after{content:"View my status"!important}
+/* PROD-CLEAN */
+#v4nav [data-n=calls],#callBtn,.v4call-go,#tcBanner,#scrCalls,#cxBtn,#scrCanix{display:none!important}

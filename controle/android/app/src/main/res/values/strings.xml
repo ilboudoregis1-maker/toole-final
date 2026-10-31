@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">CNS.corp-TÕÕLé Contrôle</string>
+    <string name="title_activity_main">CNS.corp-TÕÕLé Contrôle</string>
+    <string name="package_name">com.cns.controle</string>
+    <string name="custom_url_scheme">com.cns.controle</string>
+</resources>

@@ -5,7 +5,7 @@
   "use strict";
   if (window.__tsend) return; window.__tsend = 1;
 
-  var busy = false, inflight = {}, tries = {}, nextAt = {}, tm = null;
+  var busy = false, inflight = {}, tries = {}, nextAt = {}, lastErr = {}, tm = null;
   var FAIL_AFTER = 6;
 
   function items() { try { return outboxLoad(); } catch (e) { return []; } }
@@ -72,18 +72,22 @@
     if (busy) return; busy = true;
     var changed = false;
     try {
-      var list = items();
+      var list = items().sort(function (a, b) { return (a.audio_path ? 1 : 0) - (b.audio_path ? 1 : 0); });
       for (var i = 0; i < list.length; i++) {
         var it = list[i];
         if (!force && nextAt[it.id] && nextAt[it.id] > Date.now()) continue;
+        if (!force && (tries[it.id] || 0) >= FAIL_AFTER) continue;
         try {
           await sendOne(it);
           outboxRemove(it.id); delete tries[it.id]; delete nextAt[it.id]; changed = true;
         } catch (e) {
-          tries[it.id] = (tries[it.id] || 0) + 1;
+          lastErr[it.id] = String((e && e.message) || e).slice(0, 60);
+          /* refus du serveur (droits, bucket, bloqué...) : inutile de réessayer en boucle */
+          if (/row-level|policy|permission|violates|not found|bucket|denied|403|404/i.test(lastErr[it.id])) tries[it.id] = FAIL_AFTER;
+          else tries[it.id] = (tries[it.id] || 0) + 1;
           nextAt[it.id] = Date.now() + Math.min(30000, 3000 * tries[it.id]);
           changed = true;
-          break; /* garde l'ordre : on réessaie plus tard */
+          continue;
         }
       }
     } finally { busy = false; }
@@ -108,9 +112,10 @@
       else d.appendChild(document.createTextNode(x.body || ""));
       var t = document.createElement("div"); t.className = "t";
       var hm = new Date(tsOf(x)).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
-      t.textContent = hm + " \u00B7 " + (failed ? "! Non envoyé \u00B7 touche pour réessayer" : (inflight[x.id] ? "envoi\u2026" : "\u23F3 en attente"));
+      var dd = new Date(tsOf(x)); if (dd.toDateString() !== new Date().toDateString()) hm = dd.toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" }) + " " + hm;
+      t.textContent = hm + " \u00B7 " + (failed ? "! Non envoyé" + (lastErr[x.id] ? " (" + lastErr[x.id] + ")" : "") + " \u00B7 touche pour réessayer" : (inflight[x.id] ? "envoi\u2026" : "\u23F3 en attente"));
       d.appendChild(t);
-      d.onclick = function () { tries[x.id] = 0; nextAt[x.id] = 0; flush(true); };
+      d.onclick = function () { tries[x.id] = 0; nextAt[x.id] = 0; delete lastErr[x.id]; flush(true); };
       box.appendChild(d);
     });
     try { box.scrollTop = box.scrollHeight; } catch (e) { }

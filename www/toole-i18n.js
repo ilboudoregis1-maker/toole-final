@@ -157,46 +157,88 @@
     [/^(.*) · groupe$/, "$1 · group"], [/^(.*) · ✓ envoyé$/, "$1 · ✓ sent"],
     [/^Micro : (.*)$/, "Microphone: $1"], [/^ERREUR JS: (.*)$/, "JS ERROR: $1"]
   ];
-  /* ---- utilitaires ---- */
-  var REV = {}; Object.keys(D).forEach(function (k) { if (!REV[D[k]]) REV[D[k]] = k; });
-  function norm(s) { return s.replace(/[’‘]/g, "'").replace(/\s+/g, " ").trim(); }
-  var DN = {}; Object.keys(D).forEach(function (k) { DN[norm(k)] = D[k]; });
-  function lang() { try { return localStorage.getItem('toole_lang') || (/^en/i.test(navigator.language || '') ? 'en' : 'fr'); } catch (e) { return 'fr'; } }
-  function toEN(v) {
-    var n = norm(v); if (!n) return v;
-    if (DN[n] !== undefined) return DN[n];
-    for (var i = 0; i < P.length; i++) { if (P[i][0].test(n)) return n.replace(P[i][0], P[i][1]); }
+  /* ================== MOTEUR DE LANGUES : FR / EN / MOORÉ ==================
+     - Le texte source de l'appli est en FRANÇAIS. EN et Mooré sont des traductions
+       appliquées à l'écran (texte, placeholder, aria-label, title, alt, toasts, confirm/alert).
+     - Compléments EN : toole-lang-en.js     (window.TOOLE_LANG.en)
+     - Mooré         : toole-mos.js          (window.TOOLE_LANG.mos) — un texte non traduit reste en français.
+     - Débogage      : TOOLE_missing() liste les textes encore en français à l'écran. */
+  var LANGS = { fr: 1, en: 1, mos: 1 };
+  var RELOAD_ON_EN = false; /* recharge l'appli quand on passe vers/depuis l'anglais (certains écrans figent la langue au démarrage) */
+  var X = window.TOOLE_LANG || {};
+  var XEN = X.en || {}, XMOS = X.mos || {};
+  Object.keys(XEN.dict || {}).forEach(function (k) { if (D[k] === undefined) D[k] = XEN.dict[k]; });
+  (XEN.pat || []).forEach(function (p) { P.push(p); });
+
+  function norm(s) { return String(s).replace(/[’‘]/g, "'").replace(/\s+/g, " ").trim(); }
+  var DICT = { en: {}, mos: {} }, PAT = { en: P, mos: XMOS.pat || [] }, REV = {};
+  Object.keys(D).forEach(function (k) { DICT.en[norm(k)] = D[k]; if (!REV[norm(D[k])]) REV[norm(D[k])] = k; });
+  Object.keys(XMOS.dict || {}).forEach(function (k) { if (XMOS.dict[k]) DICT.mos[norm(k)] = XMOS.dict[k]; });
+
+  function lang() {
+    try { var v = localStorage.getItem('toole_lang'); if (LANGS[v] === 1) return v; } catch (e) { }
+    try { return /^en/i.test(navigator.language || '') ? 'en' : 'fr'; } catch (e) { return 'fr'; }
+  }
+  function fixUnits(s, L) {
+    if (L !== 'en') return s;
+    return s.replace(/(\d+)\s*jours?\b/g, function (m, a) { return a + (a === '1' ? ' day' : ' days'); })
+      .replace(/(\d+)\s*heures?\b/g, function (m, a) { return a + (a === '1' ? ' hour' : ' hours'); })
+      .replace(/(\d+)\s*secondes?\b/g, function (m, a) { return a + (a === '1' ? ' second' : ' seconds'); })
+      .replace(/(\d+(?:[.,]\d+)?)\s*(Mo|Ko|Go)\b/g, function (m, a, u) { return a + ' ' + u.replace('o', 'B'); });
+  }
+  var DECOR = /^([^A-Za-z0-9\u00C0-\u00FF\u0152\u0153]*)([\s\S]*?)([\s…:.!?;]*)$/;
+  /* traduit un texte « propre » (sans espaces autour) ; renvoie le même texte si inconnu */
+  function tr(v, L) {
+    var n = norm(v); if (!n || L === 'fr') return v;
+    var d = DICT[L]; if (!d) return v;
+    if (d[n] !== undefined) return d[n];
+    var p = PAT[L] || [], i;
+    for (i = 0; i < p.length; i++) { if (p[i][0].test(n)) return fixUnits(n.replace(p[i][0], p[i][1]), L); }
+    var m = n.match(DECOR);
+    if (m && m[2] && (m[1] || m[3])) {
+      var core = m[2], t = d[core];
+      if (t === undefined) { for (i = 0; i < p.length; i++) { if (p[i][0].test(core)) { t = fixUnits(core.replace(p[i][0], p[i][1]), L); break; } } }
+      if (t !== undefined) { var suf = L === 'en' ? m[3].replace(/^\s+(?=[:?!;])/, '') : m[3]; return m[1] + t + suf; }
+    }
     return v;
   }
-  function T(v) { return lang() === 'en' ? toEN(v) : v; }
+  function trKeep(src, L) {
+    if (typeof src !== 'string' || L === 'fr') return src;
+    var core = src.trim(); if (!core) return src;
+    var t = tr(core, L); if (t === core) return src;
+    var i = src.indexOf(core); return src.slice(0, i) + t + src.slice(i + core.length);
+  }
+  function T(v) { return trKeep(v, lang()); }
   window.TOOLE_T = T;
-  window.TOOLE_I18N = { dict: D, lang: lang };
+  window.TOOLE_I18N = { dict: D, lang: lang, tr: function (s, l) { return trKeep(s, l || lang()); } };
 
   var SKIP = { SCRIPT: 1, STYLE: 1, TEXTAREA: 1 };
-  var orig = new WeakMap();
+  var SKIPSEL = '.m,.c2-b,.cxb,#cxIn,.pol,[data-notr]';
+  var rec = new WeakMap(); /* nœud texte -> { o: original FR, w: texte écrit par nous } */
   function doText(n) {
-    if (!n.parentNode || SKIP[n.parentNode.nodeName]) return;
-    if (n.parentNode.closest && n.parentNode.closest('.m,.c2-b,.cxb,#cxIn,.pol,[data-notr]')) return;
+    var p = n.parentNode; if (!p || SKIP[p.nodeName]) return;
+    if (p.closest && p.closest(SKIPSEL)) return;
     var v = n.nodeValue; if (!v || !v.trim()) return;
-    var o = orig.get(n);
-    if (lang() === 'en') {
-      var t = toEN(v);
-      if (t !== v) { if (!o) orig.set(n, v); n.nodeValue = v.replace(v.trim(), t.trim()); }
-    } else if (o !== undefined && v !== o) {
-      /* retour FR : si le texte courant est une traduction de l'original */
-      if (toEN(o).trim() === v.trim()) n.nodeValue = o;
-    } else if (o === undefined) {
-      var r = REV[v.trim()]; if (r) n.nodeValue = v.replace(v.trim(), r);
-    }
+    var L = lang(), r = rec.get(n), src = v;
+    if (r && v === r.w) src = r.o; else if (r) { rec.delete(n); r = null; }
+    if (!r && L !== 'en') { var rv = REV[norm(v)]; if (rv && norm(rv) !== norm(v)) src = v.replace(v.trim(), rv); }
+    var out = L === 'fr' ? src : trKeep(src, L);
+    if (out === v) return;
+    if (out === src) { rec.delete(n); } else { rec.set(n, { o: src, w: out }); }
+    n.nodeValue = out;
   }
   var ATTR = ['placeholder', 'aria-label', 'title', 'alt'];
   function doEl(el) {
+    if (!el.getAttribute) return;
     for (var i = 0; i < ATTR.length; i++) {
-      var a = ATTR[i], v = el.getAttribute && el.getAttribute(a); if (!v) continue;
-      var key = 'data-fr-' + a, o = el.getAttribute(key);
-      if (lang() === 'en') { var t = toEN(v); if (t !== v) { if (!o) el.setAttribute(key, v); el.setAttribute(a, t); } }
-      else if (o) { el.setAttribute(a, o); el.removeAttribute(key); }
-      else { var r = REV[v.trim()]; if (r) el.setAttribute(a, r); }
+      var a = ATTR[i], v = el.getAttribute(a); if (!v) continue;
+      var ko = 'data-fr-' + a, kw = 'data-tr-' + a, o = el.getAttribute(ko), w = el.getAttribute(kw), L = lang(), src = v;
+      if (o !== null && v === w) src = o; else if (o !== null) { el.removeAttribute(ko); el.removeAttribute(kw); o = null; }
+      if (o === null && L !== 'en') { var rv = REV[norm(v)]; if (rv && norm(rv) !== norm(v)) src = rv; }
+      var out = L === 'fr' ? src : trKeep(src, L);
+      if (out === v) continue;
+      if (out === src) { el.removeAttribute(ko); el.removeAttribute(kw); } else { el.setAttribute(ko, src); el.setAttribute(kw, out); }
+      el.setAttribute(a, out);
     }
   }
   function walk(root) {
@@ -208,6 +250,7 @@
     while ((n = w.nextNode())) { if (n.nodeType === 3) doText(n); else doEl(n); }
   }
   var busy = false, mo = null;
+  var cfg = { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['placeholder', 'aria-label', 'title'] };
   function apply(root) {
     if (busy) return; busy = true;
     try { if (mo) mo.disconnect(); walk(root || document.body); } catch (e) { }
@@ -229,9 +272,7 @@
     }
     mo.observe(document.body, cfg);
   }
-  var cfg = { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['placeholder', 'aria-label', 'title'] };
 
-  /* ---- toast / confirm / alert traduits ---- */
   function wrap(name) {
     var f = window[name]; if (typeof f !== 'function' || f.__tr) return;
     var w = function (m) { var a = Array.prototype.slice.call(arguments); if (typeof a[0] === 'string') a[0] = T(a[0]); return f.apply(this, a); };
@@ -240,38 +281,43 @@
   window.confirm = (function (c) { return function (m) { return c.call(window, T(String(m))); }; })(window.confirm.bind(window));
   window.alert = (function (a) { return function (m) { return a.call(window, T(String(m))); }; })(window.alert.bind(window));
 
-  /* ---- API de changement de langue ---- */
+  /* ---- changement de langue ---- */
   function setLang(l) {
+    if (LANGS[l] !== 1) l = 'fr';
+    var before = lang();
     try { localStorage.setItem('toole_lang', l); } catch (e) { }
     document.documentElement.lang = l;
     wrap('toast'); apply(document.body);
     document.querySelectorAll('.lg .it').forEach(function (e) { var d = e.querySelector('.dot'); if (d) d.classList.toggle('on', e.dataset.l === l); });
+    document.querySelectorAll('.lang-sw button').forEach(function (b) { b.classList.toggle('on', b.dataset.l === l); });
     document.dispatchEvent(new CustomEvent('toole:lang', { detail: l }));
+    if (RELOAD_ON_EN && before !== l && (before === 'en' || l === 'en')) setTimeout(function () { try { location.reload(); } catch (e) { } }, 180);
   }
   window.TOOLE_setLang = setLang;
 
-  /* liste des textes français restants en mode EN (aide au débogage : TOOLE_missing()) */
+  /* textes restés en français à l'écran quand la langue n'est pas FR (aide à compléter les traductions) */
   window.TOOLE_missing = function () {
     var out = {}, w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT), n;
-    while ((n = w.nextNode())) { var v = n.nodeValue.trim(); if (v.length > 2 && /[àâçéèêëîïôûùüœ]|\b(le|la|les|des|pour|ton|tes|vous|une?)\b/i.test(v) && !n.parentNode.closest('script,style,.m,.c2-b')) out[v] = 1; }
+    while ((n = w.nextNode())) {
+      var v = n.nodeValue.trim();
+      if (v.length > 2 && /[àâçéèêëîïôûùüœ]|\b(le|la|les|des|pour|ton|tes|vous|une?)\b/i.test(v) && !n.parentNode.closest('script,style,.m,.c2-b')) out[v] = 1;
+    }
     return Object.keys(out);
   };
 
   function boot() {
-    document.documentElement.lang = lang();
+    var l = lang();
+    document.documentElement.lang = l;
     wrap('toast');
-    /* le thème d'origine appelle applyLang/tp : on les redirige vers notre moteur */
-    window.applyLang = function (l) { setLang(l); };
+    window.applyLang = function (x) { setLang(x); };
     window.tp = function () { apply(document.body); };
-    /* clic sur les choix de langue : notre moteur uniquement */
     document.addEventListener('click', function (ev) {
       var it = ev.target.closest && ev.target.closest('.lg .it');
       if (it && it.dataset.l) { ev.stopImmediatePropagation(); setLang(it.dataset.l); }
     }, true);
+    document.querySelectorAll('.lg .it').forEach(function (e) { var d = e.querySelector('.dot'); if (d) d.classList.toggle('on', e.dataset.l === l); });
     apply(document.body);
-    /* réapplique après les changements d'écran (le thème d'origine remplace des blocs entiers) */
     [300, 1200, 3000].forEach(function (t) { setTimeout(function () { apply(document.body); }, t); });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();
-
