@@ -76,6 +76,7 @@
       for (var i = 0; i < list.length; i++) {
         var it = list[i];
         if (!force && nextAt[it.id] && nextAt[it.id] > Date.now()) continue;
+        if (!force && (tries[it.id] || 0) >= FAIL_AFTER) continue;
         try {
           await sendOne(it);
           outboxRemove(it.id); delete tries[it.id]; delete nextAt[it.id]; changed = true;
@@ -83,7 +84,7 @@
           tries[it.id] = (tries[it.id] || 0) + 1;
           nextAt[it.id] = Date.now() + Math.min(30000, 3000 * tries[it.id]);
           changed = true;
-          break; /* garde l'ordre : on réessaie plus tard */
+          continue;
         }
       }
     } finally { busy = false; }
