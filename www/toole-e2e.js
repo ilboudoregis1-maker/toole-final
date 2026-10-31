@@ -127,11 +127,18 @@
   async function encRow(row, group) {
     if (!row || typeof row.body !== "string" || /^(E1|G1)\./.test(row.body)) return;
     await publish();
+    if (!group && !(await shared(row.receiver))) {
+      /* contact pas à jour (pas de clé) : envoi en clair, sauf si le message porte un média déjà chiffré */
+      if (mkFor(row)) throw new Error("NOKEY");
+      if (!window.__e2eWarned) { window.__e2eWarned = 1; try { toast("Contact pas à jour : message envoyé sans chiffrement"); } catch (x) { } }
+      return;
+    }
     var plain = JSON.stringify({ b: row.body, m: mkFor(row) }), ids = group ? await members(row.group_id) : null;
     var rt = typeof row.reply_text === "string" && row.reply_text ? JSON.stringify({ b: row.reply_text }) : null;
     if (group) { row.body = await encG(ids, plain); if (rt) row.reply_text = await encG(ids, rt); }
     else { row.body = await enc1(row.receiver, plain); if (rt) row.reply_text = await enc1(row.receiver, rt); }
   }
+  window.__e2eHasKey = async function (id) { try { return !!(await shared(id)); } catch (x) { return false; } };
   var prev = window.fetch.bind(window);
   window.fetch = async function (input, init) {
     var u = typeof input === "string" ? input : (input && input.url) || "";
@@ -141,7 +148,7 @@
       try { if (Array.isArray(o)) { for (var i = 0; i < o.length; i++) await encRow(o[i], g); } else await encRow(o, g); }
       catch (e) { throw new Error(e && e.message === "NOKEY" ? "Ce contact doit ouvrir la dernière version de TÕÕLé pour recevoir des messages chiffrés" : "Chiffrement impossible : " + (e && e.message)); }
       init = Object.assign({}, init, { body: JSON.stringify(o) });
-    } else if (m === "POST" && /\/storage\/v1\/object\/(voice|photos)\//.test(u) && init && init.body && init.body.size) {
+    } else if (m === "POST" && /\/storage\/v1\/object\/(voice|photos)\//.test(u) && init && init.body && init.body.size && !(window.__e2ePlain && window.__e2ePlain[mediaPath(u)])) {
       var e2 = await mEnc(init.body, mediaPath(u)); init = Object.assign({}, init, { body: e2 });
     }
     var r = await prev(input, init);
