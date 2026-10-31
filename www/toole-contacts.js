@@ -48,7 +48,7 @@ sh.querySelector("#mcHd").onclick=function(){var o={};try{o=JSON.parse(localStor
 var was=!!o[p.id];if(was)delete o[p.id];else o[p.id]=new Date().toISOString();try{localStorage.setItem("tdc_"+uid(),JSON.stringify(o))}catch(e){}
 closeSheet();toast(was?"Discussion de nouveau visible":"Discussion masquée de l\'accueil".replace("\\\\",""))};
 var ph=sh.querySelector("#mcPh");if(ph)ph.onclick=function(){closeSheet();showPhoto(u,p.pseudo||"")}}
-async function openDetail(p){buildDet();CUR=p;
+async function openDetail(p){buildDet();CUR=p;window.__tcdCur=p;
 try{window.showOnly("scrNone")}catch(e){}
 $("scrContacts").classList.add("hide");$("scrContactDet").classList.remove("hide");
 try{window.__v4sync&&window.__v4sync()}catch(e){}
