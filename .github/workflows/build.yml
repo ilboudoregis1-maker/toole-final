@@ -1,7 +1,7 @@
 name: build
 on:
   push:
-    branches: [main]
+    branches: [main, nopush]
   workflow_dispatch:
 permissions:
   contents: read
@@ -26,11 +26,11 @@ jobs:
           KEY_PASS: ${{ secrets.KEY_PASS }}
       - uses: actions/upload-artifact@v4
         with:
-          name: TOOLE-apk
+          name: TOOLE-apk-${{ github.ref_name }}
           path: android/app/build/outputs/apk/release/*.apk
           retention-days: 2
       - uses: actions/upload-artifact@v4
         with:
-          name: TOOLE-aab
+          name: TOOLE-aab-${{ github.ref_name }}
           path: android/app/build/outputs/bundle/release/*.aab
           retention-days: 2
