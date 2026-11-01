@@ -17,7 +17,7 @@ S={id:id,saved:!!r[0].length,blocked:!!r[1].length,accepted:!!r[2].length,iWrote
 S.mask=S.theyWrote&&!S.iWrote&&!S.saved;applyHeader();renderBanner()}
 function applyHeader(){var n=$("peerName"),a=$("peerAv"),p=P(),sc=$("scrChat");if(!n||!a||!p)return;
 if(sc)sc.classList.toggle("unk",!!S.mask);
-var cs=document.querySelector("#scrChat .cs"),star=$("starBtn");if(star)star.textContent=S.saved?"★":"☆";
+var cs=document.querySelector("#scrChat .cs"),star=$("starBtn");if(star){var _t=S.saved?"★":"☆";if(star.textContent!==_t)star.textContent=_t}
 if(S.mask&&!window.TOOLE_SHOW_NAMES){if(n.textContent!=="Inconnu")n.textContent="Inconnu";if(a.textContent!=="?")a.textContent="?";a.classList.remove("has-photo");a.style.removeProperty("--avimg");if(cs&&cs.textContent!=="Non enregistré")cs.textContent="Non enregistré"}
 else{var w=p.pseudo||"?";if(n.textContent==="Inconnu"&&w!=="Inconnu")n.textContent=w;if(a.textContent==="?"&&!a.classList.contains("has-photo"))a.textContent=w.slice(0,2).toUpperCase();if(cs&&cs.textContent==="Non enregistré")cs.textContent="Discussion"}}
 function banner(){var b=$("rqBn");if(b)return b;var h=document.querySelector("#scrChat .chead");if(!h)return null;b=document.createElement("div");b.id="rqBn";b.className="hide";h.insertAdjacentElement("afterend",b);return b}

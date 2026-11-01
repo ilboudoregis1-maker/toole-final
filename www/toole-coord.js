@@ -56,3 +56,24 @@
     return r;
   };
 })();
+
+/* garde-fou : l'en-tête de la discussion ne reste jamais vide */
+(function () {
+  "use strict";
+  setInterval(function () {
+    try {
+      var s = document.getElementById("scrChat");
+      if (!s || s.classList.contains("hide") || s.offsetParent === null) return;
+      var p = null; try { p = peer; } catch (e) { }
+      if (!p || !p.id) return;
+      var n = document.getElementById("peerName"), a = document.getElementById("peerAv");
+      var name = (p.pseudo && p.pseudo !== "Inconnu" && p.pseudo !== "?") ? p.pseudo : "Nouveau contact";
+      if (n) { n.style.visibility = "visible"; if (!n.textContent.trim()) n.textContent = name; }
+      if (a) {
+        a.style.visibility = "visible";
+        if (a.classList.contains("has-photo") && !a.style.getPropertyValue("--avimg")) a.classList.remove("has-photo");
+        if (!a.classList.contains("has-photo") && !a.textContent.trim()) a.textContent = name.slice(0, 2).toUpperCase();
+      }
+    } catch (e) { }
+  }, 700);
+})();
