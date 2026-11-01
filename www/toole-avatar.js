@@ -63,7 +63,7 @@
     document.querySelectorAll("#recent .row").forEach(function (row) {
       var av = row.querySelector(".av"), rn = row.querySelector(".rn");
       if (!av || !rn) return;
-      setPhoto(av, B[rn.textContent], "thumb");
+      setPhoto(av, row.dataset.pid || B[rn.textContent], "thumb");
     });
     var chat = $("chat");
     if (chat && pr && pr.id && visible("scrChat")) {
@@ -128,6 +128,7 @@
     var R = window.__tRows || {};
     Object.keys(R).forEach(function (k) { if (k.indexOf("g:") === 0 && R[k].sender) ids.push(R[k].sender); });
     document.querySelectorAll("#recent .rn").forEach(function (e) { var t = e.textContent; if (t && t !== "Inconnu") names.push(t); });
+    document.querySelectorAll("#recent .row").forEach(function (r) { if (r.dataset && r.dataset.pid) ids.push(r.dataset.pid); });
     var a = await loadIds(ids), b = await loadNames(names);
     if (a || b) applyAll();
   }
