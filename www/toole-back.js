@@ -1,7 +1,7 @@
 (function(){
 var ar=0,ew=0;
 function $(i){return document.getElementById(i)}
-function cur(){var a=["scrWelcome","scrInscr","scrLogin","scrList","scrChat","scrProfil","scrParam","scrGroupes","scrGroup","scrStatuts","scrCanix","scrSpecial","scrGame"];for(var i=0;i<a.length;i++){var e=$(a[i]);if(e&&!e.classList.contains("hide"))return a[i]}return "scrList"}
+function cur(){var a=["scrWelcome","scrInscr","scrLogin","scrList","scrChat","scrProfil","scrParam","scrGroupes","scrGroup","scrStatuts","scrCanix","scrSpecial","scrGame"];for(var i=a.length-1;i>=0;i--){var e=$(a[i]);if(e&&!e.classList.contains("hide"))return a[i]}return "scrList"}
 function arm(){try{history.pushState({b:1},"");ar=1}catch(e){}}
 var KEEP={tboot:1,offBar:1,tsMaj:1,supportBtn:1};
 var IDS=["shBg","stv","vprev","tsEd","tlegal","vfOv","v6ov","v9P","touiSheet","tstk3"];
@@ -27,5 +27,5 @@ var n=Date.now();
 if(n-last<2000){var A=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.App;if(A&&A.exitApp)A.exitApp();return}
 last=n;toast()}
 function reg(){var A=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.App;if(A&&A.addListener){A.addListener("backButton",onBack);return 1}return 0}
-if(!reg()){var t=0,iv=setInterval(function(){if(reg()||++t>20)clearInterval(iv)},250)}
+if(!reg()){var t=0,iv=setInterval(function(){if(reg()||++t>240)clearInterval(iv)},250)}
 })();
