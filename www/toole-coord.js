@@ -45,7 +45,7 @@
   var oc = window.openChat;
   if (typeof oc === "function") window.openChat = function (id, pseudo) {
     var r = oc.apply(this, arguments);
-    if (!pseudo || pseudo === "Inconnu" || pseudo === "?") {
+    if (!pseudo || pseudo === "Inconnu" || pseudo === "Nouveau contact" || pseudo === "?") {
       window.api("/rest/v1/profiles?select=id,pseudo,avatar_v&id=eq." + id).then(function (p) {
         var n = p && p[0] && p[0].pseudo; if (!n) return;
         try { if (peer && peer.id === id) peer.pseudo = n; } catch (e) { }

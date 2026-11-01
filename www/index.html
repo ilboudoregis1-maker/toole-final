@@ -149,7 +149,7 @@ const others=[],last={};rows.forEach(m=>{const o=m.sender===id?m.receiver:m.send
 const profs=others.length?await api("/rest/v1/profiles?select=id,pseudo&id=in.("+others.join(",")+")"):[];
 const map={};profs.forEach(p=>map[p.id]=p.pseudo);
 $("recent").innerHTML="";
-others.forEach(o=>{const m=last[o],name=map[o]||"Inconnu";const row=document.createElement("div");row.className="row";row.onclick=()=>openChat(o,name);
+others.forEach(o=>{const m=last[o],name=map[o]||"Nouveau contact";const row=document.createElement("div");row.className="row";row.onclick=()=>openChat(o,name);
 const av=document.createElement("div");av.className="av";av.textContent=initials(name);
 const box=document.createElement("div");box.style.cssText="flex:1;min-width:0";
 const rn=document.createElement("div");rn.className="rn";rn.textContent=name;
@@ -779,7 +779,7 @@ var others=[],last={};rows.forEach(function(m){var o=m.sender===id?m.receiver:m.
 var profs=others.length?await api("/rest/v1/profiles?select=id,pseudo&id=in.("+others.join(",")+")"):[];
 var map={};profs.forEach(function(p){map[p.id]=p.pseudo});
 var box=document.createElement("div");
-others.forEach(function(o){var m=last[o],name=map[o]||"Inconnu";var row=document.createElement("div");row.className="row";row.onclick=function(){openChat(o,name)};
+others.forEach(function(o){var m=last[o],name=map[o]||"Nouveau contact";var row=document.createElement("div");row.className="row";row.onclick=function(){openChat(o,name)};
 var av=document.createElement("div");av.className="av";av.textContent=name.slice(0,2).toUpperCase();
 var bx=document.createElement("div");bx.style.cssText="flex:1;min-width:0";var rn=document.createElement("div");rn.className="rn";rn.textContent=name;
 var sub=document.createElement("div");sub.className="sub";sub.textContent=(m.sender===id?"Toi : ":"")+m.body;
@@ -801,7 +801,7 @@ try{var rows=await api("/rest/v1/messages?select=sender,receiver,body,created_at
 var others=[],last={};rows.forEach(function(m){var o=m.sender===id?m.receiver:m.sender;if(!last[o]){last[o]=m;others.push(o)}});
 var profs=others.length?await api("/rest/v1/profiles?select=id,pseudo&id=in.("+others.join(",")+")"):[];
 var map={};profs.forEach(function(p){map[p.id]=p.pseudo});
-var list=others.map(function(o){var m=last[o];return {id:o,name:map[o]||"Inconnu",sub:(m.sender===id?"Toi : ":"")+(m.audio_path?"(vocal)":m.body)}});
+var list=others.map(function(o){var m=last[o];return {id:o,name:map[o]||"Nouveau contact",sub:(m.sender===id?"Toi : ":"")+(m.audio_path?"(vocal)":m.body)}});
 var h=hiddenIds();list=list.filter(function(x){return h.indexOf(x.id)<0});
 homeRender(list);localStorage.setItem(key,JSON.stringify(list))}catch(e){if(!cached.length&&rc)err("msgL",e.message)}}
 function homeRender(list){var rc=document.getElementById("recent");if(!rc)return;try{var _hh=hiddenIds();list=(list||[]).filter(function(x){return _hh.indexOf(x.id)<0})}catch(e){}rc.innerHTML="";
@@ -832,7 +832,7 @@ try{var rows=await api("/rest/v1/messages?select=sender,receiver,body,created_at
 var others=[],last={};rows.forEach(function(m){var o=m.sender===id?m.receiver:m.sender;if(!last[o]){last[o]=m;others.push(o)}});
 var profs=others.length?await api("/rest/v1/profiles?select=id,pseudo&id=in.("+others.join(",")+")"):[];
 var map={};profs.forEach(function(p){map[p.id]=p.pseudo});
-var list=others.map(function(o){var m=last[o];return {id:o,name:map[o]||"Inconnu",sub:(m.sender===id?"Toi : ":"")+(m.audio_path?"(vocal)":m.body)}});
+var list=others.map(function(o){var m=last[o];return {id:o,name:map[o]||"Nouveau contact",sub:(m.sender===id?"Toi : ":"")+(m.audio_path?"(vocal)":m.body)}});
 var h=hiddenIds();list=list.filter(function(x){return h.indexOf(x.id)<0});
 homeRender(list);localStorage.setItem(key,JSON.stringify(list))}catch(e){if(!cached.length&&rc)err("msgL",e.message)}}
 function homeRender(list){var rc=document.getElementById("recent");if(!rc)return;try{var _hh=hiddenIds();list=(list||[]).filter(function(x){return _hh.indexOf(x.id)<0})}catch(e){}rc.innerHTML="";
@@ -863,7 +863,7 @@ try{var rows=await api("/rest/v1/messages?select=sender,receiver,body,created_at
 var others=[],last={};rows.forEach(function(m){var o=m.sender===id?m.receiver:m.sender;if(!last[o]){last[o]=m;others.push(o)}});
 var profs=others.length?await api("/rest/v1/profiles?select=id,pseudo&id=in.("+others.join(",")+")"):[];
 var map={};profs.forEach(function(p){map[p.id]=p.pseudo});
-var list=others.map(function(o){var m=last[o];return {id:o,name:map[o]||"Inconnu",sub:(m.sender===id?"Toi : ":"")+(m.audio_path?"(vocal)":m.body)}});
+var list=others.map(function(o){var m=last[o];return {id:o,name:map[o]||"Nouveau contact",sub:(m.sender===id?"Toi : ":"")+(m.audio_path?"(vocal)":m.body)}});
 var h=hiddenIds();list=list.filter(function(x){return h.indexOf(x.id)<0});
 homeRender(list);localStorage.setItem(key,JSON.stringify(list))}catch(e){if(!cached.length&&rc)err("msgL",e.message)}}
 function homeRender(list){var rc=document.getElementById("recent");if(!rc)return;try{var _hh=hiddenIds();list=(list||[]).filter(function(x){return _hh.indexOf(x.id)<0})}catch(e){}rc.innerHTML="";
@@ -894,7 +894,7 @@ try{var rows=await api("/rest/v1/messages?select=sender,receiver,body,created_at
 var others=[],last={};rows.forEach(function(m){var o=m.sender===id?m.receiver:m.sender;if(!last[o]){last[o]=m;others.push(o)}});
 var profs=others.length?await api("/rest/v1/profiles?select=id,pseudo&id=in.("+others.join(",")+")"):[];
 var map={};profs.forEach(function(p){map[p.id]=p.pseudo});
-var list=others.map(function(o){var m=last[o];return {id:o,name:map[o]||"Inconnu",sub:(m.sender===id?"Toi : ":"")+(m.audio_path?"(vocal)":m.body)}});
+var list=others.map(function(o){var m=last[o];return {id:o,name:map[o]||"Nouveau contact",sub:(m.sender===id?"Toi : ":"")+(m.audio_path?"(vocal)":m.body)}});
 var h=hiddenIds();list=list.filter(function(x){return h.indexOf(x.id)<0});
 homeRender(list);localStorage.setItem(key,JSON.stringify(list))}catch(e){if(!cached.length&&rc)err("msgL",e.message)}}
 function homeRender(list){var rc=document.getElementById("recent");if(!rc)return;try{var _hh=hiddenIds();list=(list||[]).filter(function(x){return _hh.indexOf(x.id)<0})}catch(e){}rc.innerHTML="";
