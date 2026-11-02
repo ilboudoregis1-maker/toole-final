@@ -60,3 +60,4 @@ body .m.me{background:linear-gradient(135deg,var(--main),var(--main2))!important
 .pm{padding:17px 18px;font-size:16px;font-weight:500;background:#fff!important;color:var(--ink)}
 #supportStatic{background:linear-gradient(135deg,var(--main),var(--main2))!important;border-radius:18px!important;height:54px;font-size:16px}
 #cnsLink a{color:var(--main)!important}
+html body img.tph{pointer-events:auto!important;cursor:pointer}
