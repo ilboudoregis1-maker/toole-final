@@ -32,3 +32,7 @@ html:root:root:root:root:root:root:root body #scrProfil #supportStatic{width:100
 html:root:root:root:root:root:root:root body #scrProfil #supportBtn{order:80;width:calc(100% - 28px)!important;margin:12px 14px 0!important}
 html:root:root:root:root:root:root:root body #scrProfil #cnsLink{order:99;margin:18px 0 0!important}
 html:root:root:root:root:root:root:root body #scrProfil #tsDiag{display:none!important}
+#scrProfil .body{overflow-x:hidden!important}
+#scrProfil #tsAmi{flex-wrap:wrap!important}
+#scrProfil #tsAmi .tp-at{flex:1 1 100%!important}
+#scrProfil #tsAmi button{flex:1 1 0!important;width:auto!important;min-width:0!important;margin:0!important}
