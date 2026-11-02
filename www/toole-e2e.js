@@ -165,7 +165,7 @@
     }
     if (m === "GET" && (u.indexOf("/functions/v1/tg?") > -1 || /\/storage\/v1\/object\/(?!public\/avatars)/.test(u))) {
       var buf = await r.arrayBuffer(), u8 = new Uint8Array(buf);
-      if (isEnc(u8)) { var b = await mDec(u8, mediaPath(u)); if (b) return new Response(b, { status: 200, headers: { "Content-Type": b.type || "application/octet-stream" } }); }
+      if (isEnc(u8)) { var b = await mDec(u8, mediaPath(u)); if (b) return new Response(b, { status: 200, headers: { "Content-Type": b.type || "application/octet-stream" } }); try { toast("🔒 Clé du média absente (photo/fichier)"); } catch (x) { } }
       return new Response(buf, { status: r.status, statusText: r.statusText, headers: r.headers });
     }
     return r;

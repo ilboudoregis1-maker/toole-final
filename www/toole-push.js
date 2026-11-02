@@ -4,7 +4,7 @@ function U(){try{return me()}catch(e){return null}}
 function S(t){var u=U();if(!u)return;
 api("/rest/v1/rpc/register_push_token",{method:"POST",body:JSON.stringify({p_token:t,p_platform:"android"})}).catch(function(){return api("/rest/v1/push_tokens?on_conflict=token",{method:"POST",headers:{Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({token:t,user_id:u,platform:"android"})})}).catch(function(){})}
 function shown(){var s=document.getElementById("scrChat");return s&&!s.classList.contains("hide")}
-function go(p){if(p.g)openGroup({id:p.g,name:p.t});else openChat(p.id,p.t)}
+function go(p){if(p.g){openGroup({id:p.g,name:p.t});return}var f=function(n){openChat(p.id,n)};try{api("/rest/v1/profiles?select=pseudo&id=eq."+p.id).then(function(r){f((r&&r[0]&&r[0].pseudo)||p.t)}).catch(function(){f(p.t)})}catch(e){f(p.t)}}
 function sh(p){var s=document.getElementById(p.g?"scrGroup":"scrChat");return s&&!s.classList.contains("hide")}
 function GO(){if(!pend||!U()||typeof openChat!=="function")return false;var p=pend;pend=null;
 go(p);[1500,4000].forEach(function(ms){setTimeout(function(){if(!sh(p))go(p)},ms)});return true}
