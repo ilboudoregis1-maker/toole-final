@@ -1,7 +1,13 @@
 /* TÕÕLé PRO — réglages avancés, mode sombre, taille du texte, navigation propre, robustesse */
 (function () {
   'use strict';
-  var VERSION = '2.1.0';
+  var VERSION = '2.1.5';
+  try{
+    var capA=window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.App;
+    if(capA&&capA.getInfo)capA.getInfo().then(function(i){
+      if(i&&i.version){VERSION=i.version+(i.build?' ('+i.build+')':'');window.TOOLE_VERSION=VERSION}
+    }).catch(function(){});
+  }catch(e){}
   function ls(k, d) { try { var v = localStorage.getItem(k); return v === null ? d : v; } catch (e) { return d; } }
   function lss(k, v) { try { localStorage.setItem(k, v); } catch (e) { } }
   function lang() { return ls('toole_lang', /^en/i.test(navigator.language || '') ? 'en' : 'fr'); }
