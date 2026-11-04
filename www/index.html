@@ -134,7 +134,36 @@ const sess=()=>{try{return JSON.parse(localStorage.getItem("toole_session"))}cat
 const me=()=>{const s=sess();return s&&s.user?s.user.id:null};
 const err=(id,t)=>{$(id).textContent=t};
 const initials=p=>(p||"?").slice(0,2).toUpperCase();
-async function api(path,opt={}){const s=sess();const h={"Content-Type":"application/json",apikey:KEY};if(s&&s.access_token)h.Authorization="Bearer "+s.access_token;const r=await fetch(URL+path,{...opt,headers:{...h,...(opt.headers||{})}});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.msg||j.message||j.error_description||"Erreur");return j}
+let _rfP=null;
+function _rfOnce(){
+ if(_rfP)return _rfP;
+ const p=(async()=>{
+  for(let k=0;k<3;k++){
+   const s=sess();
+   if(!s||!s.refresh_token)throw new Error("Session expirée");
+   const sent=s.refresh_token;
+   try{
+    const j=await _api0("/auth/v1/token?grant_type=refresh_token",{method:"POST",body:JSON.stringify({refresh_token:sent})});
+    localStorage.setItem("toole_session",JSON.stringify(j));
+    return j;
+   }catch(e){
+    const n=sess();
+    if(n&&n.refresh_token&&n.refresh_token!==sent)continue;
+    throw e;
+   }
+  }
+  throw new Error("Session expirée");
+ })();
+ _rfP=p;
+ const free=()=>{if(_rfP===p)_rfP=null};
+ p.then(free,free);
+ return p;
+}
+async function api(path,opt={}){
+ if(typeof path==="string"&&path.indexOf("grant_type=refresh_token")>-1)return _rfOnce();
+ return _api0(path,opt);
+}
+async function _api0(path,opt={}){const s=sess();const h={"Content-Type":"application/json",apikey:KEY};if(s&&s.access_token)h.Authorization="Bearer "+s.access_token;const r=await fetch(URL+path,{...opt,headers:{...h,...(opt.headers||{})}});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.msg||j.message||j.error_description||"Erreur");return j}
 function screen(n){document.body.classList.toggle("nolog",["scrWelcome","scrInscr","scrLogin"].includes(n));["scrWelcome","scrInscr","scrLogin","scrList","scrChat","scrProfil","scrParam","scrGroupes","scrStatuts"].forEach(x=>$(x).classList.toggle("hide",x!==n))}
 
 function logout(){localStorage.removeItem("toole_session");peer=null;$("chat").innerHTML="";$("recent").innerHTML="";$("txt").value="";screen("scrWelcome")}
@@ -402,7 +431,7 @@ const _os=openSettings;openSettings=function(){_os();const b=document.getElement
 document.getElementById("pfOut").onclick=confirmLogout;
 
 const _apiBase=api;
-api=async function(path,opt){try{return await _apiBase(path,opt)}catch(e){if(!/JWT|expired|401/i.test(e.message)||path.indexOf("/auth/v1/token")>-1)throw e;const s=sess();if(!s||!s.refresh_token){logout();throw e}try{const j=await _apiBase("/auth/v1/token?grant_type=refresh_token",{method:"POST",body:JSON.stringify({refresh_token:s.refresh_token})});localStorage.setItem("toole_session",JSON.stringify(j))}catch(x){logout();throw x}return _apiBase(path,opt)}};
+api=async function(path,opt){try{return await _apiBase(path,opt)}catch(e){if(!/JWT|expired|401/i.test(e.message)||path.indexOf("/auth/v1/token")>-1)throw e;const s=sess();if(!s||!s.refresh_token){logout();throw e}try{const j=await _apiBase("/auth/v1/token?grant_type=refresh_token",{method:"POST",body:JSON.stringify({refresh_token:s.refresh_token})});localStorage.setItem("toole_session",JSON.stringify(j))}catch(x){if(/invalid|refresh|expired|JWT|400|401/i.test(x.message))logout();throw x}return _apiBase(path,opt)}};
 
 const _cxBefore=canixReply;
 canixReply=function(t){const q=t.toLowerCase().trim();
