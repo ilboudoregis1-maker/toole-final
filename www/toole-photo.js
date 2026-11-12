@@ -34,7 +34,7 @@ function bubOf(n){return (n.closest&&n.closest(".m"))||n}
 var PEND=[];
 function phd(msg){var s='<svg xmlns="http://www.w3.org/2000/svg" width="220" height="120"><rect width="220" height="120" rx="12" fill="#e6f4f8"/><text x="110" y="64" font-family="sans-serif" font-size="13" fill="#0b6b80" text-anchor="middle">'+msg+'</text></svg>';return "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(s)}
 function settle(im,p){srcOf(p).then(function(u){
-if(u==="NET"||u==="BAD"){im.dataset.pend=u;im.src=phd(u==="BAD"?"\u23F3":"\uD83D\uDCF7 Hors connexion");if(u==="NET"&&PEND.indexOf(im)<0)PEND.push(im);return}
+if(u==="NET"||u==="BAD"){im.dataset.pend=u;im.src=phd(u==="BAD"?"\u23F3":"\uD83D\uDCF7 Hors connexion");if(u==="NET"&&PEND.indexOf(im)<0)PEND.push(im);if(u==="BAD"){im.__bt=(im.__bt||0)+1;if(im.__bt<=5)setTimeout(function(){if(im.isConnected&&im.dataset.p)settle(im,im.dataset.p)},4000)}return}
 if(u){delete im.dataset.pend;MU[p]=u;im.src=u}else{DEAD[p]=1;bubOf(im).remove()}})}
 window.addEventListener("online",function(){PEND.splice(0).forEach(function(im){if(im.isConnected&&im.dataset.p)settle(im,im.dataset.p)})});
 document.addEventListener("click",function(e){var t=e.target;if(!t||t.tagName!=="IMG"||!t.classList.contains("tph"))return;e.stopPropagation();e.preventDefault();

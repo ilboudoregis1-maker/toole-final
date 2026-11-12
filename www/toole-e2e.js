@@ -72,7 +72,7 @@
   function isEnc(u8) { if (u8.length < 36) return false; for (var i = 0; i < 5; i++) if (u8[i] !== MAGIC[i]) return false; return true; }
   async function mDec(u8, path) {
     for (var i = 0; i < 300 && !MK[path]; i++) await new Promise(function (r) { setTimeout(r, 100); });
-    if (!MK[path]) return null;
+    if (!MK[path]) { try{if(typeof loadMsgs==="function"&&!window.__mkHeal){window.__mkHeal=1;setTimeout(function(){window.__mkHeal=0},15000);loadMsgs()}}catch(x){} return null; }
     var ml = u8[5], mime = TD.decode(u8.subarray(6, 6 + ml)), iv = u8.subarray(6 + ml, 18 + ml), ct = u8.subarray(18 + ml);
     var key = await S.importKey("raw", ub(MK[path]), "AES-GCM", false, ["decrypt"]);
     return new Blob([await S.decrypt({ name: "AES-GCM", iv: iv }, key, ct)], { type: mime });
