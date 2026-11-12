@@ -1,12 +1,12 @@
 (function(){
 if(window.__tph)return;window.__tph=1;
-var B="photos",PFX="\uD83D\uDCF7img:",MAXB=100*1024,MAXT=3*1048576;
+var B="photos",PFX="\uD83D\uDCF7img:",MAXB=100*1024,MAXT=4*1048576;
 function pub(p){return URL+"/storage/v1/object/public/"+B+"/"+p}
 function blobOf(c,q){return new Promise(function(r){c.toBlob(r,"image/jpeg",q)})}
 function load(f){return new Promise(function(ok,ko){var im=new Image();var u=window.URL.createObjectURL(f);im.onload=function(){window.URL.revokeObjectURL(u);ok(im)};im.onerror=ko;im.src=u})}
-async function compress(f,lim){lim=lim||MAXB;var im=await load(f),k=Math.min(1,(lim>MAXB?1600:1080)/im.width),c=document.createElement("canvas"),b;
+async function compress(f,lim){lim=lim||MAXB;var im=await load(f),k=Math.min(1,(lim>MAXB?2048:1080)/im.width),c=document.createElement("canvas"),b;
 for(var t=0;t<4;t++){c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext("2d").drawImage(im,0,0,c.width,c.height);
-for(var q=(lim>MAXB?0.85:0.7);q>=0.4;q-=0.1){b=await blobOf(c,q);if(b&&b.size<=lim)return b}k*=0.8}
+for(var q=(lim>MAXB?0.9:0.7);q>=0.4;q-=0.1){b=await blobOf(c,q);if(b&&b.size<=lim)return b}k*=0.8}
 return b}
 function today(){var d=new Date();return d.getFullYear()+"-"+d.getMonth()+"-"+d.getDate()}
 function count(){try{var o=JSON.parse(localStorage.getItem("toole_ph")||"{}");return o.d===today()?o.n:0}catch(e){return 0}}

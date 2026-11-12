@@ -172,7 +172,7 @@
   };
   function wrapUp() {
     var o = window.tgUpload; if (typeof o !== "function" || o.__e) return;
-    var w = async function (b, p) { return o(await mEnc(b, p), p); }; w.__e = 1; window.tgUpload = w;
+    var w = async function (b, p) { return o(await mEnc(b, p), p); }; w.__e = 1; w.__r = 1; window.tgUpload = w;
   }
   wrapUp(); setInterval(wrapUp, 300);
 })();

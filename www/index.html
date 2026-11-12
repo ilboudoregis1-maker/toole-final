@@ -481,7 +481,7 @@ function wire(){a.onplay=function(){pb.innerHTML=vI(VM.pause,true)};a.onpause=fu
 pb.onclick=function(e){e.stopPropagation();if(!a){pb.disabled=true;vUrl(m.audio_path).then(function(u){a=new Audio(u);wire();pb.disabled=false}).catch(function(){dur.textContent="indispo";pb.disabled=false});return}if(a.paused)a.play();else a.pause()};
 return w}
 async function loadMsgs(){if(!peer)return;const id=me();try{
-if(localStorage.getItem("toole_readconf")!=="0"){await api("/rest/v1/messages?receiver=eq."+id+"&sender=eq."+peer.id+"&read_at=is.null",{method:"PATCH",headers:{Prefer:"return=minimal"},body:JSON.stringify({read_at:new Date().toISOString()})})}
+if(localStorage.getItem("toole_readconf")!=="0"){api("/rest/v1/messages?receiver=eq."+id+"&sender=eq."+peer.id+"&read_at=is.null",{method:"PATCH",headers:{Prefer:"return=minimal"},body:JSON.stringify({read_at:new Date().toISOString()})}).catch(function(){})}
 const rows=await api("/rest/v1/messages?select=*&or=(and(sender.eq."+id+",receiver.eq."+peer.id+"),and(sender.eq."+peer.id+",receiver.eq."+id+"))&order=created_at.asc");
 const c=$("chat");c.innerHTML="";
 rows.forEach(function(m){var mine=m.sender===id;var d=document.createElement("div");d.className="m"+(mine?" me":"");d.dataset.mid=m.id;
@@ -846,10 +846,10 @@ var t=document.createElement("div");t.className="t";t.textContent=new Date(m.cre
 if(typeof bindPress==="function")bindPress(d,m,mine);c.appendChild(d)});
 pendBubbles("u",peer.id,c);
 if(first||near){c.dataset.init="1";c.scrollTop=c.scrollHeight}}
-async function loadMsgs(){if(!peer)return;var id=me();var key="chat:"+id+":"+peer.id;var c=document.getElementById("chat");
+async function loadMsgs(){if(!peer)return;var id=me();var key="chat:"+id+":"+peer.id;try{if(window.__e2eHasKey)window.__e2eHasKey(peer.id)}catch(e){}var c=document.getElementById("chat");
 var cached=null;try{cached=JSON.parse(localStorage.getItem(key)||"null")}catch(e){}
 if(cached&&c&&!c.children.length)renderMsgRows(cached);
-try{if(localStorage.getItem("toole_readconf")!=="0"){await api("/rest/v1/messages?receiver=eq."+id+"&sender=eq."+peer.id+"&read_at=is.null",{method:"PATCH",headers:{Prefer:"return=minimal"},body:JSON.stringify({read_at:new Date().toISOString()})})}
+try{if(localStorage.getItem("toole_readconf")!=="0"){api("/rest/v1/messages?receiver=eq."+id+"&sender=eq."+peer.id+"&read_at=is.null",{method:"PATCH",headers:{Prefer:"return=minimal"},body:JSON.stringify({read_at:new Date().toISOString()})}).catch(function(){})}
 var rows=await api("/rest/v1/messages?select=*&or=(and(sender.eq."+id+",receiver.eq."+peer.id+"),and(sender.eq."+peer.id+",receiver.eq."+id+"))&order=created_at.asc");
 renderMsgRows(rows);localStorage.setItem(key,JSON.stringify(rows.slice(-300)));showDirectPins()}catch(e){if(!cached)err("msgC",e.message)}}
 
@@ -877,10 +877,10 @@ var t=document.createElement("div");t.className="t";t.textContent=new Date(m.cre
 if(typeof bindPress==="function")bindPress(d,m,mine);c.appendChild(d)});
 pendBubbles("u",peer.id,c);
 if(first||near){c.dataset.init="1";c.scrollTop=c.scrollHeight}}
-async function loadMsgs(){if(!peer)return;var id=me();var key="chat:"+id+":"+peer.id;var c=document.getElementById("chat");
+async function loadMsgs(){if(!peer)return;var id=me();var key="chat:"+id+":"+peer.id;try{if(window.__e2eHasKey)window.__e2eHasKey(peer.id)}catch(e){}var c=document.getElementById("chat");
 var cached=null;try{cached=JSON.parse(localStorage.getItem(key)||"null")}catch(e){}
 if(cached&&c&&!c.children.length)renderMsgRows(cached);
-try{if(localStorage.getItem("toole_readconf")!=="0"){await api("/rest/v1/messages?receiver=eq."+id+"&sender=eq."+peer.id+"&read_at=is.null",{method:"PATCH",headers:{Prefer:"return=minimal"},body:JSON.stringify({read_at:new Date().toISOString()})})}
+try{if(localStorage.getItem("toole_readconf")!=="0"){api("/rest/v1/messages?receiver=eq."+id+"&sender=eq."+peer.id+"&read_at=is.null",{method:"PATCH",headers:{Prefer:"return=minimal"},body:JSON.stringify({read_at:new Date().toISOString()})}).catch(function(){})}
 var rows=await api("/rest/v1/messages?select=*&or=(and(sender.eq."+id+",receiver.eq."+peer.id+"),and(sender.eq."+peer.id+",receiver.eq."+id+"))&order=created_at.asc");
 renderMsgRows(rows);localStorage.setItem(key,JSON.stringify(rows.slice(-300)));showDirectPins()}catch(e){if(!cached)err("msgC",e.message)}}
 
@@ -908,10 +908,10 @@ var t=document.createElement("div");t.className="t";t.textContent=new Date(m.cre
 if(typeof bindPress==="function")bindPress(d,m,mine);c.appendChild(d)});
 pendBubbles("u",peer.id,c);
 if(first||near){c.dataset.init="1";c.scrollTop=c.scrollHeight}}
-async function loadMsgs(){if(!peer)return;var id=me();var key="chat:"+id+":"+peer.id;var c=document.getElementById("chat");
+async function loadMsgs(){if(!peer)return;var id=me();var key="chat:"+id+":"+peer.id;try{if(window.__e2eHasKey)window.__e2eHasKey(peer.id)}catch(e){}var c=document.getElementById("chat");
 var cached=null;try{cached=JSON.parse(localStorage.getItem(key)||"null")}catch(e){}
 if(cached&&c&&!c.children.length)renderMsgRows(cached);
-try{if(localStorage.getItem("toole_readconf")!=="0"){await api("/rest/v1/messages?receiver=eq."+id+"&sender=eq."+peer.id+"&read_at=is.null",{method:"PATCH",headers:{Prefer:"return=minimal"},body:JSON.stringify({read_at:new Date().toISOString()})})}
+try{if(localStorage.getItem("toole_readconf")!=="0"){api("/rest/v1/messages?receiver=eq."+id+"&sender=eq."+peer.id+"&read_at=is.null",{method:"PATCH",headers:{Prefer:"return=minimal"},body:JSON.stringify({read_at:new Date().toISOString()})}).catch(function(){})}
 var rows=await api("/rest/v1/messages?select=*&or=(and(sender.eq."+id+",receiver.eq."+peer.id+"),and(sender.eq."+peer.id+",receiver.eq."+id+"))&order=created_at.asc");
 renderMsgRows(rows);localStorage.setItem(key,JSON.stringify(rows.slice(-300)));showDirectPins()}catch(e){if(!cached)err("msgC",e.message)}}
 
@@ -939,10 +939,10 @@ var t=document.createElement("div");t.className="t";t.textContent=new Date(m.cre
 if(typeof bindPress==="function")bindPress(d,m,mine);c.appendChild(d)});
 pendBubbles("u",peer.id,c);
 if(first||near){c.dataset.init="1";c.scrollTop=c.scrollHeight}}
-async function loadMsgs(){if(!peer)return;var id=me();var key="chat:"+id+":"+peer.id;var c=document.getElementById("chat");
+async function loadMsgs(){if(!peer)return;var id=me();var key="chat:"+id+":"+peer.id;try{if(window.__e2eHasKey)window.__e2eHasKey(peer.id)}catch(e){}var c=document.getElementById("chat");
 var cached=null;try{cached=JSON.parse(localStorage.getItem(key)||"null")}catch(e){}
 if(cached&&c&&!c.children.length)renderMsgRows(cached);
-try{if(localStorage.getItem("toole_readconf")!=="0"){await api("/rest/v1/messages?receiver=eq."+id+"&sender=eq."+peer.id+"&read_at=is.null",{method:"PATCH",headers:{Prefer:"return=minimal"},body:JSON.stringify({read_at:new Date().toISOString()})})}
+try{if(localStorage.getItem("toole_readconf")!=="0"){api("/rest/v1/messages?receiver=eq."+id+"&sender=eq."+peer.id+"&read_at=is.null",{method:"PATCH",headers:{Prefer:"return=minimal"},body:JSON.stringify({read_at:new Date().toISOString()})}).catch(function(){})}
 var rows=await api("/rest/v1/messages?select=*&or=(and(sender.eq."+id+",receiver.eq."+peer.id+"),and(sender.eq."+peer.id+",receiver.eq."+id+"))&order=created_at.asc");
 renderMsgRows(rows);localStorage.setItem(key,JSON.stringify(rows.slice(-300)));showDirectPins()}catch(e){if(!cached)err("msgC",e.message)}}
 
