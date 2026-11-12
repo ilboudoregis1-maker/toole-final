@@ -34,12 +34,12 @@ function bubOf(n){return (n.closest&&n.closest(".m"))||n}
 var PEND=[];
 function phd(msg){var s='<svg xmlns="http://www.w3.org/2000/svg" width="220" height="120"><rect width="220" height="120" rx="12" fill="#e6f4f8"/><text x="110" y="64" font-family="sans-serif" font-size="13" fill="#0b6b80" text-anchor="middle">'+msg+'</text></svg>';return "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(s)}
 function settle(im,p){srcOf(p).then(function(u){
-if(u==="NET"||u==="BAD"){im.dataset.pend=u;im.src=phd(u==="BAD"?"\uD83D\uDD12 Photo illisible":"\uD83D\uDCF7 Hors connexion");if(u==="NET"&&PEND.indexOf(im)<0)PEND.push(im);return}
+if(u==="NET"||u==="BAD"){im.dataset.pend=u;im.src=phd(u==="BAD"?"\u23F3":"\uD83D\uDCF7 Hors connexion");if(u==="NET"&&PEND.indexOf(im)<0)PEND.push(im);return}
 if(u){delete im.dataset.pend;MU[p]=u;im.src=u}else{DEAD[p]=1;bubOf(im).remove()}})}
 window.addEventListener("online",function(){PEND.splice(0).forEach(function(im){if(im.isConnected&&im.dataset.p)settle(im,im.dataset.p)})});
 document.addEventListener("click",function(e){var t=e.target;if(!t||t.tagName!=="IMG"||!t.classList.contains("tph"))return;e.stopPropagation();e.preventDefault();
 if(t.dataset.pend==="NET"){try{toast("Photo pas encore enregistrée sur ce téléphone : ouvre-la une fois avec Internet")}catch(x){}return}
-if(t.dataset.pend==="BAD"){try{toast("Photo illisible (clé de chiffrement absente)")}catch(x){}return}
+if(t.dataset.pend==="BAD"){try{0}catch(x){}return}
 show(t.currentSrc||t.src)},true);
 function fix(root){var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),n,l=[];while((n=w.nextNode())){if(n.nodeValue.indexOf(PFX)===0)l.push(n)}
 l.forEach(function(t){var p=t.nodeValue.slice(PFX.length).trim(),par=t.parentNode;if(!par)return;
@@ -55,7 +55,7 @@ inp.onchange=function(){var f=inp.files&&inp.files[0];inp.value="";sendPhoto(f)}
 b.onclick=function(e){e.preventDefault();inp.click()};
 m.parentNode.insertBefore(b,m);m.parentNode.insertBefore(inp,m)}
 function show(u){if(!u)return;var o=document.createElement("div");o.style.cssText="position:fixed;inset:0;z-index:2000000000;background:rgba(0,0,0,.94);display:flex;align-items:center;justify-content:center";
-var i=new Image();i.style.cssText="max-width:100%;max-height:100%;object-fit:contain";i.onerror=function(){try{toast("Photo illisible")}catch(e){}o.remove()};i.src=u;
+var i=new Image();i.style.cssText="max-width:100%;max-height:100%;object-fit:contain";i.onerror=function(){try{0}catch(e){}o.remove()};i.src=u;
 var x=document.createElement("button");x.textContent="\u2715";x.style.cssText="position:absolute;top:calc(env(safe-area-inset-top,0px) + 12px);right:14px;width:42px;height:42px;border-radius:50%;border:0;background:rgba(255,255,255,.22);color:#fff;font-size:20px";
 o.appendChild(i);o.appendChild(x);o.onclick=function(){o.remove()};document.body.appendChild(o)}
 function init(){window.__tsendPhoto=sendPhoto;addBtn("vmic");addBtn("gMic");["chat","gMsgs"].forEach(function(id){var e=document.getElementById(id);if(!e)return;new MutationObserver(function(){fix(e)}).observe(e,{childList:true,subtree:true});fix(e)})}
