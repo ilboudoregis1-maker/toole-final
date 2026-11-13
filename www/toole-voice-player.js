@@ -56,13 +56,14 @@
         res(v);
       }
       t.preload = "metadata";
+      function chk() { if (isFinite(t.duration) && t.duration > 0) fin(t.duration); }
       t.onloadedmetadata = function () {
-        if (isFinite(t.duration) && t.duration > 0) return fin(t.duration);
-        t.ontimeupdate = function () { fin(isFinite(t.duration) ? t.duration : 0); };
+        chk();
+        t.ontimeupdate = chk; t.ondurationchange = chk; t.onseeked = chk;
         try { t.currentTime = 1e101; } catch (e) { fin(0); }
       };
       t.onerror = function () { fin(0); };
-      setTimeout(function () { fin(0); }, 3000);
+      setTimeout(function () { fin(0); }, 6000);
       t.src = src;
     });
   }
@@ -82,8 +83,47 @@
       });
     }).catch(function () { return 0; });
   }
+  /* dernier recours : lecture muette en accéléré pour mesurer la vraie durée */
+  function scanDur(blob) {
+    return new Promise(function (res) {
+      var t = new Audio(), src = window.URL.createObjectURL(blob), done = false, last = 0;
+      function fin(v) {
+        if (done) return; done = true;
+        try { t.pause(); } catch (e) { }
+        try { window.URL.revokeObjectURL(src); } catch (e) { }
+        res(v);
+      }
+      t.muted = true; t.volume = 0; t.preload = "auto";
+      try { t.playbackRate = 16; } catch (e) { }
+      t.ontimeupdate = function () { if (t.currentTime > last) last = t.currentTime; };
+      t.onended = function () { fin(isFinite(t.duration) && t.duration > 0 ? t.duration : last); };
+      t.onerror = function () { fin(0); };
+      setTimeout(function () { fin(0); }, 30000);
+      t.src = src;
+      var p = t.play(); if (p && p.catch) p.catch(function () { fin(0); });
+    });
+  }
   function getDur(blob) {
-    return mediaDur(blob).then(function (d) { return d > 0 ? d : decodeDur(blob); });
+    return mediaDur(blob).then(function (d) { return d > 0 ? d : decodeDur(blob); })
+      .then(function (d) { return d > 0 ? d : scanDur(blob); });
+  }
+  /* durées gardées sur le téléphone, mesurées une seule fois à la fois */
+  var LDK = "toole_vdur", LD = {}, QUEUE = Promise.resolve(), PEND = {};
+  try { LD = JSON.parse(localStorage.getItem(LDK) || "{}") || {}; } catch (e) { LD = {}; }
+  Object.keys(LD).forEach(function (k) { if (LD[k] > 0) DUR[k] = LD[k]; });
+  function getDurP(path, blob) {
+    if (DUR[path]) return Promise.resolve(DUR[path]);
+    if (PEND[path]) return PEND[path];
+    PEND[path] = QUEUE = QUEUE.then(function () { return getDur(blob); }).then(function (d) {
+      delete PEND[path];
+      if (d > 0) {
+        DUR[path] = d; LD[path] = d;
+        var ks = Object.keys(LD); if (ks.length > 500) delete LD[ks[0]];
+        try { localStorage.setItem(LDK, JSON.stringify(LD)); } catch (e) { }
+      }
+      return d;
+    }, function () { delete PEND[path]; return 0; });
+    return PEND[path];
   }
   function total(path, a) {
     if (a && isFinite(a.duration) && a.duration > 0) return a.duration;
@@ -151,7 +191,7 @@
     };
     a.onended = function () {
       if (!DUR[path] && a.currentTime > 0) DUR[path] = a.currentTime;
-      a.currentTime = 0; paint(path);
+      a.currentTime = 0; applyPending(path); paint(path);
     };
   }
 
@@ -176,7 +216,7 @@
       REG[path] = e;
       wire(path, a);
       if (!DUR[path]) {
-        getDur(blob).then(function (d0) { if (d0) { DUR[path] = d0; applyPending(path); paint(path); } }).catch(function () { });
+        getDurP(path, blob).then(function (d0) { if (d0) { applyPending(path); paint(path); } }).catch(function () { });
       }
       return e;
     })();
@@ -240,7 +280,7 @@
     if (path && !DUR[path]) {
       vLoad(path).then(function (blob) {
         if (!blob) return;
-        return getDur(blob).then(function (d) { if (d) { DUR[path] = d; paint(path); } });
+        return getDurP(path, blob).then(function (d) { if (d) paint(path); });
       }).catch(function () { });
     }
 
