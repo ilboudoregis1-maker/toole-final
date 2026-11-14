@@ -54,21 +54,26 @@
     b.disabled = true; b.textContent = "…";
     api("/rest/v1/rpc/join_group_by_code", { method: "POST", body: JSON.stringify({ p_code: code }) }).then(function (r) {
       var g = Array.isArray(r) ? r[0] : r;
-      say("Tu as rejoint « " + ((g && g.name) || "") + " »"); b.textContent = "Rejoint ✓";
+      say("Tu as rejoint « " + ((g && g.name) || "") + " »"); b.textContent = "Rejoint ✓"; b.classList.add("ok");
       if (g && g.id && typeof openGroup === "function") setTimeout(function () { try { openGroup({ id: g.id, name: g.name }); } catch (e) { } }, 500);
     }).catch(function (e) {
-      b.disabled = false; b.textContent = "Rejoindre";
+      b.disabled = false; b.classList.remove("ok"); b.textContent = "Rejoindre";
       var m = String((e && e.message) || "");
       say(/code_invalide/.test(m) ? "Code invalide ou expiré" : /non_connecte/.test(m) ? "Reconnecte-toi puis réessaie" : "Impossible de rejoindre : " + m);
     });
   }
   function card(code, name) {
+    var nm = name || "Groupe";
     var c = document.createElement("div"); c.className = "tinv";
     var t = document.createElement("div"); t.className = "tinv-t"; t.textContent = "👥 Invitation à un groupe";
-    var n = document.createElement("div"); n.className = "tinv-n"; n.textContent = name || "Groupe";
+    var bd = document.createElement("div"); bd.className = "tinv-bd";
+    var av = document.createElement("div"); av.className = "tinv-av";
+    av.textContent = (Array.from(String(nm).replace(/^[\s"'«»]+/, ""))[0] || "G").toUpperCase();
+    var n = document.createElement("div"); n.className = "tinv-n"; n.textContent = nm;
+    bd.appendChild(av); bd.appendChild(n);
     var b = document.createElement("button"); b.type = "button"; b.className = "tinv-b"; b.textContent = "Rejoindre";
     b.onclick = function (e) { e.stopPropagation(); join(code, b); };
-    c.appendChild(t); c.appendChild(n); c.appendChild(b); return c;
+    c.appendChild(t); c.appendChild(bd); c.appendChild(b); return c;
   }
   function scan() {
     var box = $("chat"); if (!box) return;
@@ -116,4 +121,21 @@
     "#chat .m.me .tinv-b{background:#fff;color:#0a7cff}"
   ].join("\n");
   document.head.appendChild(css);
+  var css2 = document.createElement("style");
+  css2.textContent = [
+    "html body .tinv{display:block;width:244px;max-width:100%;min-width:0;padding:0;margin:-2px 0;text-align:left;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 10px 26px rgba(8,50,140,.28);animation:tinvUp .45s cubic-bezier(.2,.8,.2,1) both}",
+    "@keyframes tinvUp{from{opacity:0;transform:translateY(10px) scale(.96)}to{opacity:1;transform:none}}",
+    "html body .tinv .tinv-t{margin:0;padding:9px 14px;font-size:12px;font-weight:800;letter-spacing:.6px;opacity:1;background:linear-gradient(135deg,#00c2e0,#2f6fe0 70%,#4a56e2);color:#fff!important;-webkit-text-fill-color:#fff!important}",
+    "html body .tinv .tinv-bd{display:flex;align-items:center;gap:12px;padding:14px 14px 10px}",
+    "html body .tinv .tinv-av{flex:none;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font:800 21px system-ui,sans-serif;background:linear-gradient(135deg,#00c2e0,#2f6fe0);color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:0 0 0 3px #fff,0 0 0 5px #bfe6f2,0 6px 14px rgba(0,194,224,.35)}",
+    "html body .tinv .tinv-n{margin:0;min-width:0;flex:1;font-size:16.5px;font-weight:800;line-height:1.25;word-break:break-word;color:#0a2a66!important;-webkit-text-fill-color:#0a2a66!important}",
+    "html body .tinv .tinv-b{display:block;width:auto;margin:4px 14px 14px;padding:11px 14px;border:0;border-radius:14px;font:800 15px system-ui,sans-serif;background:linear-gradient(135deg,#00c2e0,#2f6fe0)!important;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:0 6px 16px rgba(47,111,224,.4);transition:transform .15s}",
+    "html body .tinv .tinv-b{width:calc(100% - 28px)}",
+    "html body .tinv .tinv-b:active{transform:scale(.96)}",
+    "html body .tinv .tinv-b:disabled{opacity:.75}",
+    "html body .tinv .tinv-b.ok{background:linear-gradient(135deg,#22c55e,#16a34a)!important;box-shadow:0 6px 16px rgba(22,163,74,.4)}",
+    "html body #chat .m.tinv-m{padding:6px!important}",
+    "@media (prefers-reduced-motion:reduce){.tinv{animation:none!important}}"
+  ].join("\n");
+  document.head.appendChild(css2);
 })();
