@@ -1,0 +1,47 @@
+/* TÕÕLé – Explorer 2 : design */
+#scrDecouvrir{--sh:0 6px 22px rgba(20,60,140,.10);--sh2:0 10px 30px rgba(20,60,140,.16)}
+#scrDecouvrir .dc-hd{background:linear-gradient(135deg,#00c2e0 0%,#2f6fe0 60%,#4a56e2 100%);box-shadow:0 8px 26px rgba(47,111,224,.35);position:relative;overflow:hidden}
+#scrDecouvrir .dc-hd::after{content:"";position:absolute;right:-40px;top:-60px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.28),transparent 70%);pointer-events:none}
+#scrDecouvrir .dc-hd h1{letter-spacing:3px;text-shadow:0 2px 8px rgba(0,0,0,.18)}
+#scrDecouvrir .dc-bar{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.86);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+#scrDecouvrir .dc-srch{border-radius:26px;transition:box-shadow .2s,border-color .2s}
+#scrDecouvrir .dc-srch:focus{box-shadow:0 0 0 4px rgba(0,194,224,.18)}
+#scrDecouvrir .dc-seg{background:var(--soft);border-radius:24px;padding:4px;gap:2px}
+#scrDecouvrir .dc-seg button{background:transparent;box-shadow:none}
+#scrDecouvrir .dc-seg button.on{background:var(--g);box-shadow:0 4px 14px rgba(47,111,224,.4)}
+#scrDecouvrir .dc-chips button{border-radius:18px;transition:transform .15s,background .2s}
+#scrDecouvrir .dc-chips button:active{transform:scale(.93)}
+#scrDecouvrir .dc-card{border-radius:24px;border:1px solid rgba(214,235,244,.9);box-shadow:var(--sh);transition:transform .2s,box-shadow .2s;animation:dcUp .5s cubic-bezier(.2,.8,.2,1) both}
+#scrDecouvrir .dc-card:not(.dc-comp):not(.dc-sk):active{transform:scale(.992)}
+#scrDecouvrir .dc-av{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--c1),0 6px 14px rgba(0,194,224,.35)}
+#scrDecouvrir .dc-n{letter-spacing:.2px}
+#scrDecouvrir .dc-t{font-size:16.5px;line-height:1.5}
+#scrDecouvrir .dc-tag{color:var(--c2);font-weight:800;cursor:pointer;border-radius:6px;padding:0 1px}
+#scrDecouvrir .dc-tag:active{background:var(--tint)}
+#scrDecouvrir .dc-img{border-radius:20px;box-shadow:0 6px 20px rgba(10,42,102,.15)}
+#scrDecouvrir .dc-r button{border-radius:16px;font-size:17px}
+#scrDecouvrir .dc-r button.me{animation:dcBn .35s}
+@keyframes dcBn{0%{transform:scale(1)}40%{transform:scale(1.22)}100%{transform:scale(1)}}
+#scrDecouvrir .dc-off{border:1.5px solid transparent;background:linear-gradient(var(--card),var(--card)) padding-box,linear-gradient(135deg,#00c2e0,#2f6fe0,#4a56e2) border-box;box-shadow:0 10px 30px rgba(47,111,224,.22)}
+#scrDecouvrir .dc-comp{background:linear-gradient(180deg,#fff,#f4fbfe)}
+#scrDecouvrir .dc-fake{border-radius:26px}
+#scrDecouvrir .dc-row{flex-wrap:wrap}
+#scrDecouvrir .dc-ph{padding:9px 13px;font-size:14px}
+#scrDecouvrir .dc-go{box-shadow:0 6px 16px rgba(47,111,224,.4)}
+#scrDecouvrir .dc-tags{display:flex;gap:8px;overflow-x:auto;padding:0 12px 12px;scrollbar-width:none}
+#scrDecouvrir .dc-tags::-webkit-scrollbar{display:none}
+#scrDecouvrir .dc-tags button{flex:none;border:0;border-radius:18px;padding:8px 14px;background:#fff;color:var(--c2);font-weight:800;font-size:13.5px;box-shadow:var(--sh);border:1px solid var(--line);transition:transform .15s}
+#scrDecouvrir .dc-tags button small{color:var(--mut);font-weight:700;margin-left:5px}
+#scrDecouvrir .dc-tags button.on{background:var(--g);color:#fff;border-color:transparent}
+#scrDecouvrir .dc-tags button:active{transform:scale(.93)}
+#scrDecouvrir .dc-vid{position:relative;margin:4px 0 10px;border-radius:20px;overflow:hidden;background:linear-gradient(135deg,#0a2a66,#2f6fe0);aspect-ratio:16/9;display:grid;place-items:center;box-shadow:0 6px 20px rgba(10,42,102,.25)}
+#scrDecouvrir .dc-vid video{width:100%;max-height:480px;display:block;background:#000}
+#scrDecouvrir .dc-play{width:68px;height:68px;border-radius:50%;border:0;background:rgba(255,255,255,.25);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);display:grid;place-items:center;box-shadow:0 0 0 8px rgba(255,255,255,.12);animation:dcPulse 2s infinite}
+#scrDecouvrir .dc-play svg{width:30px;height:30px;fill:#fff;margin-left:3px}
+#scrDecouvrir .dc-vid.ld .dc-play{animation:dcSpin 1s linear infinite;opacity:.6}
+@keyframes dcPulse{0%,100%{box-shadow:0 0 0 8px rgba(255,255,255,.12)}50%{box-shadow:0 0 0 16px rgba(255,255,255,.04)}}
+@keyframes dcSpin{to{transform:rotate(360deg)}}
+#scrDecouvrir .dc-sk{border-radius:24px;height:170px}
+#scrDecouvrir .dc-pc{border-radius:22px;transition:transform .2s}
+#scrDecouvrir .dc-pc:active{transform:scale(.96)}
+@media (prefers-reduced-motion:reduce){#scrDecouvrir *{animation:none!important;transition:none!important}}
