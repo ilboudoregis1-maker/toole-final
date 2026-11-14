@@ -8,7 +8,7 @@ var SA=Element.prototype.setAttribute;
 function isEn(){var t=document.querySelector("#scrParam .ttl");
 if(t)return /^\s*Settings\s*$/i.test(t.textContent);
 return (document.documentElement.lang||"").toLowerCase().indexOf("en")===0}
-function txt(){return isEn()?"Search a contact or a group":"Rechercher un contact ou un groupe"}
+function txt(){return isEn()?"Search":"Rechercher"}
 function freeze(i){
 if(i.__tfs)return;i.__tfs=1;i.classList.add("tg-sb");
 i.setAttribute=function(n,v){if(String(n).toLowerCase()==="placeholder")return;return SA.call(i,n,v)};
