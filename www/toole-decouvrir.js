@@ -217,8 +217,8 @@ bd.onclick=function(){ov.remove()};ov.appendChild(bd);ov.appendChild(pn);sec.app
 
 /* ---------- Fil ---------- */
 function score(p,R){var n=R.filter(function(z){return z.post_id===p.id}).length,h=(Date.now()-new Date(p.created_at).getTime())/36e5;return(n*2+(p.image_url?1:0)+.5)/Math.pow(h+2,.8)}
-function post(p,R,me,L,k,C){var c=el("div","dc-card"),t=el("div","dc-top"),nm=NAMES[p.author]||"Inconnu";c.style.animationDelay=Math.min(k,8)*.05+"s";
-t.appendChild(el("div","dc-av",ini(nm)));var w=el("div");w.appendChild(el("div","dc-n",nm));w.appendChild(el("div","dc-d",ago(p.created_at)));t.appendChild(w);
+function post(p,R,me,L,k,C){var c=el("div","dc-card"),t=el("div","dc-top"),nm=p.official?"TÕÕLé":(NAMES[p.author]||"Inconnu");c.style.animationDelay=Math.min(k,8)*.05+"s";
+t.appendChild(el("div","dc-av",ini(nm)));var w=el("div");var _n=el("div","dc-n",nm);if(p.official){_n.insertAdjacentHTML("beforeend",' <svg viewBox="0 0 24 24" width="15" height="15" style="vertical-align:-2px"><circle cx="12" cy="12" r="11" fill="#1d9bf0"/><path d="M7 12.5l3.3 3.3L17 9" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> <small style="opacity:.7">Officiel</small>')}w.appendChild(_n);w.appendChild(el("div","dc-d",ago(p.created_at)));t.appendChild(w);
 var mo=el("button","dc-more2");mo.innerHTML=ico("dots");mo.setAttribute("aria-label","Plus");mo.onclick=function(){pmenu(p,me,L)};t.appendChild(mo);
 c.appendChild(t);
 if(p.body){var tx=el("div","dc-t"),long=p.body.length>220;tx.textContent=long?p.body.slice(0,220)+"…":p.body;if(long){var mb=el("button","dc-more","Voir plus");mb.onclick=function(){tx.textContent=p.body};tx.appendChild(mb)}c.appendChild(tx)}
@@ -229,7 +229,7 @@ wr.appendChild(im);wr.appendChild(pop);c.appendChild(wr)}
 var cb=el("button","dc-cbt");function lab(){var n=C.filter(function(z){return z.post_id===p.id}).length;cb.innerHTML=ico("chat");cb.appendChild(document.createTextNode(" "+(n?n+(n>1?" commentaires":" commentaire"):"Commenter")))}lab();cb.onclick=function(){csheet(p,C,me,lab)};
 sum.appendChild(cnt);sum.appendChild(cb);c.appendChild(sum);c.appendChild(rb);return c}
 function load(L){var me=uid();skel(L);
-var base="posts?select=id,author,body,image_url,created_at&order=created_at.desc",sv=tab==="saved"?savedList():null,hid=lsGet(KX("hidden"),[]);
+var base="posts?select=id,author,body,image_url,created_at,official&order=created_at.desc",sv=tab==="saved"?savedList():null,hid=lsGet(KX("hidden"),[]);
 var pq=sv?(sv.length?api(base+"&id=in.("+sv.join(",")+")"):Promise.resolve([])):api(base+"&limit="+LIM);
 Promise.all([pq,api("blocks?select=blocked&blocker=eq."+me)]).then(function(a){
 var raw=Array.isArray(a[0])?a[0]:[];var bl=(Array.isArray(a[1])?a[1]:[]).map(function(x){return x.blocked});var P=raw.filter(function(p){return bl.indexOf(p.author)<0&&(sv||hid.indexOf(String(p.id))<0)});
@@ -243,7 +243,7 @@ var miss=C.map(function(c){return c.author}).filter(function(v,i,s){return !NAME
 var q=Q.toLowerCase();if(q)P=P.filter(function(p){return(p.body||"").toLowerCase().indexOf(q)>=0||(NAMES[p.author]||"").toLowerCase().indexOf(q)>=0});
 if(FILT==="img")P=P.filter(function(p){return p.image_url});else if(FILT==="txt")P=P.filter(function(p){return !p.image_url});
 if(tab==="trend")P.sort(function(x,y){return(score(y,R)+C.filter(function(c){return c.post_id===y.id}).length*.5)-(score(x,R)+C.filter(function(c){return c.post_id===x.id}).length*.5)});
-var ct=$("dcCount");if(ct)ct.textContent=P.length+(P.length>1?" publications":" publication");L.innerHTML="";if(!P.length){L.appendChild(empty("Aucun résultat."));return}
+if(tab==="posts")P.sort(function(x,y){return(y.official?1:0)-(x.official?1:0)});var ct=$("dcCount");if(ct)ct.textContent=P.length+(P.length>1?" publications":" publication");L.innerHTML="";if(!P.length){L.appendChild(empty("Aucun résultat."));return}
 P.forEach(function(p,k){L.appendChild(post(p,R,me,L,k,C));if(k===2&&S.length&&!q&&tab==="posts"){L.appendChild(head("Personnes à découvrir"));L.appendChild(suggestions(S.slice(0,8)))}});if(!sv&&raw.length>=LIM){var mp=el("button","dc-mp","Voir les publications plus anciennes");mp.onclick=function(){LIM+=30;load(L)};L.appendChild(mp)}})})})}
 function feed(){var L=el("div");
 if(tab==="posts"){box.appendChild(stories());box.appendChild(composer(L));var hh=head("Fil en direct","…");hh.lastChild.id="dcCount";box.appendChild(hh)}
