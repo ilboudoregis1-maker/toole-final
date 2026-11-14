@@ -2,7 +2,7 @@
 (function () {
   if (window.__tcert) return; window.__tcert = 1;
   var D = document, SET = {}, T = 0, MINE = null;
-  var SEL = ['#pfName', '.cname', '.c2-name', '.cd-name', '.pf-name', '.gm-name', '.sname'];
+  var SEL = ['#pfName', '.cname', '.c2-name', '.cd-name', '.pf-name', '.gm-name', '.sname', '.dc-n'];
   function en() { try { return localStorage.getItem('toole_lang') === 'en'; } catch (e) { return false; } }
   var TX = {
     title: function () { return en() ? 'Certified account' : 'Compte certifié'; },
