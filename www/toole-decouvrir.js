@@ -178,7 +178,7 @@ var fi=el("input");fi.type="file";fi.accept="image/*";fi.style.display="none";va
 ta.oninput=function(){cn.textContent=ta.value.length+"/2000"};
 ph.innerHTML=ico("cam")+" Photo";var vb=el("button","dc-ph");vb.innerHTML="🎬 Vidéo";var vf=el("input");vf.type="file";vf.accept="video/*";vf.style.display="none";var pv2=el("video","dc-img");pv2.style.display="none";pv2.controls=true;pv2.muted=true;pv2.setAttribute("playsinline","");var vblob=null;
 vb.onclick=function(){vf.click()};
-vf.onchange=function(){var f=vf.files[0];if(!f)return;if(f.size>18*1048576){toast("Vidéo trop lourde : "+(f.size/1048576).toFixed(1)+" Mo (18 Mo maximum)");vf.value="";return}var u=URL.createObjectURL(f),t=document.createElement("video");t.preload="metadata";t.onloadedmetadata=function(){if(isFinite(t.duration)&&t.duration>180){toast("Vidéo trop longue (3 min maximum)");vf.value="";return}vblob=f;blob=null;pv.style.display="none";pv2.src=u;pv2.style.display="block"};t.onerror=function(){toast("Vidéo illisible")};t.src=u};
+vf.onchange=function(){var f=vf.files[0];if(!f)return;var u=URL.createObjectURL(f),t=document.createElement("video");t.preload="metadata";t.onloadedmetadata=function(){if(isFinite(t.duration)&&t.duration>300){toast("Vidéo trop longue (5 min maximum)");vf.value="";return}blob=null;pv.style.display="none";pv2.src=u;pv2.style.display="block";if(f.size<=18*1048576){vblob=f;return}vblob=null;window.tooleZip(f,t.videoWidth,t.videoHeight,t.duration).then(function(z){if(z)vblob=z;else{pv2.style.display="none";pv2.removeAttribute("src");vf.value=""}})};t.onerror=function(){toast("Vidéo illisible")};t.src=u};
 
 fk.onclick=function(){fk.style.display="none";ex.style.display="block";ta.focus()};
 ph.onclick=function(){fi.click()};
