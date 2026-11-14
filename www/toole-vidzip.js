@@ -1,7 +1,7 @@
 /* TÕÕLé — Explorer : compression des longues vidéos avant envoi (Telegram ~19 Mo) */
 (function(){"use strict";if(window.tooleZip)return;window.tooleZip=zip;
 var LIM=18*1048576,TARGET=16*1048576;
-function say(m){try{if(typeof toast==="function")toast(m)}catch(e){}}
+function say(m){try{var d=document.createElement("div");d.textContent=m;d.style.cssText="position:fixed;left:16px;right:16px;bottom:90px;z-index:100003;padding:14px;border-radius:14px;background:#0f172a;color:#fff;font:600 14px sans-serif;text-align:center";document.body.appendChild(d);setTimeout(function(){d.remove()},5000)}catch(e){}}
 function plan(dur,pass){var budget=TARGET*8*0.88*Math.pow(0.8,pass);var v=Math.max(40000,Math.round(budget/Math.max(dur,1)-48000));return{v:v,a:48000,h:v>550000?480:v>300000?360:v>150000?240:144}}
 function compress(file,w,h,dur,onP,q,st){return new Promise(function(res){
 var v=document.createElement("video"),u=URL.createObjectURL(file),raf=0,ac=null,rec=null,done=false,chunks=[];
