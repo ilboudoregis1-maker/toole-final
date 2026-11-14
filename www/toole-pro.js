@@ -1,7 +1,7 @@
 /* TÕÕLé PRO — réglages avancés, mode sombre, taille du texte, navigation propre, robustesse */
 (function () {
   'use strict';
-  var VERSION = '2.3.0';
+  var VERSION = '2.3.1';
   try{
     var capA=window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.App;
     if(capA&&capA.getInfo)capA.getInfo().then(function(i){
