@@ -172,7 +172,7 @@
     busy = true;
     try {
       var big, small;
-      try { big = await toJpeg(file, 512, 0.82); small = await toJpeg(file, 128, 0.8); }
+      try { big = await toJpeg(file, 1024, 0.86); small = await toJpeg(file, 128, 0.8); }
       catch (e) { say(L("Image illisible", "Unreadable image")); return; }
       var left;
       try { left = await api("/rest/v1/rpc/avatar_consume", { method: "POST", body: "{}" }); }

@@ -33,7 +33,7 @@ function showPhoto(u,n){var o=document.createElement("div");
 o.style.cssText="position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.88);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px";
 var c=document.createElement("div"),s="min(78vw,78vh,420px)";
 c.style.cssText="width:"+s+";height:"+s+";border-radius:50%;background:center/cover no-repeat;box-shadow:0 0 0 4px rgba(255,255,255,.9),0 18px 50px rgba(0,0,0,.6)";
-c.style.backgroundImage='url("'+u+'")';
+c.style.backgroundImage='url("'+u+'")';var hd=String(u).replace(/thumb/g,"avatar");if(hd!==u){var im=new Image();im.onload=function(){c.style.backgroundImage='url("'+hd+'")'};im.src=hd}
 var t=document.createElement("div");t.textContent=n;t.style.cssText="color:#fff;font:600 18px system-ui";
 o.appendChild(c);o.appendChild(t);o.onclick=function(){o.remove()};document.body.appendChild(o)}
 function callPeer(p){try{peer={id:p.id,pseudo:p.pseudo||"Contact"}}catch(e){}
