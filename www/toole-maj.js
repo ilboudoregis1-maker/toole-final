@@ -33,7 +33,7 @@ function paint(box){
  if(go)go.onclick=function(){var u=d.u.url;if(!OK.test(u)){say('Lien de mise à jour invalide');return}say('Téléchargement…');location.href=u};
  if(ck)ck.onclick=function(){ck.textContent='Vérification…';check(true).then(function(){paint(box)}).catch(function(){ck.textContent='Vérifier maintenant';say('Hors connexion')})};
 }
-function row(){var p=D.getElementById('scrProfil');
+function row(){var old=D.getElementById('tsMaj');if(old)old.remove();return;var p=D.getElementById('scrProfil');
  if(!p||D.getElementById('tsMaj'))return;
  var b=D.createElement('div');b.id='tsMaj';
  b.style.cssText='margin:10px 16px;padding:14px;border-radius:14px;background:rgba(0,188,212,.08);border:1px solid rgba(0,168,200,.35)';
