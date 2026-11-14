@@ -2,7 +2,7 @@
 (function () {
   if (window.__tcert) return; window.__tcert = 1;
   var D = document, SET = {}, T = 0, MINE = null;
-  var SEL = ['#pfName', '.cname', '.c2-name', '.cd-name', '.pf-name', '.gm-name', '.sname', '.dc-n'];
+  var SEL = ['#pfName', '.cname', '.c2-name', '.cd-name', '.pf-name', '.gm-name', '.sname', '.dc-n', '.dc-cn'];
   function en() { try { return localStorage.getItem('toole_lang') === 'en'; } catch (e) { return false; } }
   var TX = {
     title: function () { return en() ? 'Certified account' : 'Compte certifié'; },
@@ -62,7 +62,7 @@
       D.querySelectorAll(s).forEach(function (el) {
         if (el.querySelector('.tcert')) return;
         var n = (el.firstChild && el.firstChild.nodeType === 3 ? el.firstChild.nodeValue : el.textContent || '').trim().toLowerCase();
-        if (n && SET[n]) { var b = D.createElement('span'); b.className = 'tcert'; b.innerHTML = SEAL; el.appendChild(b); }
+        if (n && SET[n]) { var b = D.createElement('span'); b.className = 'tcert'; b.innerHTML = SEAL; if (el.classList.contains('dc-cn') && el.firstChild.nextSibling) el.insertBefore(b, el.firstChild.nextSibling); else el.appendChild(b); }
       });
     });
   }
