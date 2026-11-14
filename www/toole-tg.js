@@ -11,7 +11,7 @@ var r=await raw(fn(),{method:"POST",headers:h,body:blob,signal:ac.signal});
 if(r.status===401){try{await api("/auth/v1/user")}catch(e){}h=hdr();h["x-path"]=encodeURIComponent(path);h["Content-Type"]=blob.type||"application/octet-stream";r=await raw(fn(),{method:"POST",headers:h,body:blob,signal:ac.signal})}
 if(!r.ok)throw new Error("tg "+r.status)}catch(e){down=Date.now()+8000;throw e}finally{clearTimeout(t)}}
 function url(path,rtype){return fn()+"?p="+encodeURIComponent(path)+"&t="+(rtype||"image")}
-window.tgUpload=up;window.tgUrl=url;window.tgGet=function(path,rtype){return raw(url(path,rtype),{headers:hdr()})};window.tgReady=function(s){return Date.now()>=down&&navigator.onLine!==false&&s<=MAXB};
+window.tgUpload=up;window.tgUrl=url;window.tgReady=function(s){return Date.now()>=down&&navigator.onLine!==false&&s<=MAXB};
 var MARK="/storage/v1/object/voice/";
 window.fetch=async function(input,init){
 var u=typeof input==="string"?input:(input&&input.url)||"",i=u.indexOf(MARK);
