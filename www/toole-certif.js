@@ -2,7 +2,7 @@
 (function () {
   if (window.__tcert) return; window.__tcert = 1;
   var D = document, SET = {}, T = 0, MINE = null;
-  var SEL = ['#pfName', '.cname', '.c2-name', '.cd-name', '.pf-name', '.gm-name', '.sname', '.dc-n', '.dc-cn'];
+  var SEL = ['#pfName', '.cname', '.c2-name', '.cd-name', '.pf-name', '.gm-name', '.sname', '.dc-n', '.dc-cn', '.rn'];
   function en() { try { return localStorage.getItem('toole_lang') === 'en'; } catch (e) { return false; } }
   var TX = {
     title: function () { return en() ? 'Certified account' : 'Compte certifié'; },
@@ -50,6 +50,8 @@
     c.innerHTML = BIG + '<div><b>' + TX.title() + '</b><span>' + TX.sub() + '</span></div>';
     pf.parentNode.insertBefore(c, pf.nextSibling);
   }
+  var LL=0,KN={};
+  function unk(){var f=0;D.querySelectorAll('.rn').forEach(function(e){var n=(e.firstChild&&e.firstChild.nodeType===3?e.firstChild.nodeValue:'').trim().toLowerCase();if(n&&!KN[n]){KN[n]=1;f=1}});if(f&&Date.now()-LL>4000){LL=Date.now();setTimeout(load,200)}}
   function load() {
     mine();
     return call('/rest/v1/rpc/certified_pseudos', {}).then(function (a) {
@@ -57,6 +59,7 @@
     }).catch(function () { });
   }
   function paint() {
+    try{unk()}catch(e){}
     card();
     SEL.forEach(function (s) {
       D.querySelectorAll(s).forEach(function (el) {
