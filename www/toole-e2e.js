@@ -115,6 +115,7 @@
       return t;
     } catch (e) { return null; }
   }
+  window.__e2eDec = decStr;
   async function walk(x) {
     if (Array.isArray(x)) { await Promise.all(x.map(walk)); return; }
     if (!x || typeof x !== "object") return;

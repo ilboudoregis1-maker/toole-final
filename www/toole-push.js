@@ -6,7 +6,8 @@ api("/rest/v1/rpc/register_push_token",{method:"POST",body:JSON.stringify({p_tok
 function shown(){var s=document.getElementById("scrChat");return s&&!s.classList.contains("hide")}
 function valid(x){return x&&x!=="null"&&x!=="undefined"}
 function fallback(p){p.fb=1;try{toast("Ouvre la discussion depuis ta liste")}catch(e){}try{if(typeof goList==="function")goList()}catch(e){}}
-function go(p){if(valid(p.g)){openGroup({id:p.g,name:p.t});return}
+function inj(p){return new Promise(function(ok){var dn=0;function fin(){if(!dn){dn=1;ok()}}setTimeout(fin,800);try{var u=U();var pr=window.__e2eDec?window.__e2eDec(p.c):Promise.resolve(/^(E1|G1)\./.test(p.c)?null:p.c);pr.then(function(t){if(typeof t!=="string"||!u)return;var k="chat:"+u+":"+p.id,rows=[];try{rows=JSON.parse(localStorage.getItem(k)||"[]")||[]}catch(e){}if(!rows.some(function(r){return String(r.id)===String(p.mid)})){rows.push({id:p.mid,sender:p.id,receiver:u,body:t,created_at:p.ts||new Date().toISOString(),read_at:null});localStorage.setItem(k,JSON.stringify(rows.slice(-300)))}}).catch(function(){}).then(fin)}catch(e){fin()}})}
+function go(p){if(valid(p.g)){openGroup({id:p.g,name:p.t});return}if(valid(p.id)&&p.c&&p.mid&&!p.pre){p.pre=1;inj(p).then(function(){go(p)});return}
 if(valid(p.id)){openChat(p.id,p.t||"\u2026");
 try{api("/rest/v1/profiles?select=pseudo&id=eq."+p.id).then(function(r){var n=r&&r[0]&&r[0].pseudo;if(n&&n!==p.t&&typeof peer!=="undefined"&&peer&&peer.id===p.id){peer.pseudo=n;var e=document.getElementById("peerName");if(e)e.textContent=n}}).catch(function(){})}catch(e){}
 return}
@@ -16,7 +17,7 @@ fallback(p)}
 function sh(p){var s=document.getElementById(p.g?"scrGroup":"scrChat");return s&&!s.classList.contains("hide")}
 function GO(){if(!pend||!U()||typeof openChat!=="function")return false;var p=pend;pend=null;
 go(p);[1500,4000].forEach(function(ms){setTimeout(function(){if(!p.fb&&!sh(p))go(p)},ms)});return true}
-if(P){P.addListener("pushNotificationActionPerformed",function(e){try{var n=e.notification,d=n.data||{};if(d.type==="post"){var kk=0,ii=setInterval(function(){if(U()&&typeof window.openDecouvrir==="function"){clearInterval(ii);window.openDecouvrir()}else if(++kk>60)clearInterval(ii)},250);return}pend={id:d.peer,g:d.group,t:d.gname||n.title||"TÕÕLé"};var k=0,i=setInterval(function(){if(GO()||++k>200)clearInterval(i)},60)}catch(x){}});
+if(P){P.addListener("pushNotificationActionPerformed",function(e){try{var n=e.notification,d=n.data||{};if(d.type==="post"){var kk=0,ii=setInterval(function(){if(U()&&typeof window.openDecouvrir==="function"){clearInterval(ii);window.openDecouvrir()}else if(++kk>60)clearInterval(ii)},250);return}pend={id:d.peer,g:d.group,t:d.gname||n.title||"TÕÕLé",c:d.c,mid:d.mid,ts:d.ts};var k=0,i=setInterval(function(){if(GO()||++k>200)clearInterval(i)},60)}catch(x){}});
 P.addListener("registration",function(t){S(t.value)})}
 function R(){/*TOOLE_PUSH_SAFE*/if(!P||window.TOOLE_PUSH_OFF)return;try{P.requestPermissions().then(function(){try{return P.register()}catch(e){}}).catch(function(){})}catch(e){}}
 
