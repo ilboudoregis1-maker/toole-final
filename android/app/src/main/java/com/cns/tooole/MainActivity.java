@@ -13,5 +13,18 @@ public class MainActivity extends BridgeActivity {
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         try { getBridge().getWebView().setBackgroundColor(Color.WHITE); } catch (Exception e) { }
+        try { getBridge().getWebView().addJavascriptInterface(new NativeBridge(this), "TooleNative"); } catch (Exception e) { }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        BubbleHelper.appVisible = true;
+    }
+
+    @Override
+    public void onPause() {
+        BubbleHelper.appVisible = false;
+        super.onPause();
     }
 }
