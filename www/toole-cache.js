@@ -1,5 +1,5 @@
 (function(){
-var TTL=300000,MAX=600,CAP=300000;
+var TTL=300000,MAX=600,CAP=300000;var BG={};
 var RE=new RegExp("^/rest/v1/messages\\?select=\\*&or=\\(and\\(sender\\.eq\\.([^,]+),"+
 "receiver\\.eq\\.([^)]+)\\),and\\(sender\\.eq\\.([^,]+),receiver\\.eq\\.([^)]+)\\)\\)"+
 "&order=created_at\\.asc$");
@@ -19,13 +19,13 @@ function mark(r,u){if(localStorage.getItem("toole_readconf")==="0")return r;
 var t=new Date().toISOString();
 r.forEach(function(x){if(x.receiver===u&&!x.read_at)x.read_at=t});return r}
 async function load(a,s,q){var k="tmc:"+q.a+":"+q.b,c=rd(k),now=Date.now();
-var ok=c&&Array.isArray(c.r)&&c.r.length>0,full=!ok||now-c.t>TTL;
+var ok=c&&Array.isArray(c.r)&&c.r.length>0,full=!ok,stale=ok&&now-c.t>TTL;
 try{
 if(full){var rows=await a(s);if(!Array.isArray(rows))return rows;
 wr(k,{r:mark(rows.map(cl),q.a),t:now});return rows}
 var nw=await a(s+"&created_at=gt."+encodeURIComponent(since(c.r,q.a)));
 if(!Array.isArray(nw))return nw;
-var all=merge(c.r,nw);wr(k,{r:mark(all.map(cl),q.a),t:c.t});return all
+var all=merge(c.r,nw);wr(k,{r:mark(all.map(cl),q.a),t:c.t});if(stale&&!BG[k]){BG[k]=1;a(s).then(function(rw){if(Array.isArray(rw))wr(k,{r:mark(rw.map(cl),q.a),t:Date.now()})}).catch(function(){}).then(function(){delete BG[k]})}return all
 }catch(e){if(ok)return c.r;throw e}}
 var P="/rest/v1/messages?id=eq.";
 function del(s){try{var id=s.slice(P.length).split("&")[0];
