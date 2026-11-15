@@ -97,7 +97,7 @@ function build(){
  ROOT.innerHTML='<canvas id="tgCv"></canvas><button id="tgX" aria-label="Quitter">✕</button><div id="tgPn"></div>';
  document.body.appendChild(ROOT);
  CV=document.getElementById("tgCv");X=CV.getContext("2d");PN=document.getElementById("tgPn");
- document.getElementById("tgX").onclick=close;
+ document.getElementById("tgX").onclick=close;tgExtra();
  var sb=document.createElement("button");sb.id="tgSnd";sb.innerHTML=MUT?SOFF:SON;sb.onclick=function(){MUT=!MUT;try{localStorage.setItem("tg_mute",MUT?"1":"0")}catch(e){}sb.innerHTML=MUT?SOFF:SON;if(MUT)musStop();else if(G.run||G.intro)musStart()};ROOT.appendChild(sb);
  var sx=0,sy=0,ok=false;
  CV.addEventListener("touchstart",function(e){var t=e.touches[0];sx=t.clientX;sy=t.clientY;ok=true;e.preventDefault()},{passive:false});
@@ -107,7 +107,7 @@ function build(){
  CV.addEventListener("touchend",function(){ok=false});
  document.addEventListener("keydown",function(e){if(ROOT.style.display!=="block")return;
   var k=e.key;if(k==="ArrowLeft")mvL();else if(k==="ArrowRight")mvR();else if(k==="ArrowUp"||k===" ")jump();else if(k==="ArrowDown")slide();else return;e.preventDefault()});
- document.addEventListener("visibilitychange",function(){G.pause=document.hidden;if(document.hidden)musStop();else if(G.run||G.intro)musStart()});
+ document.addEventListener("visibilitychange",function(){if(document.hidden){if(G.run)tgPause();musStop()}else if(G.intro)musStart()});
  window.addEventListener("resize",function(){if(ROOT.style.display==="block")resize()});
 }
 function resize(){
@@ -129,15 +129,15 @@ function showStart(){
  PN.innerHTML='<div class="tgc"><div class="tgf"></div><h2>Faso Rush</h2><p class="tgs">Chasse au pollueur · Ouaga</p>'
  +'<p>Un citoyen vient de jeter ses ordures dans la rue. Cours, rattrape-le et fais-lui payer l’amende !</p>'
  +'<ul><li>Glisse à gauche ou à droite pour changer de voie</li><li>Glisse vers le haut pour sauter les sacs</li><li>Glisse vers le bas pour passer sous la banderole</li><li>Ramasse les cauris : chaque cauri te rapproche de lui</li></ul>'
- +'<button id="tgGo">Courir</button><p class="tgb">Record : '+fmt(best)+'</p></div>';
- document.getElementById("tgGo").onclick=intro;
+ +'<button id="tgGo">Courir</button>'+giftBtn()+'<p class="tgb">Record : '+fmt(best)+'</p></div>';
+ document.getElementById("tgGo").onclick=intro;giftInit();
 }
 function showOver(txt){
  PN.style.display="flex";
  PN.innerHTML='<div class="tgc"><div class="tgf"></div><h2>'+txt+'</h2><p class="tgs">Score : '+fmt(G.score)+'</p>'
  +'<div class="tgn"><span>Pollueurs attrapés</span><span>'+G.caught+'</span></div><div class="tgn"><span>Cauris</span><span>'+G.cauris+'</span></div>'
- +'<button id="tgGo">Rejouer</button><button class="q" id="tgQ">Quitter</button><p class="tgb">Record : '+fmt(best)+'</p></div>';
- document.getElementById("tgGo").onclick=start;document.getElementById("tgQ").onclick=close;
+ +'<button id="tgGo">Rejouer</button><button class="q" id="tgQ">Menu</button><p class="tgb">Record : '+fmt(best)+'</p></div>';
+ document.getElementById("tgGo").onclick=start;document.getElementById("tgQ").onclick=function(){close();hub()};
 }
 function start(){
  try{if(actx&&actx.resume)actx.resume()}catch(e){}
@@ -145,12 +145,12 @@ function start(){
  G={run:true,pause:false,t:0,dist:0,speed:13,score:0,cauris:0,lives:3,gap:10,lane:0,laneX:0,y:0,vy:0,slide:0,inv:0,stumble:0,shake:0,flash:0,ph:0,level:1,caught:0,
   obs:[],coins:[],dec:[],nextSp:12,nd:0,cx:0,cl:0,ct:1.5,cd:3,msg:"Rattrape le pollueur !",msgT:2.2,out:0};
  for(var z=4;z<ZMAX;z+=3){addDeco(z,-1);addDeco(z+1.5,1)}
- snd(440,.12,"triangle",.07);musStart();
+ snd(440,.12,"triangle",.07);musStart();if(takeShield())G.inv=6;
 }
 function over(txt){
  G.run=false;G.score=Math.round(G.score+G.dist*.5);
  if(G.score>best){best=G.score;try{localStorage.setItem("tg_best",String(best))}catch(e){}}
- snd(160,.4,"sawtooth",.09);musStop();showOver(txt);
+ bank(G.cauris);snd(160,.4,"sawtooth",.09);musStop();showOver(txt);
 }
 
 /* ---------- commandes ---------- */
@@ -421,6 +421,35 @@ function loop(ts){
  if(G.intro)introStep(dt);else if(G.run&&!G.pause)update(dt);else if(!G.run)G.t+=dt*.2;
  draw();
 }
+
+
+/* ---------- v5 : pause, menu, cadeau ---------- */
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,String(v))}catch(e){}return null}
+function today(){return new Date().toISOString().slice(0,10)}
+function bank(n){ls("tg_bank",(+ls("tg_bank")||0)+(n||0))}
+function takeShield(){if(ls("tg_shield")==="1"){ls("tg_shield","0");return true}return false}
+function giftBtn(){
+ var b='<p class="tgb">Banque : '+fmt(+ls("tg_bank")||0)+' cauris</p>';
+ if(ls("tg_gift")!==today())return '<button class="q" id="tgGf">🎁 Cadeau du jour</button>'+b;
+ return '<p class="tgb">🎁 Prochain cadeau demain</p>'+b}
+function giftInit(){var g=document.getElementById("tgGf");if(!g)return;
+ g.onclick=function(){ls("tg_gift",today());ls("tg_shield","1");bank(25);snd(660,.15,"triangle",.07);
+  showStart();var t=PN.querySelector(".tgb");if(t)t.textContent="🎁 +25 cauris et bouclier au prochain départ !"}}
+function tgPause(){var z=document.getElementById("tgPz");if(z)z.click()}
+function tgExtra(){
+ var s=document.createElement("style");
+ s.textContent="#tgPz{position:absolute;left:106px;top:calc(8px + env(safe-area-inset-top,0px));width:42px;height:42px;border-radius:50%;border:0;background:rgba(0,0,0,.45);color:#fff;font:900 14px sans-serif;padding:0}#tgPm{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.6);z-index:5}#tgPm .tgc button{display:block;width:100%;margin-top:10px}";
+ document.head.appendChild(s);
+ var pz=document.createElement("button");pz.id="tgPz";pz.setAttribute("aria-label","Pause");pz.innerHTML="❚❚";ROOT.appendChild(pz);
+ var pm=document.createElement("div");pm.id="tgPm";ROOT.appendChild(pm);
+ pz.onclick=function(){
+  if(!G.run||G.pause)return;G.pause=true;musStop();
+  pm.innerHTML='<div class="tgc"><h2>Pause</h2><p class="tgs">Score : '+fmt(G.score+G.dist*.5)+'</p><button id="tgRs">Reprendre</button><button class="q" id="tgRe">Recommencer</button><button class="q" id="tgMn">Menu principal</button></div>';
+  pm.style.display="flex";
+  document.getElementById("tgRs").onclick=function(){pm.style.display="none";G.pause=false;last=performance.now();musStart()};
+  document.getElementById("tgRe").onclick=function(){pm.style.display="none";start()};
+  document.getElementById("tgMn").onclick=function(){pm.style.display="none";close();hub()};
+ }}
 
 window.tooleGame={open:open,close:close};
 if(document.body)build();else document.addEventListener("DOMContentLoaded",build);
