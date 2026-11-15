@@ -15,7 +15,8 @@ d.innerHTML='<div style="background:#fff;color:#111;border-radius:16px;padding:2
 document.body.appendChild(d);
 document.getElementById('prOk').onclick=async function(){var v=document.getElementById('prIn').value.trim(),e=document.getElementById('prErr');
 if(!window.__pseudoOk(v)){e.textContent=window.__pseudoMsg;return}
-try{await api('/rest/v1/profiles?id=eq.'+me(),{method:'PATCH',headers:{Prefer:'return=minimal'},body:JSON.stringify({pseudo:v})});d.remove();busy=0;clearInterval(iv);try{toast('Pseudo enregistré')}catch(x){}try{goList()}catch(x){}}catch(x){e.textContent=(x&&x.message)||'Erreur'}}}
+try{var _av=await api('/rest/v1/rpc/pseudo_available',{method:'POST',body:JSON.stringify({p:v})});if(_av===false){e.textContent='Ce pseudo est déjà pris';return}}catch(x){}
+try{await api('/rest/v1/profiles?id=eq.'+me(),{method:'PATCH',headers:{Prefer:'return=minimal'},body:JSON.stringify({pseudo:v,must_rename:false})});d.remove();busy=0;clearInterval(iv);try{toast('Pseudo enregistré')}catch(x){}try{goList()}catch(x){}}catch(x){e.textContent=(x&&x.message)||'Erreur'}}}
 async function check(){if(busy)return;var id;try{id=me()}catch(e){return}if(!id)return;
-try{var r=await api('/rest/v1/profiles?select=pseudo&id=eq.'+id);if(r&&r[0]){var p=(r[0].pseudo||'').trim();if(!window.__pseudoOk(p)){busy=1;ov(!!p)}else clearInterval(iv)}}catch(e){}}
+try{var r=await api('/rest/v1/profiles?select=pseudo,must_rename&id=eq.'+id);if(r&&r[0]){var p=(r[0].pseudo||'').trim();if(!window.__pseudoOk(p)||r[0].must_rename){busy=1;ov(true)}else clearInterval(iv)}}catch(e){}}
 iv=setInterval(check,4000)})();
