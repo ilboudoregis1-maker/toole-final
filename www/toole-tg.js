@@ -16,6 +16,7 @@ var MARK="/storage/v1/object/voice/";
 window.fetch=async function(input,init){
 var u=typeof input==="string"?input:(input&&input.url)||"",i=u.indexOf(MARK);
 if(i>-1&&init&&init.method==="POST"&&init.body&&init.body.size){try{await up(init.body,u.slice(i+MARK.length));return new Response("{}",{status:200})}catch(e){}}
+/*__tgGetAuth*/if(u.indexOf("/functions/v1/tg?")>-1&&(!init||!init.method||init.method==="GET")){try{var hh=hdr(),ih=new Headers((init&&init.headers)||{});Object.keys(hh).forEach(function(k){if(!ih.has(k))ih.set(k,hh[k])});init=Object.assign({},init||{},{headers:ih})}catch(e){}}
 return raw(input,init)};
 var oldV=window.vUrl;
 if(typeof oldV==="function")window.vUrl=async function(path){var m=/\/(\d{13})-/.exec(path);if(m&&Number(m[1])>=CUT)return url(path,"video");return oldV(path)};
