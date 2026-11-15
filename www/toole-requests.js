@@ -56,7 +56,7 @@ var _sc=window.saveContact;
 if(typeof _sc==="function"){window.saveContact=async function(){var r=await _sc.apply(this,arguments);setTimeout(function(){refresh();listRefresh(true)},300);return r}}
 var _api=window.api;
 if(typeof _api==="function"){window.api=async function(path,opt){try{return await _api.apply(this,arguments)}catch(e){
-if(typeof path==="string"&&path.indexOf("/rest/v1/messages")===0&&opt&&opt.method==="POST"&&/accepter/i.test(e.message||"")){var b=banner();if(b){b.className="";b.innerHTML="<b>En attente</b>Cette personne doit accepter ta conversation avant que tu puisses envoyer d’autres messages."}}
+if(typeof path==="string"&&path.indexOf("/rest/v1/messages")===0&&opt&&opt.method==="POST"&&/accepter/i.test(e.message||"")){var _rc=null;try{var _bd=JSON.parse(opt.body);_rc=Array.isArray(_bd)?_bd[0].receiver:_bd.receiver}catch(x){}var _pp=P();var b=(_rc&&_pp&&_pp.id!==_rc)?null:banner();if(b){b.className="";b.innerHTML="<b>En attente</b>Cette personne doit accepter ta conversation avant que tu puisses envoyer d’autres messages."}}
 throw e}}}
 var hd=document.querySelector("#scrChat .chead");
 if(hd)new MutationObserver(function(){if(S.mask)applyHeader()}).observe(hd,{childList:true,subtree:true,attributes:true,characterData:true});
