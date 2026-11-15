@@ -47,7 +47,7 @@
   function setWall(v) {
     var k = key(); if (!k) return;
     if (v) W[k] = v; else delete W[k];
-    save(); apply();
+    save(); apply(); try{window.__wallSync&&window.__wallSync.changed(k,v)}catch(e){}
   }
   function pickPhoto() {
     var f = document.createElement("input"); f.type = "file"; f.accept = "image/*";
@@ -129,5 +129,6 @@
       b.onclick = openSheet; h.appendChild(b);
     });
   }
+  window.__wallW={get:function(){return W},put:function(k,v){if(v)W[k]=v;else delete W[k];save();apply()},key:key,cats:CATS,fr:fr};
   setInterval(function () { addBtn(); apply(); }, 700);
 })();
