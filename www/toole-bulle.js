@@ -33,11 +33,3 @@ function addRow(){
 }
 setInterval(addRow,1000);
 }catch(e){}})();
-
-/* Bulle : reception du texte de la barre native */
-(function(){try{
-if(new URLSearchParams(location.search).get("bulle")!=="1")return;
-function comp(){var s=[document.getElementById("cxSend"),document.getElementById("gSend")].filter(function(b){return b&&b.offsetParent!==null})[0];if(!s)return null;var box=s.parentElement,i=null,d=0;while(box&&d<5&&!i){i=box.querySelector("textarea,input[type=text],input:not([type]),[contenteditable=true]");if(!i)box=box.parentElement;d++}return i?{s:s,i:i,box:box}:null}
-window.tooleBubbleSend=function(x){var c=comp();if(!c)return false;if(c.i.isContentEditable)c.i.textContent=x;else{var P=c.i.tagName==="TEXTAREA"?HTMLTextAreaElement.prototype:HTMLInputElement.prototype;Object.getOwnPropertyDescriptor(P,"value").set.call(c.i,x)}c.i.dispatchEvent(new Event("input",{bubbles:true}));setTimeout(function(){c.s.click()},60);return true};
-setInterval(function(){var c=comp();if(c&&c.box&&c.box.getBoundingClientRect().height<150)c.box.style.cssText+=";visibility:hidden;position:absolute;height:0;overflow:hidden;pointer-events:none"},500);
-}catch(e){}})();

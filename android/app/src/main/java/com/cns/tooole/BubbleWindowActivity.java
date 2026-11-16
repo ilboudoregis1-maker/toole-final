@@ -22,7 +22,7 @@ public class BubbleWindowActivity extends BridgeActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         /*KB_FIX*/ try{ getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | android.view.WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM); getWindow().setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED); }catch(Throwable t){}
-        try { floating(); } catch (Throwable t) { } try { addBar(); } catch (Throwable t) { }
+        try { floating(); } catch (Throwable t) { }
         loadChat(getIntent());
     }
 
@@ -63,56 +63,5 @@ public class BubbleWindowActivity extends BridgeActivity {
         });
         decor.setClipToOutline(true);
         setFinishOnTouchOutside(true);
-    }
-
-    private void addBar() {
-        final android.webkit.WebView wv = getBridge().getWebView();
-        final android.view.ViewGroup parent = (android.view.ViewGroup) wv.getParent();
-        final float dn = getResources().getDisplayMetrics().density;
-        parent.removeView(wv);
-        android.widget.LinearLayout wrap = new android.widget.LinearLayout(this);
-        wrap.setOrientation(android.widget.LinearLayout.VERTICAL);
-        wrap.addView(wv, new android.widget.LinearLayout.LayoutParams(-1, 0, 1f));
-        android.widget.LinearLayout bar = new android.widget.LinearLayout(this);
-        bar.setOrientation(android.widget.LinearLayout.HORIZONTAL);
-        bar.setGravity(Gravity.CENTER_VERTICAL);
-        bar.setBackgroundColor(0xFFFFFFFF);
-        int p = (int) (8 * dn);
-        bar.setPadding(p, p, p, p);
-        final android.widget.EditText et = new android.widget.EditText(this);
-        et.setHint("\u00c9crire un message");
-        et.setTextSize(16);
-        et.setTextColor(0xFF0F172A);
-        et.setHintTextColor(0xFF94A3B8);
-        et.setMaxLines(4);
-        et.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE | android.text.InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-        GradientDrawable bg = new GradientDrawable();
-        bg.setColor(0xFFEEF2F7);
-        bg.setCornerRadius(22 * dn);
-        et.setBackground(bg);
-        et.setPadding((int) (16 * dn), (int) (10 * dn), (int) (16 * dn), (int) (10 * dn));
-        bar.addView(et, new android.widget.LinearLayout.LayoutParams(0, -2, 1f));
-        android.widget.TextView sd = new android.widget.TextView(this);
-        sd.setText("\u27a4");
-        sd.setTextColor(0xFFFFFFFF);
-        sd.setTextSize(20);
-        sd.setGravity(Gravity.CENTER);
-        GradientDrawable sb = new GradientDrawable();
-        sb.setShape(GradientDrawable.OVAL);
-        sb.setColor(0xFF2F6FE0);
-        sd.setBackground(sb);
-        android.widget.LinearLayout.LayoutParams sl = new android.widget.LinearLayout.LayoutParams((int) (44 * dn), (int) (44 * dn));
-        sl.leftMargin = (int) (8 * dn);
-        bar.addView(sd, sl);
-        sd.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                String t = et.getText().toString().trim();
-                if (t.length() == 0) return;
-                wv.evaluateJavascript("window.tooleBubbleSend&&window.tooleBubbleSend(" + org.json.JSONObject.quote(t) + ")", null);
-                et.setText("");
-            }
-        });
-        wrap.addView(bar, new android.widget.LinearLayout.LayoutParams(-1, -2));
-        parent.addView(wrap, new android.view.ViewGroup.LayoutParams(-1, -1));
     }
 }
