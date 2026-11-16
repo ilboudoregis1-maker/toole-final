@@ -262,3 +262,32 @@ var st=document.createElement("style");st.textContent=`
 #tvFeed .tkms span{min-width:0;overflow:hidden;text-overflow:ellipsis}
 `;document.head.appendChild(st);
 }catch(e){}})();
+/* TÕÕLé : correctifs finaux du fil Vidéos (entete, telechargement) */
+(function(){try{
+function U(s){return 'url("data:image/svg+xml,'+encodeURIComponent(s)+'")'}
+var DL="<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'><path d='M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z'/></svg>";
+var st=document.createElement("style");st.textContent=`
+#tvFeed .tvt{justify-content:flex-start!important;overflow-x:auto!important;scrollbar-width:none!important;gap:0!important}
+#tvFeed .tvt::-webkit-scrollbar{display:none}
+#tvFeed .tvt button{font-size:13px!important;padding:0 8px!important}
+#tvFeed #tvScr .tvr .tk-dw{order:3}
+#tvFeed #tvScr .tvr .tk-dw i{background-image:${U(DL)}!important}
+#tvFeed #tvScr .tvr .tk-dw span{display:none!important}
+`;document.head.appendChild(st);
+function E(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+function toast(m){var d=E("div","",m);d.style.cssText="position:fixed;left:16px;right:16px;bottom:90px;z-index:100090;padding:12px;border-radius:14px;background:#0f172a;color:#fff;text-align:center;font-size:14px";document.body.appendChild(d);setTimeout(function(){d.remove()},2600)}
+function blobOf(path){var u=null;try{u=window.tgUrl(path,"video")}catch(e){}
+var a=u?fetch(u).then(function(r){if(!r.ok)throw 0;return r.blob()}):Promise.reject(0);
+return a.catch(function(){return fetch("https://res.cloudinary.com/mydh3xtz/video/upload/toole/"+path).then(function(r){if(!r.ok)throw 0;return r.blob()})})}
+function b64(bl){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){res(String(r.result).split(",")[1])};r.onerror=rej;r.readAsDataURL(bl)})}
+function dl(it){var path=it.__p;if(!path)return;var name="TOOLE_"+Date.now()+(/webm$/.test(path)?".webm":".mp4");toast("Téléchargement…");
+blobOf(path).then(function(bl){
+var N=window.TooleNative,S=window.TooleSaver,P=window.Capacitor&&window.Capacitor.Plugins;
+if(S&&S.saveBase64)return b64(bl).then(function(d){S.saveBase64(d,name,bl.type||"video/mp4");toast("Vidéo enregistrée dans Téléchargements")});
+if(N&&N.saveVideoBase64)return b64(bl).then(function(d){N.saveVideoBase64(d,name);toast("Vidéo enregistrée dans Téléchargements")});
+if(P&&P.Filesystem)return b64(bl).then(function(d){return P.Filesystem.writeFile({path:"Download/"+name,data:d,directory:"EXTERNAL_STORAGE",recursive:true})}).then(function(){toast("Vidéo enregistrée dans Téléchargements")});
+var a=document.createElement("a");a.href=URL.createObjectURL(bl);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){a.remove()},1000);toast("Téléchargement lancé : vérifie ton dossier Téléchargements")
+}).catch(function(){toast("Téléchargement impossible pour cette vidéo")})}
+setInterval(function(){var sc=document.getElementById("tvScr");if(!sc)return;
+sc.querySelectorAll(".tvi").forEach(function(it){it.querySelectorAll(".tvr button").forEach(function(b){var i=b.querySelector("i");if(!i)return;if(/↗/.test(i.textContent)&&!b.__dw){b.__dw=1;b.classList.remove("tk-sh");b.classList.add("tk-dw");b.onclick=function(e){e.stopPropagation();dl(it)}}})})},400);
+}catch(e){}})();
