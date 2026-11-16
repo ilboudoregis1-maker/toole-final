@@ -96,7 +96,7 @@ public class BubbleHelper {
         cv.drawCircle(cx, cy, r, p);
     }
 
-    private static Bitmap compose(Context ctx, String name, Bitmap photo) {
+    static Bitmap compose(Context ctx, String name, Bitmap photo) {
         final int S = 256;
         Bitmap out = Bitmap.createBitmap(S, S, Bitmap.Config.ARGB_8888);
         Canvas cv = new Canvas(out);
@@ -212,7 +212,10 @@ public class BubbleHelper {
                 .setSmallIcon(R.drawable.ic_stat_toole).setContentTitle(title).setContentText(body)
                 .setStyle(style).setCategory(NotificationCompat.CATEGORY_MESSAGE)
                 .setPriority(NotificationCompat.PRIORITY_HIGH).setAutoCancel(true)
-                .setShortcutId(sid).setContentIntent(tapPi).setBubbleMetadata(meta);
+                .setShortcutId(sid).setContentIntent(tapPi);
+        boolean overlay = FloatingBubble.canShow(ctx);
+        if (!overlay) b.setBubbleMetadata(meta);
         nm.notify(id, b.build());
+        if (overlay) FloatingBubble.show(ctx, title, peer, group, photo);
     }
 }
