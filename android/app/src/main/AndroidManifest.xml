@@ -34,13 +34,13 @@
         <activity android:name=".BubbleChatActivity" android:exported="false"
             android:allowEmbedded="true" android:resizeableActivity="true"
             android:documentLaunchMode="always" android:label="TÕÕLé"
-            android:windowSoftInputMode="adjustResize"
+            android:windowSoftInputMode="adjustResize|stateUnchanged"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode|navigation|density"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity android:name=".BubbleWindowActivity" android:exported="false"
             android:excludeFromRecents="true" android:taskAffinity="" android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize"
+            android:windowSoftInputMode="adjustResize|stateUnchanged"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode|navigation|density"
             android:theme="@style/BubbleWindow" />
 
