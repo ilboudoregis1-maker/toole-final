@@ -45,3 +45,21 @@
 #scrDecouvrir .dc-pc{border-radius:22px;transition:transform .2s}
 #scrDecouvrir .dc-pc:active{transform:scale(.96)}
 @media (prefers-reduced-motion:reduce){#scrDecouvrir *{animation:none!important;transition:none!important}}
+
+/* TOOLE-COMPACT : Explorer plus petit et adapté */
+#scrDecouvrir .dc-hd{padding:calc(env(safe-area-inset-top,0px) + 6px) 10px 8px!important;gap:6px!important;min-height:0!important}
+#scrDecouvrir .dc-hd h1{font-size:15px!important;letter-spacing:1.5px!important}
+#scrDecouvrir .dc-hd button,#scrDecouvrir .dc-hd .ic{transform:scale(.82);transform-origin:center}
+#scrDecouvrir .dc-hd::after{width:110px!important;height:110px!important;top:-50px!important}
+#scrDecouvrir .dc-bar{padding:6px 10px 2px!important}
+#scrDecouvrir .dc-srch{padding:8px 14px 8px 38px!important;font-size:14px!important;background-position:12px center!important;background-size:17px!important}
+#scrDecouvrir .dc-seg{padding:4px 0!important;gap:4px!important}
+#scrDecouvrir .dc-seg button{padding:6px 4px!important;font-size:12.5px!important;border-radius:16px!important}
+#scrDecouvrir .dc-chips button,#scrDecouvrir .dc-tags button{padding:5px 11px!important;font-size:12px!important;border-radius:14px!important}
+#scrDecouvrir .dc-card{border-radius:18px!important;padding:10px 12px!important;margin-top:8px!important}
+#scrDecouvrir .dc-av{width:36px!important;height:36px!important;min-width:36px!important;font-size:14px!important}
+#scrDecouvrir .dc-n{font-size:14px!important}
+#scrDecouvrir .dc-t{font-size:14px!important;line-height:1.4!important}
+#scrDecouvrir .dc-tag{font-size:11.5px!important}
+#scrDecouvrir .dc-r button{padding:5px 9px!important;font-size:12px!important}
+#scrDecouvrir .dc-comp{padding:10px 12px!important}

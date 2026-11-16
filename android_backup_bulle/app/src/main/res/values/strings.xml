@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">T&#213;&#213;L&#233;</string>
+    <string name="title_activity_main">TÕÕLé</string>
+    <string name="package_name">com.cns.tooole</string>
+    <string name="custom_url_scheme">com.cns.tooole</string>
+</resources>

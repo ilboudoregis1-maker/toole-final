@@ -1,0 +1,57 @@
+package com.cns.tooole;
+
+import com.getcapacitor.BridgeActivity;
+
+public class MainActivity extends BridgeActivity {
+    // TOOLE_BARS
+    private static class BarsBg extends android.graphics.drawable.Drawable {
+        int top = 0xFFFFFFFF, bot = 0xFFFFFFFF, tH = 0;
+        final android.graphics.Paint p = new android.graphics.Paint();
+        @Override public void draw(android.graphics.Canvas c) {
+            android.graphics.Rect b = getBounds();
+            p.setColor(bot); c.drawRect(b, p);
+            p.setColor(top); c.drawRect(b.left, b.top, b.right, b.top + tH, p);
+        }
+        @Override public void setAlpha(int a) {}
+        @Override public void setColorFilter(android.graphics.ColorFilter f) {}
+        @Override public int getOpacity() { return android.graphics.PixelFormat.OPAQUE; }
+    }
+    private BarsBg tooleBg;
+    private void tooleBars() {
+        final android.view.Window w = getWindow();
+        androidx.core.view.WindowCompat.setDecorFitsSystemWindows(w, false);
+        tooleBg = new BarsBg();
+        final android.view.View root = findViewById(android.R.id.content);
+        root.setBackground(tooleBg);
+        androidx.core.view.WindowInsetsControllerCompat ic = androidx.core.view.WindowCompat.getInsetsController(w, w.getDecorView());
+        ic.setAppearanceLightStatusBars(true);
+        ic.setAppearanceLightNavigationBars(true);
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(root, new androidx.core.view.OnApplyWindowInsetsListener() {
+            @Override public androidx.core.view.WindowInsetsCompat onApplyWindowInsets(android.view.View v, androidx.core.view.WindowInsetsCompat ins) {
+                androidx.core.graphics.Insets b = ins.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars() | androidx.core.view.WindowInsetsCompat.Type.displayCutout());
+                androidx.core.graphics.Insets k = ins.getInsets(androidx.core.view.WindowInsetsCompat.Type.ime());
+                tooleBg.tH = b.top;
+                v.setPadding(b.left, b.top, b.right, Math.max(b.bottom, k.bottom));
+                v.invalidate();
+                return androidx.core.view.WindowInsetsCompat.CONSUMED;
+            }
+        });
+        getBridge().getWebView().addJavascriptInterface(new Object() {
+            @android.webkit.JavascriptInterface
+            public void set(final int top, final int bot, final boolean darkIconsTop, final boolean darkIconsBot) {
+                runOnUiThread(new Runnable() { public void run() {
+                    tooleBg.top = 0xFF000000 | top; tooleBg.bot = 0xFF000000 | bot; tooleBg.invalidateSelf();
+                    androidx.core.view.WindowInsetsControllerCompat c = androidx.core.view.WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+                    c.setAppearanceLightStatusBars(darkIconsTop);
+                    c.setAppearanceLightNavigationBars(darkIconsBot);
+                }});
+            }
+        }, "ToolBars");
+    }
+
+    @Override public void onCreate(android.os.Bundle savedInstanceState) {
+        registerPlugin(SecureScreenPlugin.class);
+        super.onCreate(savedInstanceState);
+        tooleBars();
+    }
+}
