@@ -35,15 +35,17 @@ public class MainActivity extends BridgeActivity {
         super.onPause();
     }
 
+    private static boolean askedThisRun = false;
+
     private void askOverlayOnce() {
         try {
             if (Settings.canDrawOverlays(this)) return;
-            SharedPreferences sp = getSharedPreferences("toole_bubble", MODE_PRIVATE);
-            if (sp.getBoolean("asked", false)) return;
-            sp.edit().putBoolean("asked", true).apply();
-            new AlertDialog.Builder(this)
-                .setTitle("Bulle de messages")
-                .setMessage("Autorise TÕÕLé à s'afficher par-dessus les autres applis pour voir la bulle de messages quand l'appli est fermée.")
+            if (askedThisRun) return;
+            askedThisRun = true;
+            new AlertDialog.Builder(this, android.R.style.Theme_Material_Light_Dialog_Alert)
+                .setTitle("Autoriser la bulle de messages")
+                .setMessage("Pour voir la bulle quand l'appli est fermée, TÕÕLé doit pouvoir s'afficher par-dessus les autres applis.\n\nAppuie sur « Autoriser », puis active l'interrupteur.")
+                .setCancelable(false)
                 .setPositiveButton("Autoriser", (d, w) -> startActivity(new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()))))
                 .setNegativeButton("Plus tard", null)
                 .show();

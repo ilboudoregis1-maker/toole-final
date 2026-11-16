@@ -117,7 +117,7 @@ public class BubbleHelper {
             Drawable d = ContextCompat.getDrawable(ctx, R.mipmap.ic_launcher);
             if (d != null) {
                 boolean adaptive = Build.VERSION.SDK_INT >= 26 && d instanceof AdaptiveIconDrawable;
-                int in = adaptive ? (int) (-0.15f * S) : (int) (0.17f * S);
+                int in = adaptive ? (int) (-0.2f * S) : (int) (0.03f * S);
                 cv.save();
                 Path clip = new Path();
                 clip.addCircle(c, c, c - 9, Path.Direction.CW);
