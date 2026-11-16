@@ -54,7 +54,6 @@ arr(b[1]).forEach(function(x){var p=by[x.post_id];if(p){p.lk++;if(x.user_id===me
 arr(b[2]).forEach(function(x){var p=by[x.post_id];if(p)p.cc++});
 FOK=Array.isArray(b[3]);FC={};FM={};FB={};if(FOK)b[3].forEach(function(x){FC[x.followed]=(FC[x.followed]||0)+1;if(x.follower===me)FM[x.followed]=1});
 sc.innerHTML="";
-function load(it){if(it.__ld)return;it.__ld=1;src(it.__p).then(function(u){it.__v.src=u;it.__l.remove();if(it.__act)play(it.__v)}).catch(function(){it.__l.textContent="Vidéo indisponible"})}
 var ioP=new IntersectionObserver(function(es){es.forEach(function(e){var it=e.target;if(e.isIntersecting&&e.intersectionRatio>.6){it.__act=1;load(it);if(it.__v.src)play(it.__v)}else{it.__act=0;it.__v.pause()}})},{root:sc,threshold:[0,.6]});
 var ioL=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)load(e.target)})},{root:sc,rootMargin:"100% 0px"});
 ios.push(ioP,ioL);
