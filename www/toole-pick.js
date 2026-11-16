@@ -4,8 +4,8 @@ var d=document.getElementById("__dbg");
 if(!d){d=document.createElement("div");d.id="__dbg";
 d.style.cssText="position:fixed;top:0;left:0;right:0;z-index:2147483647;"+
 "background:rgba(0,0,0,.85);color:#0f0;font:12px monospace;padding:4px;"+
-"pointer-events:none;white-space:pre-wrap";0}
-d.textContent+=m+"\n"};
+"pointer-events:none;white-space:pre-wrap";document.body.appendChild(d)}
+d.textContent+=m+"\n";clearTimeout(d._t);d._t=setTimeout(function(){d.remove()},7000)};
 function toFile(f){
 return fetch(Capacitor.convertFileSrc(f.path)).then(function(r){return r.blob()})
 .then(function(b){return new File([b],f.name||"media",{type:f.mimeType||b.type||""})})}

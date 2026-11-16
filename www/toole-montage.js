@@ -3,9 +3,9 @@
 var F=[["Normal",""],["N&B","grayscale(1) contrast(1.1)"],["Chaud","sepia(.3) saturate(1.5) hue-rotate(-12deg) brightness(1.05)"],["Froid","hue-rotate(18deg) saturate(1.2) brightness(1.05)"],["Vintage","sepia(.55) contrast(1.1) brightness(.95) saturate(1.2)"],["Contraste","contrast(1.4) saturate(1.3)"],["Vif","saturate(1.9) contrast(1.08)"],["Doux","brightness(1.1) contrast(.9) saturate(1.1)"]];
 var MAXL=180;
 function E(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
-function toast(m){var d=E("div","",m);d.style.cssText="position:fixed;left:16px;right:16px;bottom:90px;z-index:100040;padding:12px;border-radius:14px;background:#0f172a;color:#fff;font:600 14px sans-serif;text-align:center";document.body.appendChild(d);setTimeout(function(){d.remove()},3500)}
+function toast(m){var d=E("div","",m);d.style.cssText="position:fixed;left:16px;right:16px;bottom:90px;z-index:2147483600;padding:12px;border-radius:14px;background:#0f172a;color:#fff;font:600 14px sans-serif;text-align:center";document.body.appendChild(d);setTimeout(function(){d.remove()},3500)}
 function mm(s){s=Math.max(0,Math.round(s));return Math.floor(s/60)+":"+("0"+(s%60)).slice(-2)}
-var st=document.createElement("style");st.textContent="#tmEd{position:fixed;inset:0;z-index:100030;background:#0b1220;color:#fff;font-family:sans-serif;display:flex;flex-direction:column}"
+var st=document.createElement("style");st.textContent="#tmEd{position:fixed;inset:0;z-index:2147483000;background:#0b1220;color:#fff;font-family:sans-serif;display:flex;flex-direction:column}"
 +"#tmEd .h{display:flex;align-items:center;gap:10px;padding:calc(env(safe-area-inset-top,0px) + 10px) 14px 8px}#tmEd .h b{flex:1;letter-spacing:2px;font-size:15px}#tmEd .h button{border:0;background:rgba(255,255,255,.14);color:#fff;width:38px;height:38px;border-radius:50%;font-size:18px}"
 +"#tmEd .vw{flex:1;min-height:0;display:grid;place-items:center;background:#000}#tmEd video{max-width:100%;max-height:100%}"
 +"#tmEd .p{padding:10px 14px calc(env(safe-area-inset-bottom,0px) + 12px);background:#111a2e}#tmEd .lb{font-size:13px;color:#9ec5ff;margin:2px 0}"
@@ -55,10 +55,10 @@ ra.oninput=function(){A=+ra.value;if(A>B-1)A=Math.max(0,B-1);if(B-A>MAXL)B=Math.
 rb.oninput=function(){B=+rb.value;if(B<A+1)B=Math.min(D,A+1);if(B-A>MAXL)A=B-MAXL;sync();v.currentTime=Math.max(A,B-1)};
 v.ontimeupdate=function(){if(B&&v.currentTime>=B){v.currentTime=A;v.play().catch(function(){})}};
 F.forEach(function(k,i){var b=E("button",i?"":"on",k[0]);b.onclick=function(){fi=i;fl.querySelectorAll("button").forEach(function(y){y.className=""});b.className="on";v.style.filter=k[1]||"none"};fl.appendChild(b)});
-v.onloadedmetadata=function(){D=v.duration;if(!isFinite(D)||!D){toast("Montage indisponible pour cette vidéo");return end(f)}
+v.onloadedmetadata=function(){clearTimeout(wd);D=v.duration;if(!isFinite(D)||!D){toast("Montage indisponible pour cette vidéo");return end(f)}
 A=0;B=Math.min(D,MAXL);ra.min=rb.min=0;ra.max=rb.max=D;sync();if(D>MAXL)toast("Vidéo de plus de 3 min : rogne pour garder 3 min maximum");v.play().catch(function(){v.muted=true;v.play().catch(function(){})})};
 v.onerror=function(){toast("Vidéo illisible ici, envoi sans montage");end(f)};
-v.src=u;
+v.src=u;var wd=setTimeout(function(){if(!D&&o.parentNode){toast("Montage lent, envoi sans montage");end(f)}},8000);
 go.onclick=function(){if(A<.2&&B>D-.2&&!fi)return end(f);
 v.pause();ctl={abort:0};bi.style.width="0";ot.textContent="Montage en cours… garde l'écran allumé";ov.className="ov on";
 enc(f,A,B,F[fi][1],function(q){bi.style.width=Math.round(q*100)+"%";ot.textContent="Montage en cours… "+Math.round(q*100)+" % · garde l'écran allumé"},ctl).then(function(bl){end(bl)}).catch(function(e){ov.className="ov";if(e&&e.message==="abort")return v.play().catch(function(){});toast("Montage impossible ici, vidéo originale conservée");end(f)})};
