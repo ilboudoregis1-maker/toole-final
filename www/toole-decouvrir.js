@@ -154,7 +154,7 @@ function isSaved(id){return savedList().indexOf(String(id))>=0}
 function toggleSaved(id){var a=savedList(),i=a.indexOf(String(id));if(i>=0)a.splice(i,1);else a.unshift(String(id));lsSet(KX("saved"),a);return i<0}
 function markSeen(iso){var c=lsGet(KX("seen"),null);if(!c||iso>c)lsSet(KX("seen"),iso)}
 /* ---------- Utilitaires média ---------- */
-function upload(bl){var p=uid()+"/dc_"+Date.now()+".jpg";if(!window.tgUpload)return Promise.reject(1);return window.tgUpload(bl,p).then(function(){return "tg:"+p})}
+function upload(bl){var p=uid()+"/dc_"+Date.now()+".jpg";window.__e2ePlain=window.__e2ePlain||{};window.__e2ePlain[p]=1;if(!window.tgUpload)return Promise.reject(1);return window.tgUpload(bl,p).then(function(){return "tg:"+p})}
 function setImg(im,v){if(!v)return;if(v.indexOf("tg:")!==0){im.src=v;return}var p=v.slice(3);fetch(window.tgUrl(p,"image")).then(function(r){if(!r.ok)throw 1;return r.blob()}).then(function(b){im.src=window.URL.createObjectURL(b)}).catch(function(){im.alt="Photo indisponible"})}
 function shrink(f){return new Promise(function(ok,ko){var rd=new FileReader();rd.onerror=ko;rd.onload=function(){var i=new Image();i.onerror=ko;i.onload=function(){var s=Math.min(1,1080/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=Math.round(i.width*s);c.height=Math.round(i.height*s);c.getContext("2d").drawImage(i,0,0,c.width,c.height);c.toBlob(function(b){b?ok(b):ko()},"image/jpeg",.72)};i.src=rd.result};rd.readAsDataURL(f)})}
 function viewer(src){var v=el("div","dc-view"),i=el("img");i.src=src;v.appendChild(i);v.onclick=function(){v.remove()};document.body.appendChild(v)}
@@ -241,7 +241,7 @@ var d=el("div","dc-tags");if(Q.charAt(0)==="#"){var x=el("button","on","✕ "+Q)
 a.forEach(function(k){if(k===Q.toLowerCase())return;var b=el("button","",k);b.appendChild(el("small","",String(C[k])));b.onclick=function(){setQ(k)};d.appendChild(b)});return d}
 function cloudV(f,p){var fd=new FormData();fd.append("file",f);fd.append("upload_preset","TÕÕLé-app");fd.append("public_id","toole/"+p.replace(/\.[^.\/]+$/,""));return fetch("https://api.cloudinary.com/v1_1/mydh3xtz/video/upload",{method:"POST",body:fd}).then(function(r){if(!r.ok)throw new Error("Envoi impossible ("+r.status+")")})}
 function uploadV(f){var p=uid()+"/"+Date.now()+"-"+Math.random().toString(36).slice(2)+(/webm/.test(f.type)?".webm":".mp4");
-var tg=window.tgUpload?window.tgUpload(f,p):Promise.reject(1);
+window.__e2ePlain=window.__e2ePlain||{};window.__e2ePlain[p]=1;var tg=window.tgUpload?window.tgUpload(f,p):Promise.reject(1);
 return tg.then(function(){return "tgv:"+p}).catch(function(){
 return api("media",{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify({owner:uid(),kind:"video",path:p,public_id:"toole/"+p,resource_type:"video",size_bytes:f.size,duration_s:null,expires_at:new Date(Date.now()+15*864e5).toISOString()})}).then(function(r){
 if(r&&!Array.isArray(r)&&(r.code||r.message))throw new Error("Limite atteinte : 2 vidéos par 24 h");

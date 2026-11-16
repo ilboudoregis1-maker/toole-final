@@ -91,7 +91,7 @@ else q=api(base);
 q.then(function(r){if(r===null)return none("Les abonnements ne sont pas encore activés.");if(!Array.isArray(r))return none("La section vidéos n'est pas encore activée (lance le SQL dans Supabase).");if(!r.length)return none(mode==="follow"?"Abonne-toi à des personnes pour voir leurs vidéos ici.":mode==="liked"?"Tu n'as encore aimé aucune vidéo.":"Aucune vidéo pour l'instant. Appuie sur + pour envoyer la première !");render(r,sc)})}
 function cloudV(f,p){var fd=new FormData();fd.append("file",f);fd.append("upload_preset","TÕÕLé-app");fd.append("public_id","toole/"+p.replace(/\.[^.\/]+$/,""));return fetch("https://api.cloudinary.com/v1_1/mydh3xtz/video/upload",{method:"POST",body:fd}).then(function(r){if(!r.ok)throw new Error("Envoi impossible ("+r.status+")")})}
 function upV(f){var me=uid(),p=me+"/"+Date.now()+"-"+Math.random().toString(36).slice(2)+(/webm/.test(f.type)?".webm":".mp4");
-var tg=window.tgUpload?window.tgUpload(f,p):Promise.reject(1);
+window.__e2ePlain=window.__e2ePlain||{};window.__e2ePlain[p]=1;var tg=window.tgUpload?window.tgUpload(f,p):Promise.reject(1);
 return tg.then(function(){return p}).catch(function(){
 return api("media",{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify({owner:me,kind:"video",path:p,public_id:"toole/"+p,resource_type:"video",size_bytes:f.size,duration_s:null,expires_at:new Date(Date.now()+15*864e5).toISOString()})}).then(function(r){
 if(r&&!Array.isArray(r)&&(r.code||r.message))throw new Error("Limite atteinte : 2 vidéos par 24 h");
