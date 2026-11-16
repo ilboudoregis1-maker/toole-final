@@ -1,5 +1,5 @@
 (function(){
-var D=window.__dbg=window.__dbg||function(m){
+var D=window.__dbg2=function(m){
 var d=document.getElementById("__dbg");
 if(!d){d=document.createElement("div");d.id="__dbg";
 d.style.cssText="position:fixed;top:0;left:0;right:0;z-index:2147483647;"+
