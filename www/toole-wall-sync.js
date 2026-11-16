@@ -37,7 +37,7 @@ function doPush(p){
   API("/rest/v1/chat_walls?on_conflict=conv_key",{method:"POST",
     headers:{Prefer:"resolution=merge-duplicates,return=minimal"},
     body:JSON.stringify({conv_key:p.c,wall:p.v,wall_name:nameOf(p.v),updated_by:me_(),updated_at:new Date().toISOString()})
-  }).catch(function(){});
+  }).then(function(r){if(r&&!Array.isArray(r)&&(r.code||r.message))wtoast("Fond non synchronis\u00e9 : "+(r.message||r.code))}).catch(function(e){wtoast("Fond non synchronis\u00e9 : "+(e&&e.message||e))});
 }
 function doMsg(m){
   getName(function(n){
@@ -78,14 +78,17 @@ function scan1(c){
   busyScan=false;
 }
 function scan(){
-  ["chat","gMsgs"].forEach(function(id){
+  ["chat","gMsgs","cxMsgs"].forEach(function(id){
     var c=document.getElementById(id);if(!c)return;
     if(!c.__ws){c.__ws=1;new MutationObserver(function(){scan1(c)}).observe(c,{childList:true,subtree:true,characterData:true})}
     scan1(c);
   });
 }
+var n5=0;
+function wtoast(m){try{var d=document.createElement("div");d.textContent=m;d.style.cssText="position:fixed;left:16px;right:16px;bottom:90px;z-index:100090;padding:12px;border-radius:14px;background:#0f172a;color:#fff;text-align:center;font-size:13px";document.body.appendChild(d);setTimeout(function(){d.remove()},5000)}catch(e){}}
+function scanPrev(){try{var ex=["chat","gMsgs","cxMsgs"].map(function(i){return document.getElementById(i)});var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,null),n,L=[];while((n=w.nextNode())){if(n.nodeValue.indexOf(MARK)>=0)L.push(n)}L.forEach(function(n){for(var i=0;i<ex.length;i++){if(ex[i]&&ex[i].contains(n))return}n.nodeValue=n.nodeValue.replace(/\[\[wall\]\][^\n]*/,"Fond de conversation modifi\u00e9")})}catch(e){}}
 setInterval(function(){
-  scan();
+  scan();if(++n5>=5){n5=0;scanPrev()}
   if(!myName&&me_())getName(function(){});
   var h=H();if(!h)return;
   var now=Date.now();
