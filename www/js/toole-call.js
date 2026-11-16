@@ -159,7 +159,7 @@ function exportRec(r){
  var f=new File([r.blob],name,{type:r.type});
  function fallback(){
   if(navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:name}).catch(function(){});return}
-  var u=URL.createObjectURL(r.blob),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000);
+  var u=window.URL.createObjectURL(r.blob),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){window.URL.revokeObjectURL(u)},4000);
  }
  var P=window.Capacitor&&window.Capacitor.Plugins;
  if(P&&P.Filesystem&&P.Filesystem.writeFile){
@@ -179,7 +179,7 @@ async function openList(){
   var it=document.createElement('div');it.className='ro-i';
   var b=document.createElement('b');b.textContent=r.peer;it.appendChild(b);
   var sm=document.createElement('small');sm.textContent=new Date(r.date).toLocaleString()+' · '+fmt(r.dur);it.appendChild(sm);
-  var au=document.createElement('audio');au.controls=true;au.preload='none';au.src=URL.createObjectURL(r.blob);it.appendChild(au);
+  var au=document.createElement('audio');au.controls=true;au.preload='none';au.src=window.URL.createObjectURL(r.blob);it.appendChild(au);
   var ac=document.createElement('div');ac.className='ro-a';
   var ex=document.createElement('button');ex.textContent='Exporter';ex.onclick=function(){exportRec(r)};
   var de=document.createElement('button');de.className='d';de.textContent='Supprimer';de.onclick=function(){delRec(r.id).then(openList)};

@@ -53,13 +53,13 @@
     var f = document.createElement("input"); f.type = "file"; f.accept = "image/*";
     f.onchange = function () {
       var file = f.files && f.files[0]; if (!file) return;
-      var u = URL.createObjectURL(file), im = new Image();
+      var u = window.URL.createObjectURL(file), im = new Image();
       im.onload = function () {
         var s = Math.min(1, 900 / Math.max(im.width, im.height));
         var c = document.createElement("canvas");
         c.width = Math.round(im.width * s); c.height = Math.round(im.height * s);
         c.getContext("2d").drawImage(im, 0, 0, c.width, c.height);
-        URL.revokeObjectURL(u);
+        window.URL.revokeObjectURL(u);
         setWall("url(" + c.toDataURL("image/jpeg", 0.6) + ")");
       };
       im.src = u;

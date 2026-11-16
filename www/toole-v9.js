@@ -27,7 +27,7 @@ var o=document.createElement("div");o.id="v9P";
 var c=document.createElement("div");c.className="c";
 var h=document.createElement("div");h.className="h";
 var th=document.createElement("div");th.className="th";var tu=null;
-if(/^image\//.test(r.type||"")){tu=URL.createObjectURL(r.blob);th.style.backgroundImage='url("'+tu+'")'}else th.textContent="\uD83C\uDFAC";
+if(/^image\//.test(r.type||"")){tu=window.URL.createObjectURL(r.blob);th.style.backgroundImage='url("'+tu+'")'}else th.textContent="\uD83C\uDFAC";
 var w=document.createElement("div");
 var t=document.createElement("div");t.className="t";
 var n=document.createElement("div");n.className="n";n.textContent=r.name+" \u00B7 "+kb(r.size);
@@ -39,7 +39,7 @@ else{t.textContent="T\u00E9l\u00E9chargement lanc\u00E9";m.textContent="Non v\u0
 m.style.whiteSpace="pre-line";
 w.appendChild(t);w.appendChild(n);h.appendChild(th);h.appendChild(w);c.appendChild(h);c.appendChild(m);
 var row=document.createElement("div");row.className="r";
-function close(){if(tu){try{URL.revokeObjectURL(tu)}catch(e){}}o.remove()}
+function close(){if(tu){try{window.URL.revokeObjectURL(tu)}catch(e){}}o.remove()}
 var P=window.Capacitor&&window.Capacitor.Plugins,SH=P&&P.Share;
 if(SH&&r.uri){var sb=document.createElement("button");sb.type="button";sb.textContent="Partager";sb.onclick=function(){SH.share({title:r.name,url:r.uri}).catch(function(){T("Partage impossible")})};row.appendChild(sb)}
 var ok=document.createElement("button");ok.type="button";ok.className="p";ok.textContent="OK";ok.onclick=close;row.appendChild(ok);
@@ -65,7 +65,7 @@ if(!SH)throw e;
 var w=await FS.writeFile({path:name,data:d,directory:"CACHE"});
 await SH.share({title:name,url:w.uri});r.mode="shared";r.path=""}
 }else{
-var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;
+var a=document.createElement("a");a.href=window.URL.createObjectURL(b);a.download=name;
 document.body.appendChild(a);a.click();a.remove();r.mode="browser";r.path=""}
 logDl(r);proof(r);
 btn.classList.remove("busy");btn.classList.add("ok");btn.innerHTML=CK+"<span>T\u00E9l\u00E9charg\u00E9</span>";

@@ -55,7 +55,7 @@
       for (var k of ["p", "v", "m"]) {
         if (typeof d[k] !== "string") continue;
         var r = await c.match(d[k]); if (!r) continue;
-        d[k] = URL.createObjectURL(await r.blob()); n++;
+        d[k] = window.URL.createObjectURL(await r.blob()); n++;
       }
       if (!n) return st;
       return Object.assign({}, st, { body: p.cap + MK + JSON.stringify(d) });
