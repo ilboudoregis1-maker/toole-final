@@ -134,10 +134,10 @@ public class FloatingBubble {
         String p = curP, g = curG, n = curN;
         String key = g != null ? "g" + g : (p != null ? "p" + p : "n" + n);
         try {
-            Intent it = new Intent(c, BubbleChatActivity.class).setAction(Intent.ACTION_VIEW)
+            Intent it = new Intent(c, BubbleWindowActivity.class).setAction(Intent.ACTION_VIEW)
                     .setData(Uri.parse("toole://bulle/" + Uri.encode(key)))
                     .putExtra("p", p).putExtra("g", g).putExtra("n", n)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             c.startActivity(it);
         } catch (Throwable t) { }
         try {

@@ -28,7 +28,25 @@ c.innerHTML='<div style="width:56px;height:56px;border-radius:18px;margin:0 auto
 bg.appendChild(c);D.body.appendChild(bg);
 D.getElementById("tmoLater").onclick=function(){later=Date.now();bg.remove()};
 D.getElementById("tmoGo").onclick=function(){var url=u.url||"";if(!OK.test(url)){say(L("Lien de mise à jour invalide","Invalid update link"));return}
-later=Date.now();bg.remove();say(L("Téléchargement…","Downloading…"));location.href=url}}
+if(window.TooleNative&&typeof window.TooleNative.installUpdate==="function"){tmoNative(c,bg,url);return}later=Date.now();bg.remove();say(L("Téléchargement…","Downloading…"));location.href=url}}
+function tmoNative(c,bg,url){
+var d=dark(),N=window.TooleNative;
+var st=D.createElement("style");st.textContent="@keyframes tmoSpin{to{transform:rotate(360deg)}}";D.head.appendChild(st);
+c.innerHTML='<div style="text-align:center;padding:14px 0 6px">'
++'<div id="tmoRing" style="width:72px;height:72px;margin:0 auto 14px;border-radius:50%;border:6px solid '+(d?"rgba(255,255,255,.15)":"#dfeafb")+';border-top-color:#2f6fe0;animation:tmoSpin 1s linear infinite"></div>'
++'<div id="tmoTxt" style="font-size:17px;font-weight:800">'+L("Téléchargement de la mise à jour…","Downloading the update…")+'</div>'
++'<div id="tmoPct" style="margin-top:6px;font-size:15px;font-weight:700;color:#2f6fe0"></div>'
++'<div id="tmoHint" style="margin:10px 8px 0;font-size:13px;opacity:.75"></div>'
++'<button id="tmoRetry" style="display:none;width:100%;margin-top:14px;border:0;border-radius:14px;padding:13px;font-size:15px;font-weight:800;color:#fff;background:linear-gradient(135deg,#00c2e0,#2f6fe0)"></button></div>';
+function g(i){return D.getElementById(i)}
+function retry(label){var b=g("tmoRetry");if(!b)return;b.textContent=label;b.style.display="block";b.onclick=function(){b.style.display="none";var t=g("tmoTxt"),h=g("tmoHint");if(t)t.textContent=L("Téléchargement de la mise à jour…","Downloading the update…");if(h)h.textContent="";start()}}
+function start(){var r=g("tmoRing");if(r)r.style.animationPlayState="running";try{N.installUpdate(url)}catch(e){window.__tmoState("error")}}
+window.__tmoProgress=function(p){var e=g("tmoPct");if(e)e.textContent=p+" %"};
+window.__tmoState=function(s){var t=g("tmoTxt"),h=g("tmoHint"),r=g("tmoRing"),p=g("tmoPct");
+if(s==="perm"){if(t)t.textContent=L("Autorisation nécessaire","Permission needed");if(h)h.textContent=L("Active « Autoriser depuis cette source », reviens ici, puis appuie sur Réessayer.","Enable “Allow from this source”, come back, then tap Retry.");if(r)r.style.animationPlayState="paused";retry(L("Réessayer","Retry"))}
+else if(s==="install"){if(t)t.textContent=L("Installation…","Installing…");if(p)p.textContent="100 %";if(h)h.textContent=L("Appuie sur « Mettre à jour » sur l’écran qui s’affiche, puis sur « Ouvrir ».","Tap “Update” on the screen that appears, then “Open”.")}
+else{if(t)t.textContent=L("Le téléchargement a échoué","Download failed");if(h)h.textContent=L("Vérifie ta connexion.","Check your connection.");if(r)r.style.animationPlayState="paused";retry(L("Réessayer","Retry"))}};
+start()}
 function check(){if(busy||!logged()||typeof window.api!=="function"||D.getElementById("tmoBox"))return;
 if(later&&Date.now()-later<2*3600*1000)return;busy=1;
 Promise.all([info(),window.api("/rest/v1/rpc/latest_app_update",{method:"POST",body:"{}"})]).then(function(r){var i=r[0],u=r[1];if(Array.isArray(u))u=u[0];

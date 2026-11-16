@@ -98,35 +98,32 @@ public class BubbleHelper {
 
     static Bitmap compose(Context ctx, String name, Bitmap photo) {
         final int S = 256;
+        final float c = S / 2f;
         Bitmap out = Bitmap.createBitmap(S, S, Bitmap.Config.ARGB_8888);
         Canvas cv = new Canvas(out);
         Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
-        float c = S / 2f;
 
-        // disque blanc avec un fin anneau gris
-        p.setStyle(Paint.Style.FILL);
-        p.setColor(Color.WHITE);
-        cv.drawCircle(c, c, c - 4, p);
+        // couche du logo, puis decoupe en cercle parfait : tout le reste reste transparent
+        Bitmap layer = Bitmap.createBitmap(S, S, Bitmap.Config.ARGB_8888);
+        Canvas lc = new Canvas(layer);
+        lc.drawColor(Color.WHITE);
+        try {
+            Drawable d0 = ContextCompat.getDrawable(ctx, R.mipmap.ic_launcher);
+            if (d0 != null) {
+                Drawable d = d0.mutate();
+                boolean adaptive = Build.VERSION.SDK_INT >= 26 && d instanceof AdaptiveIconDrawable;
+                int in = adaptive ? (int) (-0.2f * S) : (int) (0.03f * S);
+                d.setBounds(in, in, S - in, S - in);
+                d.draw(lc);
+            }
+        } catch (Throwable t) { }
+        Paint sp = new Paint(Paint.ANTI_ALIAS_FLAG);
+        sp.setShader(new BitmapShader(layer, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));
+        cv.drawCircle(c, c, c - 4, sp);
         p.setStyle(Paint.Style.STROKE);
         p.setStrokeWidth(6);
         p.setColor(0xFFDDE3EE);
         cv.drawCircle(c, c, c - 4, p);
-
-        // logo inscrit dans le cercle
-        try {
-            Drawable d = ContextCompat.getDrawable(ctx, R.mipmap.ic_launcher);
-            if (d != null) {
-                boolean adaptive = Build.VERSION.SDK_INT >= 26 && d instanceof AdaptiveIconDrawable;
-                int in = adaptive ? (int) (-0.2f * S) : (int) (0.03f * S);
-                cv.save();
-                Path clip = new Path();
-                clip.addCircle(c, c, c - 9, Path.Direction.CW);
-                cv.clipPath(clip);
-                d.setBounds(in, in, S - in, S - in);
-                d.draw(cv);
-                cv.restore();
-            }
-        } catch (Throwable t) { }
 
         // badge de la personne (photo ou initiales), en bas a gauche
         float br = S * 0.21f;

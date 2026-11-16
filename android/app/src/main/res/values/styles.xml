@@ -26,4 +26,13 @@
         <item name="android:windowBackground">#ffffff</item>
     </style>
     <style name="TooleAlert" parent="Theme.AppCompat.Light.Dialog.Alert"><item name="android:textColorPrimary">#0B1B2B</item><item name="android:textColorSecondary">#0B1B2B</item><item name="colorAccent">#0A7CFF</item></style>
+    <style name="BubbleWindow" parent="Theme.AppCompat.Light.Dialog">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+    </style>
 </resources>
