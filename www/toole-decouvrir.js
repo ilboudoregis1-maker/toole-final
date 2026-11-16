@@ -261,7 +261,7 @@ window.__vc=window.__vc||{};if(window.__vm==null)window.__vm=true;
 function vget(p){return window.__vc[p]||(window.__vc[p]=vsrc(p))}
 function vplay(v){var q=v.play();if(q&&q.catch)q.catch(function(){v.muted=true;v.play().catch(function(){})})}
 function vio(){if(window.__vio)return window.__vio;
-var pre=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&e.target.__ld)e.target.__ld()})},{rootMargin:"900px 0px"});
+var pre=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&e.target.__ld)e.target.__ld()})},{rootMargin:"400px 0px"});
 var act=new IntersectionObserver(function(es){es.forEach(function(e){if(e.target.__go)e.target.__go(e.isIntersecting&&e.intersectionRatio>=.6)})},{threshold:[0,.6,1]});
 return window.__vio={pre:pre,act:act}}
 function vsnd(){var s=el("button","dc-snd");s.type="button";
@@ -279,11 +279,11 @@ b.innerHTML='<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';w.appendC
 function go(f){on=f;if(!v){if(f&&!w.__bad)load();return}v.__on=f;
 if(f){document.querySelectorAll("video").forEach(function(x){if(x!==v)x.pause()});vplay(v)}else v.pause()}
 function load(){if(busy||v)return;busy=true;w.classList.add("ld");
-vget(path).then(function(u){busy=false;build(u)}).catch(function(){busy=false;w.classList.remove("ld");toast("Vidéo indisponible")})}
+(window.__vd===false?vget(path):Promise.resolve(window.tgUrl(path,"video"))).then(function(u){busy=false;build(u)}).catch(function(){busy=false;w.classList.remove("ld");toast("Vidéo indisponible")})}
 function build(u){v=el("video");v.setAttribute("playsinline","");v.setAttribute("webkit-playsinline","");
 v.loop=true;v.muted=window.__vm;v.preload="auto";v.__on=on;
 v.style.cssText="width:100%;max-height:520px;display:block;background:#000;object-fit:contain";
-v.onerror=function(){bad(u)};v.src=u;
+v.onerror=function(){if(u.indexOf("/functions/v1/tg?")>-1){window.__vd=false;v=null;busy=false;load()}else bad(u)};v.src=u;
 var bar=el("div");bar.style.cssText="position:absolute;left:0;bottom:0;height:3px;width:0;background:#00c2e0;z-index:2";
 v.ontimeupdate=function(){if(v.duration)bar.style.width=(v.currentTime/v.duration*100)+"%"};
 v.onclick=function(){if(v.paused)vplay(v);else v.pause()};
