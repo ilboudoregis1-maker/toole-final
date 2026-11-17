@@ -63,7 +63,7 @@ function blobWay(){if(tried++)return;clearTimeout(tm);it.__l.textContent="Charge
 Promise.resolve().then(function(){return fetch(window.tgUrl(path,"video"))}).then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.blob()}).then(function(bl){v.onerror=function(){bad("lecture "+(v.error?v.error.code:"?"))};v.onloadeddata=ok;v.src=window.URL.createObjectURL(new Blob([bl],{type:ty}))}).catch(function(e){v.onerror=function(){bad(e&&e.message?e.message:"")};v.onloadeddata=ok;v.src="https://res.cloudinary.com/mydh3xtz/video/upload/toole/"+path})}
 v.onloadeddata=ok;v.onerror=blobWay;
 try{v.src=window.tgUrl(path,"video")}catch(e){return blobWay()}
-tm=setTimeout(function(){if(v.readyState<1)blobWay()},15000)}
+tm=setTimeout(function(){if(v.readyState<1)blobWay()},4000)}
 var ioP=new IntersectionObserver(function(es){es.forEach(function(e){var it=e.target;if(e.isIntersecting&&e.intersectionRatio>.6){it.__act=1;load(it);if(it.__v.src&&it.__v.readyState>=2)play(it.__v)}else{it.__act=0;it.__v.pause()}})},{root:sc,threshold:[0,.6]});
 var ioL=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)load(e.target)})},{root:sc,rootMargin:"100% 0px"});
 ios.push(ioP,ioL);
@@ -75,7 +75,7 @@ lk.onclick=function(e){e.stopPropagation();doLike()};cm.onclick=function(e){e.st
 var OF=/^t[õo][õo]l[ée]$/i.test(nm(p.author));if(!OF){rail.appendChild(lk);rail.appendChild(cm)}
 if(p.author===me){var dl=E("button");dl.innerHTML="<i>🗑</i><span></span>";dl.onclick=function(e){e.stopPropagation();if(confirm("Supprimer cette vidéo ?")){api("videos?id=eq."+p.id,{method:"DELETE"});v.pause();it.remove()}};rail.appendChild(dl)}
 upd();
-var c=E("div","tvc"),n=E("div","tvn");n.appendChild(E("b","","@"+nm(p.author)));if(OF){var bg=E("span");bg.innerHTML="<svg viewBox='0 0 24 24' width='16' height='16' style='flex:none;margin-left:4px;vertical-align:-3px'><circle cx='12' cy='12' r='11' fill='#1d9bf0'/><path d='M7 12.5l3.3 3.3L17 9' fill='none' stroke='#fff' stroke-width='2.4'/></svg>";n.appendChild(bg)}
+var c=E("div","tvc"),n=E("div","tvn");n.appendChild(E("b","","@"+nm(p.author)));
 if(FOK){var fc=E("span","tvfc"),fb=E("button","tvf");(FB[p.author]=FB[p.author]||[]).push({b:fb,c:fc});if(p.author!==me&&!OF){fb.onclick=function(e){e.stopPropagation();follow(p.author)};n.appendChild(fb)}n.appendChild(fc);fbRefresh(p.author)}
 c.appendChild(n);c.appendChild(E("div","tvx",p.caption||""));
 it.appendChild(v);it.appendChild(l);it.appendChild(rail);it.appendChild(c);

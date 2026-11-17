@@ -1959,3 +1959,16 @@ html body #scrDecouvrir .dc-list .dc-card:has(.dc-go2) .dc-top{min-width:0}
 html body #scrDecouvrir .dc-list .dc-card:has(.dc-go2) .dc-n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 html body #scrDecouvrir .dc-list .dc-card:has(.dc-go2) button{white-space:nowrap;padding:8px 12px!important;font-size:12.5px!important}
 
+/* ===== Correctifs : Explorer + vidéos officielles ===== */
+#scrDecouvrir .dc-hd{padding-bottom:8px!important}
+#scrDecouvrir .dc-bar{padding:6px 12px 2px!important}
+#scrDecouvrir .dc-srch{padding:8px 14px!important}
+#scrDecouvrir .dc-seg{padding:4px 0 2px!important;gap:4px!important}
+#scrDecouvrir .dc-seg button{padding:6px 2px!important;font-size:13px!important}
+#scrDecouvrir .dc-r{display:flex!important;flex-wrap:nowrap!important;gap:4px!important;overflow:hidden!important}
+#scrDecouvrir .dc-r button{flex:1 1 0!important;min-width:0!important;padding:6px 2px!important;font-size:12px!important}
+#scrDecouvrir .dc-r button.sh{flex:0 0 38px!important;width:38px!important}
+#scrDecouvrir .dc-sum{flex-wrap:wrap!important;gap:4px 10px!important}
+#scrDecouvrir .dc-sum *{white-space:nowrap!important}
+.tvoff .tkpl,.tvoff .tv3f,.tvoff .tvf,.tvoff .tvfc{display:none!important}
+.dc-card.tvoff .dc-r,.dc-card.tvoff .dc-sum,.dc-card.tvoff .dc-comp{display:none!important}
