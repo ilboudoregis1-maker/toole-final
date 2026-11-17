@@ -1,0 +1,1 @@
+(function(){function chk(){document.querySelectorAll('video').forEach(function(v){if(v.paused)return;var r=v.getBoundingClientRect(),h=window.innerHeight,vis=Math.min(r.bottom,h)-Math.max(r.top,0);if(document.hidden||r.width===0||vis<r.height*0.5){try{v.pause()}catch(e){}}})}setInterval(chk,400);document.addEventListener('visibilitychange',chk)})();

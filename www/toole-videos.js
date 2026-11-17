@@ -76,7 +76,7 @@ var OF=/^t[õo][õo]l[ée]$/i.test(nm(p.author));if(!OF){rail.appendChild(lk);ra
 if(p.author===me){var dl=E("button");dl.innerHTML="<i>🗑</i><span></span>";dl.onclick=function(e){e.stopPropagation();if(confirm("Supprimer cette vidéo ?")){api("videos?id=eq."+p.id,{method:"DELETE"});v.pause();it.remove()}};rail.appendChild(dl)}
 upd();
 var c=E("div","tvc"),n=E("div","tvn");n.appendChild(E("b","","@"+nm(p.author)));if(OF){var bg=E("span");bg.innerHTML="<svg viewBox='0 0 24 24' width='16' height='16' style='flex:none;margin-left:4px;vertical-align:-3px'><circle cx='12' cy='12' r='11' fill='#1d9bf0'/><path d='M7 12.5l3.3 3.3L17 9' fill='none' stroke='#fff' stroke-width='2.4'/></svg>";n.appendChild(bg)}
-if(FOK){var fc=E("span","tvfc"),fb=E("button","tvf");(FB[p.author]=FB[p.author]||[]).push({b:fb,c:fc});if(p.author!==me){fb.onclick=function(e){e.stopPropagation();follow(p.author)};n.appendChild(fb)}n.appendChild(fc);fbRefresh(p.author)}
+if(FOK){var fc=E("span","tvfc"),fb=E("button","tvf");(FB[p.author]=FB[p.author]||[]).push({b:fb,c:fc});if(p.author!==me&&!OF){fb.onclick=function(e){e.stopPropagation();follow(p.author)};n.appendChild(fb)}n.appendChild(fc);fbRefresh(p.author)}
 c.appendChild(n);c.appendChild(E("div","tvx",p.caption||""));
 it.appendChild(v);it.appendChild(l);it.appendChild(rail);it.appendChild(c);
 it.__v=v;it.__l=l;it.__p=p.path;
