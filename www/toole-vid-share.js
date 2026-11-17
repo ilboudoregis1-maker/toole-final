@@ -27,7 +27,7 @@ var o=E("div");o.id="tv3sh";o.onclick=function(e){if(e.target===o)o.remove()};
 var b=E("div","tv3b"),q=E("input","tv3q"),l=E("div","tv3li");q.type="search";q.placeholder="Rechercher un pseudo";
 b.appendChild(E("div","tv3t","Envoyer à"));b.appendChild(q);b.appendChild(l);o.appendChild(b);document.body.appendChild(o);
 function paint(r){l.innerHTML="";if(!r.length)l.appendChild(E("div","tv3e","Aucun résultat"));
-r.forEach(function(p){if(p.id===me())return;var row=E("button","tv3r");row.appendChild(E("span","tv3ra",(p.pseudo||"?").charAt(0).toUpperCase()));row.appendChild(E("span","","@"+(p.pseudo||"")));row.onclick=function(){o.remove();go(p,txt)};l.appendChild(row)})}
+var C=window.__tvCert||{};r.sort(function(x,y){return (C[(y.pseudo||"").toLowerCase()]?1:0)-(C[(x.pseudo||"").toLowerCase()]?1:0)});r.forEach(function(p){if(p.id===me())return;var row=E("button","tv3r");row.appendChild(E("span","tv3ra",(p.pseudo||"?").charAt(0).toUpperCase()));row.appendChild(E("span","","@"+(p.pseudo||"")));if(C[(p.pseudo||"").toLowerCase()]){var sb=E("span");sb.innerHTML=window.__tvSeal?window.__tvSeal():"";row.appendChild(sb)}row.onclick=function(){o.remove();go(p,txt)};l.appendChild(row)})}
 var tm;q.oninput=function(){clearTimeout(tm);tm=setTimeout(function(){find(q.value.trim()).then(paint)},300)};
 find("").then(paint)}
 var IC='<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><path d="M14 4l7 7-7 7v-4c-6 0-9.5 1.5-12 5 .8-6.500 4.500-10 12-10V4z"/></svg>';
