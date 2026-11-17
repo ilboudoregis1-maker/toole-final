@@ -1972,3 +1972,10 @@ html body #scrDecouvrir .dc-list .dc-card:has(.dc-go2) button{white-space:nowrap
 #scrDecouvrir .dc-sum *{white-space:nowrap!important}
 .tvoff .tkpl,.tvoff .tv3f,.tvoff .tvf,.tvoff .tvfc{display:none!important}
 .dc-card.tvoff .dc-r,.dc-card.tvoff .dc-sum,.dc-card.tvoff .dc-comp{display:none!important}
+/* ===== Correctif : éditeurs de stickers ===== */
+.tsed{overflow-y:auto!important;-webkit-overflow-scrolling:touch;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 30px)!important}
+.tsed>*{flex:none!important}
+.tsed>div:first-child{display:flex!important;flex-wrap:nowrap!important;align-items:center!important;gap:8px!important;padding:calc(env(safe-area-inset-top,0px) + 10px) 12px 8px!important}
+.tsed>div:first-child b{flex:1 1 auto!important;min-width:0!important;font-size:13px!important;letter-spacing:.05em!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+.tsed>div:first-child .tsstab{flex:0 0 auto!important;width:auto!important;min-width:0!important;padding:9px 16px!important;white-space:nowrap!important}
+.tsed>div:first-child button:first-child{flex:0 0 auto!important;width:auto!important}
