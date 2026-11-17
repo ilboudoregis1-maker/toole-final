@@ -38,6 +38,7 @@ var its=[].slice.call(sc.querySelectorAll(":scope>.tvi"));if(!its.length||its.so
 var key=its.map(function(i){return i.__p}).join();if(sc.__oc===key)return;sc.__oc=key;
 var ok=function(i){return CERT[i.__n]},a=its.filter(ok),b=its.filter(function(i){return !ok(i)});
 if(a.length)a.concat(b).forEach(function(i){sc.appendChild(i)})}
+function stx(){var t=document.getElementById("stTxt");if(t&&!t.__m){t.__m=1;if(window.__tvMax&&window.__tvMax()>18){t.maxLength=1000;t.placeholder="Écris ton statut (1000 caractères max)"}}}
 function top(){var h=document.querySelector("#tvFeed .tvh");if(h&&!h.querySelector(".tv3l")){var l=E("div","tv3l");l.innerHTML="<b>TÕÕLé</b>"+FL;h.insertBefore(l,h.querySelector(".tvt"))}}
 function fit(v){var w=v.videoWidth,h=v.videoHeight;if(w&&h)v.style.setProperty("object-fit",h/w>=1.5?"cover":"contain","important")}
 function card(it){var c=it.querySelector(".tvc"),nb=c&&c.querySelector(".tvn b");if(!c||!nb)return;it.__c=1;
@@ -48,5 +49,5 @@ if((it.__p||"").split("/")[0]!==me()){var b=E("button","tv3f","+ S'abonner");b.o
 c.insertBefore(h,c.firstChild)}
 function kill(it){it.querySelectorAll(".tvr button").forEach(function(b){if(!b.classList.contains("tv3s")&&/Partager/i.test(b.textContent))b.remove()})}
 function sync(it){if(it.__v&&!it.__v.firstChild&&CERT[it.__n])it.__v.innerHTML=gs();if(!it.__b)return;var pl=it.querySelector(".tkpl");if(!pl)return;var t=getComputedStyle(pl).display==="none"?"Abonné ✓":"+ S'abonner";if(it.__b.textContent!==t)it.__b.textContent=t}
-setInterval(function(){top();document.querySelectorAll("#tvScr .tvi").forEach(function(it){var v=it.querySelector("video");if(v&&!v.__f){v.__f=1;v.addEventListener("loadedmetadata",function(){fit(v)});fit(v)}if(!it.__c)card(it);sync(it);kill(it)});order()},800);
+setInterval(function(){top();document.querySelectorAll("#tvScr .tvi").forEach(function(it){var v=it.querySelector("video");if(v&&!v.__f){v.__f=1;v.addEventListener("loadedmetadata",function(){fit(v)});fit(v)}if(!it.__c)card(it);sync(it);kill(it)});order();stx()},800);
 })();
