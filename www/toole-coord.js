@@ -119,7 +119,7 @@
     var m = document.getElementById("msgI"), err = "", ck = document.getElementById("ick");
     if (g("iem").replace(/\D/g, "").length < 6) err = "Entre ton numéro de téléphone (ex. +226 70 12 34 56).";
     else if (g("ipw").length < 6) err = "Mot de passe trop court : 6 caractères minimum.";
-    else if (g("ips").length < 3) err = "Choisis un pseudo d'au moins 3 caractères.";
+    else if (!g("ips")) err = "Entre ton prénom."; else if (g("inom") === "" && document.getElementById("inom")) err = "Entre ton nom.";
     else if (ck && !ck.checked) err = "Coche la case « J'accepte les conditions » pour créer ton compte.";
     if (err) { e.preventDefault(); e.stopImmediatePropagation(); if (m) m.textContent = err; }
   }, true);
