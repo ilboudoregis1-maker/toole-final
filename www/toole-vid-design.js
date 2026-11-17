@@ -30,7 +30,7 @@ window.__tvSeal=gs;
 function hd(){var s=null;try{s=JSON.parse(localStorage.getItem("toole_session"))}catch(e){}return{apikey:KEY,Authorization:"Bearer "+((s&&s.access_token)||KEY),"Content-Type":"application/json"}}
 function load(){fetch(SB+"/rest/v1/rpc/certified_pseudos",{method:"POST",headers:hd(),body:"{}"}).then(function(r){return r.json()}).then(function(a){if(!Array.isArray(a))return;Object.keys(CERT).forEach(function(k){delete CERT[k]});a.forEach(function(p){CERT[String(p).trim().toLowerCase()]=1})}).catch(function(){});
 var m=me();if(m)fetch(SB+"/rest/v1/profiles?select=certified&id=eq."+m,{headers:hd()}).then(function(r){return r.json()}).then(function(r){MINE=!!(r&&r[0]&&r[0].certified)}).catch(function(){})}
-window.__tvMax=function(){return MINE?50:18};
+window.__tvMax=function(){return MINE?50:18};window.__tvDur=function(){return MINE?60:30};
 load();setInterval(load,60000);
 function order(){var sc=document.getElementById("tvScr");if(!sc||sc.scrollTop>4||!Object.keys(CERT).length)return;
 var on=document.querySelector("#tvFeed .tvt button.on");if(!on||!/Pour toi/i.test(on.textContent))return;
