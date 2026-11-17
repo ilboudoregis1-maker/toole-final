@@ -43,7 +43,7 @@ function top(){var h=document.querySelector("#tvFeed .tvh");if(h&&!h.querySelect
 function fit(v){var w=v.videoWidth,h=v.videoHeight;if(w&&h)v.style.setProperty("object-fit",h/w>=1.5?"cover":"contain","important")}
 function card(it){var c=it.querySelector(".tvc"),nb=c&&c.querySelector(".tvn b");if(!c||!nb)return;it.__c=1;
 var name=nb.textContent.replace("@","").trim(),h=E("div","tv3h"),av=E("div","tv3a",(name||"?").charAt(0).toUpperCase()),nm=E("span","tv3n",name);
-var op=function(){nb.click()};av.onclick=op;nm.onclick=op;h.appendChild(av);h.appendChild(nm);
+var op=function(){if(/Officiel/.test(it.textContent||""))return;nb.click()};av.onclick=op;nm.onclick=op;h.appendChild(av);h.appendChild(nm);
 var bd=E("span","tv3v");h.appendChild(bd);it.__v=bd;it.__n=name.toLowerCase();
 if((it.__p||"").split("/")[0]!==me()){var b=E("button","tv3f","+ S'abonner");b.onclick=function(e){e.stopPropagation();var pl=it.querySelector(".tkpl");if(pl)pl.click();else op()};h.appendChild(b);it.__b=b}
 c.insertBefore(h,c.firstChild)}
