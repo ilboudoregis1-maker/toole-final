@@ -19,6 +19,16 @@ public class MainActivity extends BridgeActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         try { getBridge().getWebView().setBackgroundColor(Color.WHITE); } catch (Exception e) { }
         try { getBridge().getWebView().addJavascriptInterface(new NativeBridge(this), "TooleNative"); } catch (Exception e) { }
+        try { getBridge().getWebView().addJavascriptInterface(new ContactsBridge(this), "TooleContacts"); } catch (Exception e) { }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int rc, String[] perms, int[] res) {
+        super.onRequestPermissionsResult(rc, perms, res);
+        if (rc == 7731) {
+            final boolean ok = res.length > 0 && res[0] == android.content.pm.PackageManager.PERMISSION_GRANTED;
+            runOnUiThread(() -> { try { getBridge().getWebView().evaluateJavascript("window.__tcPerm&&window.__tcPerm(" + ok + ")", null); } catch (Exception e) { } });
+        }
     }
 
     @Override
