@@ -38,7 +38,7 @@ var its=[].slice.call(sc.querySelectorAll(":scope>.tvi"));if(!its.length||its.so
 var key=its.map(function(i){return i.__p}).join();if(sc.__oc===key)return;sc.__oc=key;
 var ok=function(i){return CERT[i.__n]},a=its.filter(ok),b=its.filter(function(i){return !ok(i)});
 if(a.length)a.concat(b).forEach(function(i){sc.appendChild(i)})}
-function stx(){var t=document.getElementById("stTxt");if(t&&!t.__m){t.__m=1;if(window.__tvMax&&window.__tvMax()>18){t.maxLength=1000;t.placeholder="Écris ton statut (1000 caractères max)"}}}
+function stx(){var t=document.getElementById("stTxt");if(t&&!t.__m&&window.__tvMax&&window.__tvMax()>18){t.__m=1;t.maxLength=1000;t.placeholder="Écris ton statut (1000 caractères max)";t.oninput=function(){var c=document.getElementById("stCnt");if(c)c.textContent=t.value.length+"/1000"};t.oninput()}}
 function top(){var h=document.querySelector("#tvFeed .tvh");if(h&&!h.querySelector(".tv3l")){var l=E("div","tv3l");l.innerHTML="<b>TÕÕLé</b>"+FL;h.insertBefore(l,h.querySelector(".tvt"))}}
 function fit(v){var w=v.videoWidth,h=v.videoHeight;if(w&&h)v.style.setProperty("object-fit",h/w>=1.5?"cover":"contain","important")}
 function card(it){var c=it.querySelector(".tvc"),nb=c&&c.querySelector(".tvn b");if(!c||!nb)return;it.__c=1;
