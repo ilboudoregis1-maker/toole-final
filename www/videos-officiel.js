@@ -97,7 +97,7 @@
   function run() {
     if (busy) return;
     busy = true;
-    requestAnimationFrame(function () { busy = false; try { fix(); } catch (e) {} });
+    setTimeout(function () { busy = false; try { fix(); } catch (e) {} }, 1500);
   }
   new MutationObserver(run).observe(document.body, { childList: true, subtree: true });
   run();

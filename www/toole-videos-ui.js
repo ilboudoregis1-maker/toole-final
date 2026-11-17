@@ -107,7 +107,7 @@ var pb=E("div","tkb"),bi=E("i");pb.appendChild(bi);it.appendChild(pb);
 v.addEventListener("timeupdate",function(){bi.style.width=(v.currentTime/(v.duration||1)*100)+"%"});
 v.addEventListener("loadedmetadata",function(){it.classList.toggle("fit",v.videoWidth>v.videoHeight*1.15)});
 var lt=0;it.addEventListener("click",function(e){var t=Date.now();if(t-lt<320){var r=it.getBoundingClientRect(),h=E("div","tkh","❤️");h.style.left=(e.clientX-r.left)+"px";h.style.top=(e.clientY-r.top)+"px";it.appendChild(h);setTimeout(function(){h.remove()},900);lt=0}else lt=t})}
-setInterval(function(){var sc=document.getElementById("tvScr");if(!sc)return;sc.querySelectorAll(".tvi").forEach(function(it){if(!it.__tk)enh(it);var l=it.querySelector(".tvl");if(l)l.classList.toggle("tkerr",/^Vid\u00e9o indisponible/.test(l.textContent));if(it.__pl){var fb=it.querySelector(".tvf");it.__pl.style.display=(fb&&!/\bon\b/.test(fb.className))?"block":"none"}})},400);
+setInterval(function(){var sc=document.getElementById("tvScr");if(!sc)return;sc.querySelectorAll(".tvi").forEach(function(it){if(!it.__tk)enh(it);var l=it.querySelector(".tvl");if(l)l.classList.toggle("tkerr",/^Vid\u00e9o indisponible/.test(l.textContent));if(it.__pl){var fb=it.querySelector(".tvf");it.__pl.style.display=(fb&&!/\bon\b/.test(fb.className))?"block":"none"}})},1200);
 }catch(e){}})();
 /* TÕÕLé : Vidéos high-tech (icônes SVG, abonnés, amis qui ont aimé) */
 (function(){try{
@@ -198,7 +198,7 @@ var pb=feed.querySelector(".tvh .tvp");if(pb&&!pb.__ic){pb.__ic=1;pb.innerHTML=I
 var pbk=feed.querySelector("#tkProf .tpb button");if(pbk&&!pbk.__ic){pbk.__ic=1;pbk.innerHTML=IC.back}
 var vx=feed.querySelector("#tkVw .tkvx");if(vx&&!vx.__ic){vx.__ic=1;vx.innerHTML=IC.close}
 var fresh=[];feed.querySelectorAll("#tvScr .tvi").forEach(function(it){if(!it.__tk2){if(!it.__p||!it.querySelector(".tvr"))return;setup(it);fresh.push(it)}state(it)});
-if(fresh.length)social(fresh)},400);
+if(fresh.length)social(fresh)},1200);
 }catch(e){}})();
 /* TÕÕLé : fil Vidéos, style reference (icones nues, texte simple, disque musique) */
 (function(){try{
@@ -231,7 +231,7 @@ var ms=E("div","tkms");ms.innerHTML=NOTE;ms.appendChild(E("span","","Son origina
 var d=E("div","tkdisc");d.innerHTML=NOTE;rail.appendChild(d)}
 setInterval(function(){var sc=document.getElementById("tvScr");if(!sc)return;
 sc.querySelectorAll(".tvi").forEach(function(it){if(!it.__tk3&&it.querySelector(".tk-lk,.tka,.tvr button"))setup(it);
-it.querySelectorAll(".tk-lk span,.tk-cm span").forEach(function(s){var t=s.textContent;if(/^\d+$/.test(t)&&+t>=1000)s.textContent=K(+t)})})},500);
+it.querySelectorAll(".tk-lk span,.tk-cm span").forEach(function(s){var t=s.textContent;if(/^\d+$/.test(t)&&+t>=1000)s.textContent=K(+t)})})},1500);
 }catch(e){}})();
 /* TÕÕLé : mise en page finale du fil Vidéos (prioritaire) */
 (function(){try{
@@ -289,5 +289,5 @@ if(P&&P.Filesystem)return b64(bl).then(function(d){return P.Filesystem.writeFile
 var a=document.createElement("a");a.href=URL.createObjectURL(bl);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){a.remove()},1000);toast("Téléchargement lancé : vérifie ton dossier Téléchargements")
 }).catch(function(){toast("Téléchargement impossible pour cette vidéo")})}
 setInterval(function(){var sc=document.getElementById("tvScr");if(!sc)return;
-sc.querySelectorAll(".tvi").forEach(function(it){it.querySelectorAll(".tvr button").forEach(function(b){var i=b.querySelector("i");if(!i)return;if(/↗/.test(i.textContent)&&!b.__dw){b.__dw=1;b.classList.remove("tk-sh");b.classList.add("tk-dw");b.onclick=function(e){e.stopPropagation();dl(it)}}})})},400);
+sc.querySelectorAll(".tvi").forEach(function(it){it.querySelectorAll(".tvr button").forEach(function(b){var i=b.querySelector("i");if(!i)return;if(/↗/.test(i.textContent)&&!b.__dw){b.__dw=1;b.classList.remove("tk-sh");b.classList.add("tk-dw");b.onclick=function(e){e.stopPropagation();dl(it)}}})})},1200);
 }catch(e){}})();

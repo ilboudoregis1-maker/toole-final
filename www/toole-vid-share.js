@@ -34,5 +34,5 @@ var IC='<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff
 function add(it){var rail=it.querySelector(".tvr");if(!rail||it.__sh)return;it.__sh=1;
 var b=E("button","tv3s");b.setAttribute("aria-label","Partager");b.innerHTML="<i>"+IC+"</i><span>Partager</span>";
 b.onclick=function(e){e.stopPropagation();sheet(it)};rail.insertBefore(b,rail.querySelector(".tkdisc"))}
-setInterval(function(){document.querySelectorAll("#tvScr .tvi").forEach(add)},500);
+setInterval(function(){document.querySelectorAll("#tvScr .tvi").forEach(add)},1200);
 })();
