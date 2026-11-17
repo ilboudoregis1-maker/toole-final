@@ -8,10 +8,10 @@ window.__pseudoOk=function(p){p=(p||"").trim();
  return p.split(/[ _.'-]+/).every(function(w){
   var l=(w.match(/\p{L}/gu)||[]).length;
   return l<3||/[aeiouyàâäéèêëîïôöùûüœ]/i.test(w)})};
-window.__pseudoMsg="Pseudo invalide : utilise un vrai prénom ou nom lisible (ex : Awa, Ibrahim O.)";
+window.__pseudoMsg="Nom d’utilisateur invalide : utilise un vrai prénom ou nom lisible (ex : Awa, Ibrahim O.)";
 function ov(bad){var d=document.createElement('div');d.id='pseudoReq';
 d.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;padding:20px';
-d.innerHTML='<div style="background:#fff;color:#111;border-radius:16px;padding:20px;max-width:360px;width:100%"><h3>'+(bad?'Change ton pseudo':'Choisis ton pseudo')+'</h3><p>'+(bad?'Ton pseudo actuel n’est pas valide. ':'')+'Utilise ton vrai prénom ou nom, lisible par tes contacts (3 à 20 caractères).</p><input id="prIn" maxlength="20" placeholder="Ton pseudo" style="width:100%;padding:12px;border:1px solid #ccc;border-radius:10px;box-sizing:border-box"><p id="prErr" style="color:#b91c1c;min-height:18px"></p><button id="prOk" style="width:100%;padding:12px;border:0;border-radius:10px;background:#2f6fe0;color:#fff;font-weight:600">Valider</button></div>';
+d.innerHTML='<div style="background:#fff;color:#111;border-radius:16px;padding:20px;max-width:360px;width:100%"><h3>'+(bad?'Change ton nom d’utilisateur':'Choisis ton nom d’utilisateur')+'</h3><p>'+(bad?'Ton pseudo actuel n’est pas valide. ':'')+'Utilise ton vrai prénom ou nom, lisible par tes contacts (3 à 20 caractères).</p><input id="prIn" maxlength="20" placeholder="Ton pseudo" style="width:100%;padding:12px;border:1px solid #ccc;border-radius:10px;box-sizing:border-box"><p id="prErr" style="color:#b91c1c;min-height:18px"></p><button id="prOk" style="width:100%;padding:12px;border:0;border-radius:10px;background:#2f6fe0;color:#fff;font-weight:600">Valider</button></div>';
 document.body.appendChild(d);
 document.getElementById('prOk').onclick=async function(){var v=document.getElementById('prIn').value.trim(),e=document.getElementById('prErr');
 if(!window.__pseudoOk(v)){e.textContent=window.__pseudoMsg;return}

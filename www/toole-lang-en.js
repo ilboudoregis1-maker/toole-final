@@ -5,7 +5,7 @@ window.TOOLE_LANG.en={dict:{
 "Spécial": "Special",
 "Appui long sur un message, puis Copier. Le texte est alors dans le presse-papiers.": "Long-press a message, then Copy. The text is now on the clipboard.",
 "Chargement": "Loading",
-"Chercher le pseudo «": "Search for username «",
+"Chercher le nom d’utilisateur «": "Search for username «",
 "Vocal limité à 5 minutes": "Voice message limited to 60 seconds",
 "écouté ailleurs": "played elsewhere",
 "Numéro de téléphone": "Phone number",
