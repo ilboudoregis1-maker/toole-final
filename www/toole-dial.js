@@ -4,12 +4,11 @@
   if (window.__tdial) return; window.__tdial = 1;
   var KEYD = "toole_dial", DEF = "226", PH_INS = "Numéro (+226 70 12 34 56)";
   function ls(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
-  function dial() { var d = ls(KEYD); return d && /^\d{1,4}$/.test(d) ? d : DEF; }
+  function dial() { return DEF; }
   function flag(c) { try { return String.fromCodePoint(127397 + c.charCodeAt(0), 127397 + c.charCodeAt(1)); } catch (e) { return "🌍"; } }
   function pays() {
     var L = (window.VF_PAYS || []).slice();
-    if (!L.length) L = [{ c: "BF", n: "Burkina Faso", d: "226" }, { c: "CI", n: "Côte d'Ivoire", d: "225" }, { c: "ML", n: "Mali", d: "223" },
-      { c: "SN", n: "Sénégal", d: "221" }, { c: "FR", n: "France", d: "33" }, { c: "US", n: "États-Unis", d: "1" }];
+    if (!L.length) L = [{ c: "BF", n: "Burkina Faso", d: "226" }];
     return L.sort(function (a, b) { return a.c === "BF" ? -1 : b.c === "BF" ? 1 : a.n.localeCompare(b.n, "fr"); });
   }
   function cur() {
@@ -24,14 +23,9 @@
 
   /* ---------- règle de conversion numéro -> identifiant ---------- */
   window.ph2e = function (v) {
-    var raw = String(v || "").trim(), intl = /^(\+|00)/.test(raw), d = raw.replace(/[^0-9]/g, "");
-    if (/^00/.test(raw)) d = d.replace(/^00/, "");
-    if (!intl) {
-      var dl = dial();
-      if (dl === DEF) { if (d.length === 8) d = DEF + d; }
-      else if (!(d.indexOf(dl) === 0 && d.length >= dl.length + 8)) d = dl + d.replace(/^0+/, "");
-    }
-    if (d.length < 8) throw new Error("Numéro invalide");
+    var d = String(v || "").replace(/[^0-9]/g, "").replace(/^00/, "");
+    if (/^\d{8}$/.test(d)) d = DEF + d;
+    if (!/^226\d{8}$/.test(d)) throw new Error("Numéro du Burkina Faso uniquement (+226 XX XX XX XX)");
     return d + "@phone.tooole.app";
   };
 

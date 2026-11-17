@@ -63,11 +63,11 @@ function blobWay(){if(tried++)return;clearTimeout(tm);it.__l.textContent="Charge
 Promise.resolve().then(function(){return fetch(window.tgUrl(path,"video"))}).then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.blob()}).then(function(bl){v.onerror=function(){bad("lecture "+(v.error?v.error.code:"?"))};v.onloadeddata=ok;v.src=window.URL.createObjectURL(new Blob([bl],{type:ty}))}).catch(function(e){v.onerror=function(){bad(e&&e.message?e.message:"")};v.onloadeddata=ok;v.src="https://res.cloudinary.com/mydh3xtz/video/upload/toole/"+path})}
 v.onloadeddata=ok;v.onerror=blobWay;
 try{v.src=window.tgUrl(path,"video")}catch(e){return blobWay()}
-tm=setTimeout(function(){if(v.readyState<1)blobWay()},4000)}
+tm=setTimeout(function(){if(v.readyState<1)blobWay()},12000)}
 var ioP=new IntersectionObserver(function(es){es.forEach(function(e){var it=e.target;if(e.isIntersecting&&e.intersectionRatio>.6){it.__act=1;load(it);if(it.__v.src&&it.__v.readyState>=2)play(it.__v)}else{it.__act=0;it.__v.pause()}})},{root:sc,threshold:[0,.6]});
-var ioL=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)load(e.target)})},{root:sc,rootMargin:"100% 0px"});
+var ioL=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)load(e.target)})},{root:sc,rootMargin:"150% 0px"});
 ios.push(ioP,ioL);
-list.forEach(function(p){var it=E("div","tvi"),v=E("video"),l=E("div","tvl","Chargement…");v.setAttribute("playsinline","");v.setAttribute("webkit-playsinline","");v.loop=true;v.preload="metadata";v.poster="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+list.forEach(function(p){var it=E("div","tvi"),v=E("video"),l=E("div","tvl","Chargement…");v.setAttribute("playsinline","");v.setAttribute("webkit-playsinline","");v.loop=true;v.preload="auto";v.poster="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 var rail=E("div","tvr"),lk=E("button"),cm=E("button");lk.innerHTML="<i></i><span></span>";cm.innerHTML="<i>💬</i><span></span>";
 function upd(){lk.firstChild.textContent=p.me?"❤️":"🤍";lk.lastChild.textContent=p.lk;cm.lastChild.textContent=p.cc}
 function doLike(){if(!me)return toast("Connecte-toi");if(p.me){p.me=false;p.lk=Math.max(0,p.lk-1);api("video_likes?video_id=eq."+p.id+"&user_id=eq."+me,{method:"DELETE"})}else{p.me=true;p.lk++;api("video_likes",{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify({video_id:p.id,user_id:me})})}upd()}

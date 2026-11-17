@@ -261,7 +261,7 @@ window.__vc=window.__vc||{};if(window.__vm==null)window.__vm=true;
 function vget(p){return window.__vc[p]||(window.__vc[p]=vsrc(p))}
 function vplay(v){var q=v.play();if(q&&q.catch)q.catch(function(){v.muted=true;v.play().catch(function(){})})}
 function vio(){if(window.__vio)return window.__vio;
-var pre=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&e.target.__ld)e.target.__ld()})},{rootMargin:"400px 0px"});
+var pre=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&e.target.__ld)e.target.__ld()})},{rootMargin:"800px 0px"});
 var act=new IntersectionObserver(function(es){es.forEach(function(e){if(e.target.__go)e.target.__go(e.isIntersecting&&e.intersectionRatio>=.6)})},{threshold:[0,.6,1]});
 return window.__vio={pre:pre,act:act}}
 function vsnd(){var s=el("button","dc-snd");s.type="button";
