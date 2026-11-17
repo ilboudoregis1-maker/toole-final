@@ -4,7 +4,7 @@ on:
     branches: [main, nopush, test-compression]
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -34,3 +34,5 @@ jobs:
           name: TOOLE-aab-${{ github.ref_name }}
           path: android/app/build/outputs/bundle/release/*.aab
           retention-days: 2
+      - run: gh release create "toole-${{ github.run_number }}" android/app/build/outputs/apk/release/*.apk --title "TOOLE build ${{ github.run_number }}" --notes "${{ github.sha }}" --prerelease
+        env: { GH_TOKEN: "${{ github.token }}" }
