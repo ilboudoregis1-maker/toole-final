@@ -135,8 +135,7 @@ const me=()=>{const s=sess();return s&&s.user?s.user.id:null};
 const err=(id,t)=>{$(id).textContent=t};
 const initials=p=>(p||"?").slice(0,2).toUpperCase();
 let _rfP=null;
-function _rfOnce(){
- if(_rfP)return _rfP;
+function _rfOnce(){ if(_rfP)return _rfP; try{const s0=sess();if(s0&&s0.access_token&&s0.refresh_token&&Date.now()-(window.__rfNeed||0)>60000){const ex=JSON.parse(atob(s0.access_token.split(".")[1].replace(/-/g,"+").replace(/_/g,"/"))).exp;if(ex&&ex*1000-Date.now()>300000)return Promise.resolve(s0)}}catch(e){}
  const p=(async()=>{
   for(let k=0;k<3;k++){
    const s=sess();
@@ -163,12 +162,12 @@ async function api(path,opt={}){
  if(typeof path==="string"&&path.indexOf("grant_type=refresh_token")>-1)return _rfOnce();
  return _api0(path,opt);
 }
-async function _api0(path,opt={}){const s=sess();const h={"Content-Type":"application/json",apikey:KEY};if(s&&s.access_token)h.Authorization="Bearer "+s.access_token;const r=await fetch(URL+path,{...opt,headers:{...h,...(opt.headers||{})}});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.msg||j.message||j.error_description||"Erreur");return j}
+async function _api0(path,opt={}){const s=sess();const h={"Content-Type":"application/json",apikey:KEY};if(s&&s.access_token&&!/^\/auth\/v1\/(token|signup)/.test(path))h.Authorization="Bearer "+s.access_token;/*__sess2*/const r=await fetch(URL+path,{...opt,headers:{...h,...(opt.headers||{})}});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.msg||j.message||j.error_description||"Erreur");return j}
 function screen(n){document.body.classList.toggle("nolog",["scrWelcome","scrInscr","scrLogin"].includes(n));["scrWelcome","scrInscr","scrLogin","scrList","scrChat","scrProfil","scrParam","scrGroupes","scrStatuts"].forEach(x=>$(x).classList.toggle("hide",x!==n))}
 
 function logout(){localStorage.removeItem("toole_session");peer=null;$("chat").innerHTML="";$("recent").innerHTML="";$("txt").value="";screen("scrWelcome")}
 
-async function login(){err("msg","");try{const j=await api("/auth/v1/token?grant_type=password",{method:"POST",body:JSON.stringify({email:ph2e($("em").value),password:$("pw").value})});localStorage.setItem("toole_session",JSON.stringify(j));goList()}catch(e){err("msg",e.message)}}
+async function login(){err("msg","");try{localStorage.removeItem("toole_session");const j=await api("/auth/v1/token?grant_type=password",{method:"POST",body:JSON.stringify({email:ph2e($("em").value),password:$("pw").value})});localStorage.setItem("toole_session",JSON.stringify(j));goList()}catch(e){err("msg",e.message)}}
 function ph2e(v){let d=v.replace(/[^0-9]/g,"");if(d.length===8)d="226"+d;if(d.length<8)throw new Error("Numéro invalide");return d+"@phone.tooole.app"}
 async function signup(){err("msg","");try{const pseudo=$("ps").value.trim().replace(/\s+/g," ");if(window.__pseudoOk&&!window.__pseudoOk(pseudo))throw new Error(window.__pseudoMsg);const _d=$("em").value.replace(/\D/g,"").replace(/^00/,"");/*__bfOnly*/if(!(/^226\d{8}$/.test(_d)||/^\d{8}$/.test(_d)))throw new Error("Numéro du Burkina Faso uniquement (+226 XX XX XX XX)");const email=ph2e($("em").value),password=$("pw").value;/*__pseuDup*/try{const _a=await api("/rest/v1/rpc/pseudo_available",{method:"POST",body:JSON.stringify({p:pseudo})});if(_a===false)throw new Error("Ce pseudo est déjà pris")}catch(e){if(e.message==="Ce pseudo est déjà pris")throw e}/*__signup2*/const _login=()=>api("/auth/v1/token?grant_type=password",{method:"POST",body:JSON.stringify({email,password})});let j,rec=false;try{j=await api("/auth/v1/signup",{method:"POST",body:JSON.stringify({email,password})})}catch(e){if(/already|registered|exists/i.test(e.message)){rec=true;try{j=await _login()}catch(x){throw new Error("Ce numéro a déjà un compte. Touche « Déjà un compte ? Se connecter ».")}}else throw e}if(!j.access_token){try{j=await _login()}catch(x){throw new Error("Compte créé. Connecte-toi.")}}localStorage.setItem("toole_session",JSON.stringify(j));try{let has=false;if(rec){const r=await api("/rest/v1/profiles?select=pseudo&id=eq."+j.user.id);has=!!(r&&r[0]&&r[0].pseudo)}if(!has)await api("/rest/v1/profiles?on_conflict=id",{method:"POST",headers:{Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({id:j.user.id,pseudo})})}catch(e){localStorage.removeItem("toole_session");throw e}goList()}catch(e){err("msg",e.message)}}
 
@@ -423,7 +422,7 @@ async function boot(){const s=sess();
 if(!s||!s.user){showOnly("scrWelcome");removeSplash();return}
 showOnly("scrList");removeSplash();
 const rc=document.getElementById("recent");if(rc)rc.innerHTML='<div class="sx-s" style="padding:14px;color:#667">Chargement…</div>';
-try{const j=await Promise.race([api("/auth/v1/token?grant_type=refresh_token",{method:"POST",body:JSON.stringify({refresh_token:s.refresh_token})}),new Promise((_,rej)=>setTimeout(()=>rej(new Error("timeout")),4000))]);localStorage.setItem("toole_session",JSON.stringify(j))}catch(e){if(/invalid|refresh|expired|JWT|400|401/i.test(e.message)){logout();return}}
+try{const j=await Promise.race([api("/auth/v1/token?grant_type=refresh_token",{method:"POST",body:JSON.stringify({refresh_token:s.refresh_token})}),new Promise((_,rej)=>setTimeout(()=>rej(new Error("timeout")),4000))]);localStorage.setItem("toole_session",JSON.stringify(j))}catch(e){if(/invalid refresh token|refresh token not found|already used|session_not_found|invalid_grant|refresh_token_not_found/i.test(e.message)){logout();return}}
 goList()}
 function removeSplash(){const sp=document.getElementById("splash");if(sp)sp.remove()}
 function confirmLogout(){const sh=sheetEl('<div class="sht">Voulez-vous vraiment vous déconnecter ?</div><button id="lgYes" style="background:#b00020">Oui, me déconnecter</button><button class="sa cc" onclick="closeSheet()">Annuler</button>');sh.querySelector("#lgYes").onclick=()=>{closeSheet();logout()}}
@@ -431,7 +430,7 @@ const _os=openSettings;openSettings=function(){_os();const b=document.getElement
 document.getElementById("pfOut").onclick=confirmLogout;
 
 const _apiBase=api;
-api=async function(path,opt){try{return await _apiBase(path,opt)}catch(e){if(!/JWT|expired|401/i.test(e.message)||path.indexOf("/auth/v1/token")>-1)throw e;const s=sess();if(!s||!s.refresh_token){logout();throw e}try{const j=await _apiBase("/auth/v1/token?grant_type=refresh_token",{method:"POST",body:JSON.stringify({refresh_token:s.refresh_token})});localStorage.setItem("toole_session",JSON.stringify(j))}catch(x){if(/invalid|refresh|expired|JWT|400|401/i.test(x.message))logout();throw x}return _apiBase(path,opt)}};
+api=async function(path,opt){try{return await _apiBase(path,opt)}catch(e){if(!/JWT|expired|401/i.test(e.message)||path.indexOf("/auth/v1/token")>-1)throw e;window.__rfNeed=Date.now();const s=sess();if(!s||!s.refresh_token){logout();throw e}try{const j=await _apiBase("/auth/v1/token?grant_type=refresh_token",{method:"POST",body:JSON.stringify({refresh_token:s.refresh_token})});localStorage.setItem("toole_session",JSON.stringify(j))}catch(x){if(/invalid|refresh|expired|JWT|400|401/i.test(x.message))logout();throw x}return _apiBase(path,opt)}};
 
 const _cxBefore=canixReply;
 canixReply=function(t){const q=t.toLowerCase().trim();
