@@ -30,6 +30,8 @@
 
   /* statut texte : 1000 caractères pour les certifiés (le champ #tsW est en dur à 280) */
   function tick() {
+    var c = D.getElementById("tsT");   /* légende d'un statut vidéo/photo : 200 en dur */
+    if (c && MINE && c.maxLength !== 1000) c.maxLength = 1000;
     var w = D.getElementById("tsW"); if (!w) return;
     var max = MINE ? 1000 : 280, p = D.getElementById("tsP");
     if (w.maxLength !== max) w.maxLength = max;

@@ -39,7 +39,7 @@ window.openComposer=function(){
 var ov=document.createElement("div");ov.style.cssText="position:fixed;inset:0;z-index:99996;background:rgba(0,40,60,.45);display:flex;align-items:flex-end";
 ov.onclick=function(e){if(e.target===ov)ov.remove()};
 var sh=document.createElement("div");sh.style.cssText="width:100%;background:#fff;border-top:4px solid #00a8c8;border-radius:22px 22px 0 0;padding:16px 16px 26px;color:#0b2a3a";
-sh.innerHTML='<div style="font:800 15px \'Exo 2\',sans-serif;letter-spacing:.14em;color:#0097a7">NOUVEAU STATUT</div><button class="tsc" id="cV"><i>🎬</i><span>Vidéo<small>30 secondes max, rognage, musique, stickers</small></span></button><button class="tsc" id="cP"><i>🖼</i><span>Photo + son<small>15 secondes avec la musique de ton téléphone</small></span></button><button class="tsc" id="cT"><i>✍️</i><span>Texte<small>Un message sur fond de couleur</small></span></button>';
+sh.innerHTML='<div style="font:800 15px \'Exo 2\',sans-serif;letter-spacing:.14em;color:#0097a7">NOUVEAU STATUT</div><button class="tsc" id="cV"><i>🎬</i><span>Vidéo<small>'+(window.__tvDur?window.__tvDur():30)+' secondes max, rognage, musique, stickers</small></span></button><button class="tsc" id="cP"><i>🖼</i><span>Photo + son<small>15 secondes avec la musique de ton téléphone</small></span></button><button class="tsc" id="cT"><i>✍️</i><span>Texte<small>Un message sur fond de couleur</small></span></button>';
 ov.appendChild(sh);document.body.appendChild(ov);
 sh.querySelector("#cV").onclick=function(){ov.remove();studio("video")};
 sh.querySelector("#cP").onclick=function(){ov.remove();studio("photo")};
@@ -57,11 +57,11 @@ $("tsX").onclick=function(){ed.remove()};
 $("tsU").onclick=async function(){var v=w.value.trim();if(!v){toast("Écris quelque chose");return}this.disabled=true;
 try{await api("/rest/v1/statuts",{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify({author:me(),body:v+M+JSON.stringify({k:"t",bg:bi,h:window.__tsHours||0})})});ed.remove();toast("Statut publié");loadStatuts()}catch(e){this.disabled=false;toast("Erreur d'envoi")}}}
 function studio(mode){
-var ph=mode==="photo";S={mode:mode,L:ph?15:30,v:null,p:null,m:null,ms:0,a:0,b:30,dur:0,st:[],sel:null};au=null;
+var ph=mode==="photo";S={mode:mode,L:ph?15:(window.__tvDur?window.__tvDur():30),v:null,p:null,m:null,ms:0,a:0,b:(window.__tvDur?window.__tvDur():30),dur:0,st:[],sel:null};au=null;
 var ed=document.createElement("div");ed.id="tsEd";
 ed.style.cssText="position:fixed;inset:0;z-index:99997;background:linear-gradient(180deg,#ffffff,#e6faff);color:#0b2a3a;font-family:'Exo 2',sans-serif;display:flex;flex-direction:column;overflow-y:auto;padding-top:env(safe-area-inset-top,0px)";
 ed.innerHTML='<div style="display:flex;align-items:center;gap:10px;padding:12px 14px"><button id="tsX" style="background:none;border:0;font-size:24px;color:#0097a7">✕</button><b style="flex:1;color:#0097a7">'+(ph?"PHOTO + SON":"STUDIO VIDÉO")+'</b><button id="tsU" class="tsb go" style="flex:0 0 auto;padding:10px 20px">Publier</button></div>'
-+'<div id="tsS" style="position:relative;height:44vh;aspect-ratio:9/16;margin:0 auto;background:linear-gradient(160deg,#00e5ff,#e6faff);border:1px solid rgba(0,229,255,.6);box-shadow:0 0 24px rgba(0,229,255,.35);border-radius:16px;overflow:hidden;touch-action:none;flex:0 0 auto"><video id="tsV" playsinline loop muted style="width:100%;height:100%;object-fit:cover;display:none"></video><img id="tsI" style="width:100%;height:100%;object-fit:contain;background:#000;display:none"><div id="tsH" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#0097a7;font-size:14px;text-align:center;padding:12px">'+(ph?"Choisis une photo (15 s avec ton son)":"Choisis une vidéo (30 s max)")+'</div></div>'
++'<div id="tsS" style="position:relative;height:44vh;aspect-ratio:9/16;margin:0 auto;background:linear-gradient(160deg,#00e5ff,#e6faff);border:1px solid rgba(0,229,255,.6);box-shadow:0 0 24px rgba(0,229,255,.35);border-radius:16px;overflow:hidden;touch-action:none;flex:0 0 auto"><video id="tsV" playsinline loop muted style="width:100%;height:100%;object-fit:cover;display:none"></video><img id="tsI" style="width:100%;height:100%;object-fit:contain;background:#000;display:none"><div id="tsH" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#0097a7;font-size:14px;text-align:center;padding:12px">'+(ph?"Choisis une photo (15 s avec ton son)":"Choisis une vidéo ("+(window.__tvDur?window.__tvDur():30)+" s max)")+'</div></div>'
 +'<div id="tsTr" class="tsp" style="display:none"><div id="tsTl" style="margin-bottom:4px;color:#0097a7"></div>Début<input type="range" id="tsRa" class="tsr" step="0.1" value="0">Fin<input type="range" id="tsRb" class="tsr" step="0.1" value="0"></div>'
 +'<div style="display:flex;gap:8px;padding:8px 14px"><button class="tsb" id="tsBv">'+(ph?"🖼 Photo":"🎬 Vidéo")+'</button><button class="tsb" id="tsBm">🎵 Musique</button><button class="tsb" id="tsBs">😀 Sticker</button></div>'
 +'<div id="tsM" class="tsp" style="display:none"></div>'
@@ -72,16 +72,16 @@ var $=function(i){return ed.querySelector("#"+i)},stage=$("tsS"),vid=$("tsV"),im
 function close(){if(au)au.pause();ed.remove()}
 $("tsX").onclick=close;
 function sel(o){S.sel=o;S.st.forEach(function(z){z._el.style.outline="none"});if(o)o._el.style.outline="2px dashed #00a8c8"}
-function lab(){$("tsTl").textContent="Rognage : "+mmss(S.a)+" → "+mmss(S.b)+" ("+Math.round(S.b-S.a)+" s sur 30 max)"}
+function lab(){$("tsTl").textContent="Rognage : "+mmss(S.a)+" → "+mmss(S.b)+" ("+Math.round(S.b-S.a)+" s sur "+(window.__tvDur?window.__tvDur():30)+" max)"}
 var ra=$("tsRa"),rb=$("tsRb");
 function sync(){ra.value=S.a;rb.value=S.b;lab()}
-ra.oninput=function(){S.a=+ra.value;if(S.a>S.b-1)S.a=Math.max(0,S.b-1);if(S.b-S.a>30)S.b=Math.min(S.dur,S.a+30);sync();vid.currentTime=S.a};
-rb.oninput=function(){S.b=+rb.value;if(S.b<S.a+1)S.b=Math.min(S.dur,S.a+1);if(S.b-S.a>30)S.a=S.b-30;sync();vid.currentTime=S.a};
+ra.oninput=function(){S.a=+ra.value;if(S.a>S.b-1)S.a=Math.max(0,S.b-1);if(S.b-S.a>(window.__tvDur?window.__tvDur():30))S.b=Math.min(S.dur,S.a+(window.__tvDur?window.__tvDur():30));sync();vid.currentTime=S.a};
+rb.oninput=function(){S.b=+rb.value;if(S.b<S.a+1)S.b=Math.min(S.dur,S.a+1);if(S.b-S.a>(window.__tvDur?window.__tvDur():30))S.a=S.b-(window.__tvDur?window.__tvDur():30);sync();vid.currentTime=S.a};
 vid.ontimeupdate=function(){if(vid.currentTime>=S.b){vid.currentTime=S.a;if(au&&S.m){au.currentTime=S.ms;au.play()}}};
 $("tsBv").onclick=function(){
 if(ph){pick("image/*",function(f){S.p=f;img.onerror=function(){img.onerror=null;var r=new FileReader();r.onload=function(){img.src=r.result};r.readAsDataURL(f)};img.onload=function(){toast("Photo OK "+img.naturalWidth)};img.src=window.URL.createObjectURL(f);img.style.display="block";$("tsH").style.display="none"});return}
 pick("video/*",function(f){S.v=f;vid.onerror=function(){toast("Video err "+(vid.error?vid.error.code:"?"))};vid.onloadeddata=function(){toast("Video OK "+vid.videoWidth+"x"+vid.videoHeight)};vid.src=window.URL.createObjectURL(f);vid.style.display="block";$("tsH").style.display="none";
-vid.onloadedmetadata=function(){S.dur=vid.duration;S.a=0;S.b=Math.min(30,S.dur);ra.max=rb.max=S.dur;sync();$("tsTr").style.display="block";vid.currentTime=0;vid.play();if(S.dur>30)toast("Vidéo trop longue : choisis tes 30 secondes avec les curseurs")};
+vid.onloadedmetadata=function(){S.dur=vid.duration;S.a=0;S.b=Math.min((window.__tvDur?window.__tvDur():30),S.dur);ra.max=rb.max=S.dur;sync();$("tsTr").style.display="block";vid.currentTime=0;vid.play();if(S.dur>(window.__tvDur?window.__tvDur():30))toast("Vidéo trop longue : choisis tes "+(window.__tvDur?window.__tvDur():30)+" secondes avec les curseurs")};
 vid.onerror=function(){P.textContent="Cette vidéo ne peut pas être lue ici"}})};
 $("tsBm").onclick=function(){pick("audio/*",function(f){S.m=f;S.ms=0;if(au)au.pause();au=new Audio(window.URL.createObjectURL(f));vid.muted=true;
 au.onloadedmetadata=function(){var L=S.L,mx=Math.max(0,Math.floor(au.duration-L)),b=$("tsM");b.style.display="block";b.innerHTML='<div id="tsMn" style="color:#0097a7"></div><input type="range" id="tsMr" class="tsr" min="0" max="'+mx+'" step="1" value="0"><button class="tsb" id="tsMp" style="width:100%;margin-top:6px">▶ Écouter l\'extrait</button>';
