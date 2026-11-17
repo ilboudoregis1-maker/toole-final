@@ -12,10 +12,11 @@ var n=0,t=setInterval(function(){n++;var hit=null;document.querySelectorAll("#tv
 if(hit){clearInterval(t);hit.scrollIntoView({block:"start"});return}
 if(n>16){clearInterval(t);toast("Vidéo introuvable dans le fil")}},400)}
 var RE=/toole:\/\/video\/(\S+)/;
-function links(){if(document.hidden)return;var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,null),a=[],n;
-while(n=w.nextNode()){if(n.nodeValue.indexOf("toole://video/")>=0&&n.parentElement&&!n.parentElement.closest("#tv3sh,input,textarea,script,style"))a.push(n)}
-a.forEach(function(n){var m=n.nodeValue.match(RE);if(!m)return;var p=m[1],par=n.parentNode;
+function fix(n){var m=n.nodeValue.match(RE);if(!m)return;var par=n.parentNode;if(!par||par.closest("#tv3sh,input,textarea,script,style"))return;var p=m[1];
 var b=E("button","tv3lk","▶ Ouvrir la vidéo");b.onclick=function(e){e.preventDefault();e.stopPropagation();play(p)};
-par.insertBefore(document.createTextNode(n.nodeValue.slice(0,m.index)),n);par.insertBefore(b,n);par.removeChild(n)})}
-setInterval(links,1000);
+par.insertBefore(document.createTextNode(n.nodeValue.slice(0,m.index)),n);par.insertBefore(b,n);par.removeChild(n)}
+function scan(n){if(n.nodeType===3){if(n.nodeValue.indexOf("toole://video/")>=0)fix(n);return}
+if(n.nodeType!==1||(n.textContent||"").indexOf("toole://video/")<0)return;
+var w=document.createTreeWalker(n,NodeFilter.SHOW_TEXT,null),a=[],t;while(t=w.nextNode()){if(t.nodeValue.indexOf("toole://video/")>=0)a.push(t)}a.forEach(fix)}
+new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(scan)})}).observe(document.body,{childList:true,subtree:true});
 })();
