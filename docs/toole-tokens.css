@@ -1,0 +1,18 @@
+/* TÕÕLé — thème unique (chargé en dernier). Remplace la palette « papier chaud » V4 par le bleu de marque. */
+:root,html[data-theme="light"]{
+  --main:#0a7cff;
+  --v4-bg:#f4f7fb;--v4-surface:#ffffff;--v4-soft:#e8f1ff;--v4-line:#d6e3f5;
+  --v4-ink:#0b1b2b;--v4-muted:#6b7c93;
+  --v4-main:#0a7cff;--v4-out:#0a7cff;--v4-out-ink:#ffffff;
+  --v4-ochre:#2f9bff;--v4-laterite:#0a3d91;--v4-green:#1f9d55;--v4-danger:#e5484d;
+  --v4-ring:conic-gradient(from 200deg,#2f9bff,#0a7cff,#0a3d91,#2f9bff);
+  --t-radius:16px;
+}
+html[data-theme="dark"]{--main:#2f9bff;--v4-main:#2f9bff;--v4-out:#0a5bc4;--v4-ring:conic-gradient(from 200deg,#2f9bff,#0a7cff,#0a3d91,#2f9bff)}
+/* une seule police d'interface */
+html body,html button,html input,html textarea,html select{font-family:'Exo 2',system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+/* feuilles / menus / appui long : mêmes surfaces partout */
+html .menu,html .sheet,html [class*="sheet"],html [class*="actionsheet"]{background:var(--v4-surface)!important;border-color:var(--v4-line)!important}
+html .row:active,html .row.sel,html .row.selected,html .row.pressed{background:var(--v4-soft)!important}
+/* dernière ligne du profil jamais cachée par la barre du bas */
+html #scrProfil .body,html #scrParam .body,html #scrList .body{padding-bottom:calc(var(--v4-nav-h,64px) + env(safe-area-inset-bottom) + 40px)!important}

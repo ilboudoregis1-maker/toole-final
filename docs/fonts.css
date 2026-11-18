@@ -1,0 +1,7 @@
+@font-face{font-family:'Exo 2';font-weight:400;font-display:block;src:url(fonts/exo-2-latin-400-normal.woff2) format('woff2')}
+@font-face{font-family:'Exo 2';font-weight:500;font-display:block;src:url(fonts/exo-2-latin-500-normal.woff2) format('woff2')}
+@font-face{font-family:'Exo 2';font-weight:600;font-display:block;src:url(fonts/exo-2-latin-600-normal.woff2) format('woff2')}
+@font-face{font-family:'Exo 2';font-weight:700;font-display:block;src:url(fonts/exo-2-latin-700-normal.woff2) format('woff2')}
+@font-face{font-family:'Orbitron';font-weight:800;font-display:block;src:url(fonts/orbitron-latin-800-normal.woff2) format('woff2')}
+#splash{position:fixed;inset:0;z-index:9999;background:#fff;display:flex;align-items:center;justify-content:center}
+#splash img{width:132px!important;height:132px!important;max-width:132px;border-radius:32px;animation:none!important}

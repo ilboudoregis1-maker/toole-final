@@ -1,0 +1,115 @@
+/* TÕÕLé — style messagerie v2 (un seul fichier qui prend le dessus sur les anciens) */
+:root{--wa-ac:var(--main,#0f8a3c);--wa-bar:var(--wa-ac);--wa-bg:#fff;--wa-soft:#f0f2f5;--wa-ink:#111b21;--wa-mut:#667781;--wa-line:#e9edef;--wa-chat:#efeae2;--wa-in:#fff;--wa-out:#d9fdd3;--wa-sys:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}
+html[data-theme="dark"]{--wa-bar:#1f2c34;--wa-bg:#111b21;--wa-soft:#202c33;--wa-ink:#e9edef;--wa-mut:#8696a0;--wa-line:#222d34;--wa-chat:#0b141a;--wa-in:#202c33;--wa-out:#005c4b}
+html body,html body *{font-family:var(--wa-sys)!important}
+html body .ttl,html body .hdr *,html body h1,html body h2{letter-spacing:0!important}
+html body{background:var(--wa-bg)!important;color:var(--wa-ink)}
+html body #scrWelcome,html body #scrInscr,html body #scrLogin,html body #scrList,html body #scrChat,html body #scrProfil,html body #scrParam,html body #scrStatuts,html body #scrGroupes,html body #scrGroup,html body #scrCalls{background:var(--wa-bg)!important;color:var(--wa-ink)}
+html body #scrList .hdr,html body #scrStatuts .hdr,html body #scrGroupes .hdr,html body #scrCalls .hdr,html body #scrProfil .hdr,html body #scrParam .hdr,html body #scrGroup .hdr,html body #scrChat .chead,html body #scrGroup .chead{background:var(--wa-bar)!important;background-image:none!important;color:#fff!important;border:0!important;box-shadow:0 1px 3px rgba(0,0,0,.25)!important;min-height:56px;padding:calc(env(safe-area-inset-top,0px) + 8px) 8px 8px 12px!important;gap:6px}
+html body #scrList .hdr .ttl,html body #scrStatuts .hdr .ttl,html body #scrGroupes .hdr .ttl,html body #scrCalls .hdr .ttl,html body #scrProfil .hdr .ttl,html body #scrParam .hdr .ttl,html body #scrGroup .hdr .ttl,html body #scrChat .chead .ttl,html body #scrGroup .chead .ttl,html body #scrList .hdr .ttl{color:#fff!important;-webkit-text-fill-color:#fff!important;background:none!important;font-family:var(--wa-sys)!important;font-style:normal!important;text-transform:none!important;font-size:21px!important;font-weight:700!important;text-shadow:none!important}
+html body #scrList .hdr svg,html body #scrStatuts .hdr svg,html body #scrGroupes .hdr svg,html body #scrCalls .hdr svg,html body #scrProfil .hdr svg,html body #scrParam .hdr svg,html body #scrGroup .hdr svg,html body #scrChat .chead svg,html body #scrGroup .chead svg{stroke:#fff!important;color:#fff!important}
+html body #scrList .hdr .ic,html body #scrStatuts .hdr .ic,html body #scrGroupes .hdr .ic,html body #scrCalls .hdr .ic,html body #scrProfil .hdr .ic,html body #scrParam .hdr .ic,html body #scrGroup .hdr .ic,html body #scrChat .chead .ic,html body #scrGroup .chead .ic,html body #scrList .hdr button,html body #scrStatuts .hdr button,html body #scrGroupes .hdr button,html body #scrCalls .hdr button,html body #scrProfil .hdr button,html body #scrParam .hdr button,html body #scrGroup .hdr button,html body #scrChat .chead button,html body #scrGroup .chead button{background:transparent!important;border:0!important;box-shadow:none!important;color:#fff!important;width:42px;height:42px;min-height:0;display:flex;align-items:center;justify-content:center;border-radius:50%;padding:0;margin:0}
+html body #scrList .hdr .ic:active,html body #scrStatuts .hdr .ic:active,html body #scrGroupes .hdr .ic:active,html body #scrCalls .hdr .ic:active,html body #scrProfil .hdr .ic:active,html body #scrParam .hdr .ic:active,html body #scrGroup .hdr .ic:active,html body #scrChat .chead .ic:active,html body #scrGroup .chead .ic:active{background:rgba(255,255,255,.15)!important}
+html[data-theme="dark"] body #scrList .hdr .ic,html[data-theme="dark"] body #scrStatuts .hdr .ic,html[data-theme="dark"] body #scrGroupes .hdr .ic,html[data-theme="dark"] body #scrCalls .hdr .ic,html[data-theme="dark"] body #scrProfil .hdr .ic,html[data-theme="dark"] body #scrParam .hdr .ic,html[data-theme="dark"] body #scrGroup .hdr .ic,html[data-theme="dark"] body #scrChat .chead .ic,html[data-theme="dark"] body #scrGroup .chead .ic,html[data-theme="dark"] body #scrList .hdr button,html[data-theme="dark"] body #scrStatuts .hdr button,html[data-theme="dark"] body #scrGroupes .hdr button,html[data-theme="dark"] body #scrCalls .hdr button,html[data-theme="dark"] body #scrProfil .hdr button,html[data-theme="dark"] body #scrParam .hdr button,html[data-theme="dark"] body #scrGroup .hdr button,html[data-theme="dark"] body #scrChat .chead button,html[data-theme="dark"] body #scrGroup .chead button{background:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important}
+html body #scrChat .chead .cav,html body #scrGroup .chead .cav{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.25)!important;background-image:none!important;color:#fff!important;border:0!important;font-weight:600;display:flex;align-items:center;justify-content:center;overflow:hidden}
+html body #scrChat .chead .cn,html body #scrGroup .chead .cn{color:#fff!important;font-size:17px!important;font-weight:600!important}
+html body #scrChat .chead .cs,html body #scrGroup .chead .cs{color:rgba(255,255,255,.8)!important;font-size:12.5px!important}
+html body #scrChat #back,html body #scrGroup #gBack,html body .chead .bk{background:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important;width:40px!important;height:40px!important;padding:0!important;margin:0!important;border-radius:50%!important}
+html body .chead .bk svg,html body #scrChat #back svg{stroke:#fff!important;width:24px;height:24px}
+html body #scrChat #starBtn{color:#fff!important;font-size:22px!important;width:40px!important;height:40px;padding:0!important}
+html body #scrChat #callBtn svg{width:22px;height:22px}
+html body #scrChat #wBtnU{display:none!important}
+html body #scrList .body{padding:0 0 92px!important;background:var(--wa-bg)!important}
+html body #scrList #v4st{display:flex;gap:14px;padding:12px 14px 4px;overflow-x:auto;background:var(--wa-bg)!important}
+html body #scrList #v4st .v4s{width:64px;flex:none;text-align:center;font-size:12px;color:var(--wa-mut)!important;background:none!important;border:0!important;box-shadow:none!important}
+html body #scrList #v4st .v4s .rg{width:56px;height:56px;margin:0 auto 4px;border-radius:50%!important;background:var(--wa-soft)!important;background-image:none!important;border:2.5px solid var(--wa-ac)!important;box-shadow:none!important;display:flex;align-items:center;justify-content:center;position:relative;padding:0}
+html body #scrList #v4st .v4s.me .rg{border:2px dashed var(--wa-mut)!important}
+html body #scrList #v4st .v4s .rg svg{stroke:var(--wa-mut)!important;width:26px;height:26px}
+html body #scrList #v4st .v4s .plus{position:absolute;right:-3px;bottom:-3px;width:20px;height:20px;border-radius:50%;background:var(--wa-ac)!important;color:#fff!important;font-size:15px;line-height:20px;text-align:center;border:2px solid var(--wa-bg)}
+html body #scrList #srch{display:block;width:calc(100% - 24px)!important;margin:8px 12px!important;height:42px;padding:0 16px!important;background:var(--wa-soft)!important;border:0!important;border-radius:21px!important;color:var(--wa-ink)!important;box-shadow:none!important;font-size:15px}
+html body #scrList #srch::placeholder{color:var(--wa-mut)}
+html body #scrList #v4chips{display:flex;gap:8px;padding:2px 12px 8px;overflow-x:auto;background:none!important}
+html body #scrList #v4chips button{flex:none;height:34px;padding:0 16px;border-radius:17px!important;background:var(--wa-soft)!important;background-image:none!important;color:var(--wa-mut)!important;border:0!important;box-shadow:none!important;font-size:14px;font-weight:500;width:auto;margin:0}
+html body #scrList #v4chips button.on{background:var(--wa-ac)!important;color:#fff!important;font-weight:600}
+html body #scrList .chips{display:none!important}
+html body #scrList #v4sec{padding:8px 16px 4px;font-size:13px!important;font-weight:600;color:var(--wa-mut)!important;letter-spacing:0!important;text-transform:none!important;background:none!important}
+html body #scrList #recent .row,html body #scrGroupes #gRows .row,html body #scrStatuts .row{display:flex;align-items:center;gap:14px;padding:10px 16px!important;margin:0!important;background:transparent!important;background-image:none!important;border:0!important;border-bottom:1px solid var(--wa-line)!important;border-radius:0!important;box-shadow:none!important;min-height:68px}
+html body #scrList #recent .row:active,html body #scrGroupes #gRows .row:active{background:var(--wa-soft)!important}
+html body #scrList .row .av,html body #scrGroupes .row .av,html body #scrStatuts .row .av,html body #scrCalls .row .av,html body #scrCalls #v4calls .av{width:52px;height:52px;flex:none;border-radius:50%!important;background:var(--wa-ac)!important;background-image:none!important;color:#fff!important;font-size:18px;font-weight:600;display:flex;align-items:center;justify-content:center;border:0!important;box-shadow:none!important;overflow:hidden}
+html body #scrList #recent .row:nth-child(6n+1) .av{background:#128c7e!important}
+html body #scrList #recent .row:nth-child(6n+2) .av{background:#d6336c!important}
+html body #scrList #recent .row:nth-child(6n+3) .av{background:#f08c00!important}
+html body #scrList #recent .row:nth-child(6n+4) .av{background:#1c7ed6!important}
+html body #scrList #recent .row:nth-child(6n+5) .av{background:#7048e8!important}
+html body #scrList #recent .row:nth-child(6n+6) .av{background:#c92a2a!important}
+html body .row .rn{color:var(--wa-ink)!important;font-size:17px!important;font-weight:600!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html body .row .sub{color:var(--wa-mut)!important;font-size:14px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+html body #scrList .v4star,html body #scrList .v5star{color:var(--wa-line)!important}
+html body #scrList .v5star.on{color:#f2b01e!important}
+html body #v4nav{background:var(--wa-bg)!important;background-image:none!important;border:0!important;border-top:1px solid var(--wa-line)!important;border-radius:0!important;box-shadow:none!important;left:0!important;right:0!important;bottom:0!important;width:100%!important;margin:0!important;align-items:center;justify-content:space-around;padding:6px 4px calc(env(safe-area-inset-bottom,0px) + 6px)!important}
+html body #v4nav:not(.on){display:none!important}
+html body #v4nav.on{display:flex!important}
+html body #v4nav button.t{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;gap:3px;background:none!important;background-image:none!important;border:0!important;box-shadow:none!important;color:var(--wa-mut)!important;padding:2px 0;margin:0;border-radius:0!important;height:auto;min-height:0}
+html body #v4nav button.t svg{width:24px;height:24px;box-sizing:content-box;padding:4px 18px;border-radius:16px;stroke:currentColor!important}
+html body #v4nav button.t{padding:2px 0!important;overflow:visible}
+html body #v4nav button.t span{overflow:visible!important;text-overflow:clip!important;font-size:10.5px!important;letter-spacing:0!important;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html body #v4nav button.t.on{color:var(--wa-ink)!important;font-weight:600}
+html body #v4nav button.t.on svg{background:var(--wa-soft)!important;stroke:var(--wa-ac)!important}
+html body #v4nav button.mid{flex:none;width:52px;height:52px;border-radius:50%!important;background:var(--wa-ac)!important;background-image:none!important;border:0!important;margin:-22px 2px 0;box-shadow:0 3px 10px rgba(0,0,0,.3)!important;display:flex;align-items:center;justify-content:center;padding:0}
+html body #v4nav button.mid svg{stroke:#fff!important;width:26px;height:26px}
+html body #chat,html body #gMsgs{background:var(--wa-chat)!important;background-image:none!important;padding:10px 10px 6px!important;gap:3px!important}
+html body #scrChat .m,html body #scrGroup .m{max-width:80%;padding:6px 9px 4px!important;border-radius:8px!important;background:var(--wa-in)!important;background-image:none!important;color:var(--wa-ink)!important;border:0!important;box-shadow:0 1px 1px rgba(11,20,26,.14)!important;font-size:15.5px;line-height:1.32}
+html body #scrChat .m.me,html body #scrGroup .m.me{background:var(--wa-out)!important;color:var(--wa-ink)!important;-webkit-text-fill-color:var(--wa-ink)!important;border-bottom-right-radius:2px!important}
+html body #scrChat .m,html body #scrGroup .m{-webkit-text-fill-color:var(--wa-ink)}
+html body #scrChat .m:not(.me),html body #scrGroup .m:not(.me){border-bottom-left-radius:2px!important}
+html body #scrChat .m::before,html body #scrChat .m::after,html body #scrGroup .m::before,html body #scrGroup .m::after{display:none!important;content:none!important}
+html body #scrChat .m .t,html body #scrGroup .m .t{color:var(--wa-mut)!important;font-size:11px!important;opacity:1;text-align:right;margin-top:1px}
+html body #scrChat .m.pend{opacity:.75}
+html body #scrChat .tf-day,html body #scrGroup .tf-day{align-self:center;background:var(--wa-in)!important;color:var(--wa-mut)!important;font-size:12.5px!important;padding:4px 12px;border-radius:8px;box-shadow:0 1px 1px rgba(11,20,26,.14);margin:8px 0}
+html body #scrChat .bar,html body #scrGroup .bar{background:var(--wa-chat)!important;background-image:none!important;border:0!important;box-shadow:none!important;padding:6px 8px calc(env(safe-area-inset-bottom,0px) + 6px)!important;gap:6px;align-items:flex-end}
+html body #scrChat .bar .tsta{background:var(--wa-in)!important;color:var(--wa-ink)!important;border:0!important;border-radius:22px!important;padding:11px 16px!important;font-size:16px!important;box-shadow:0 1px 1px rgba(11,20,26,.14)!important;min-height:44px}
+html body #scrChat .bar .tsta::placeholder{color:var(--wa-mut)}
+html body #scrChat .bar button,html body #scrGroup .bar button{background:transparent!important;border:0!important;box-shadow:none!important;color:var(--wa-mut)!important;width:40px;height:44px;padding:0;margin:0;border-radius:50%!important;display:flex;align-items:center;justify-content:center}
+html body #scrChat .bar button svg,html body #scrGroup .bar button svg{stroke:var(--wa-mut)!important;width:24px;height:24px}
+html body #scrChat .bar button.tsplus{font-size:28px;color:var(--wa-mut)!important}
+html body #scrChat .bar #send,html body #scrGroup .bar #send,html body #scrGroup .bar #gSend{background:var(--wa-ac)!important;width:46px;height:46px}
+html body #scrChat .bar #send svg,html body #scrGroup .bar #send svg{stroke:#fff!important;width:22px;height:22px}
+html body .sx-add,html body #scrGroupes .sx-add,html body #scrStatuts .sx-add,html body #scrGroupes #gNew{outline:0!important;border-style:solid!important;border-width:0 0 1px 0!important;display:flex;align-items:center;gap:14px;width:100%;margin:0!important;padding:12px 16px!important;background:transparent!important;background-image:none!important;border:0!important;border-bottom:1px solid var(--wa-line)!important;border-radius:0!important;box-shadow:none!important;color:var(--wa-ink)!important;font-size:16px;font-weight:600;text-align:left;min-height:64px}
+html body .sx-add .ti-w{width:48px;height:48px;border-radius:50%;background:var(--wa-ac)!important;display:flex;align-items:center;justify-content:center;flex:none}
+html body .sx-add .ti{stroke:#fff!important;width:24px;height:24px}
+html body .sx-card{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;padding:0!important}
+html body #scrStatuts .body,html body #scrGroupes .body,html body #scrCalls .body{padding:0 0 92px!important;background:var(--wa-bg)!important}
+html body #scrStatuts .sx-h,html body #scrStatuts .sx-t,html body #scrStatuts .gt{color:var(--wa-ac)!important;font-size:14px!important;font-weight:700!important;letter-spacing:0!important;text-transform:none!important;padding:14px 16px 6px}
+html body #scrStatuts .sx-s,html body #v4empty{color:var(--wa-mut)!important;font-size:14.5px;padding:12px 16px;text-align:left}
+html body #scrCalls #v4calls>*{display:flex;align-items:center;gap:14px;padding:10px 16px;background:transparent!important;border:0!important;border-bottom:1px solid var(--wa-line)!important;border-radius:0!important;box-shadow:none!important}
+html body #scrCalls .v4call-go{background:transparent!important;border:0!important;color:var(--wa-ac)!important;width:44px;height:44px;border-radius:50%;box-shadow:none!important}
+html body #scrCalls .v4call-go svg{stroke:var(--wa-ac)!important}
+html body #scrCalls .rn{font-size:17px!important}
+html body #scrProfil .body{background:var(--wa-bg)!important;padding-bottom:92px!important}
+html body #scrProfil .pf{background:transparent!important;border:0!important;box-shadow:none!important;padding:22px 0 8px;text-align:center}
+html body #scrProfil .pf .big{width:104px;height:104px;margin:0 auto 10px;border-radius:50%!important;background:var(--wa-ac)!important;background-image:none!important;color:#fff!important;font-size:38px;font-weight:600;display:flex;align-items:center;justify-content:center;position:relative;border:0!important;box-shadow:none!important}
+html body #scrProfil .pf h2{color:var(--wa-ink)!important;font-size:22px;margin:0}
+html body #scrProfil .pf .em{color:var(--wa-mut)!important;font-size:14px}
+html body #scrProfil .stats{display:flex;gap:8px;padding:8px 12px}
+html body #scrProfil .stats>div{flex:1;background:var(--wa-soft)!important;border:0!important;border-radius:12px!important;box-shadow:none!important;padding:10px 4px;text-align:center}
+html body #scrProfil .stats b{color:var(--wa-ac)!important;font-size:20px}
+html body #scrProfil .stats span{color:var(--wa-mut)!important;font-size:12.5px}
+html body #scrProfil .menu,html body #scrParam .card{background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important}
+html body #scrProfil .menu .pm{display:flex;align-items:center;width:100%;text-align:left;padding:0 16px!important;height:56px;background:transparent!important;background-image:none!important;border:0!important;border-bottom:1px solid var(--wa-line)!important;border-radius:0!important;color:var(--wa-ink)!important;font-size:16px;box-shadow:none!important}
+html body #scrProfil #pfOut{color:#d6453d!important}
+html body #supportStatic{background:var(--wa-ac)!important;background-image:none!important;border-radius:24px!important;box-shadow:none!important;height:48px}
+html body #scrParam .body{background:var(--wa-bg)!important}
+html body #scrParam .gt{color:var(--wa-ac)!important;font-size:14px!important;font-weight:700!important;letter-spacing:0!important;text-transform:none!important;padding:16px 16px 6px}
+html body #scrParam .card .row{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:54px;padding:0 16px!important;margin:0!important;background:transparent!important;background-image:none!important;border:0!important;border-bottom:1px solid var(--wa-line)!important;border-radius:0!important;box-shadow:none!important;color:var(--wa-ink)!important;font-size:16px}
+html body #scrParam .card .row.danger,html body #scrParam .card .row.danger span{color:#d6453d!important}
+html body #scrParam .card button.on{background:var(--wa-ac)!important;background-image:none!important;color:#fff!important;border-color:transparent!important}
+html body #scrParam .card button:not(.on):not(.row):not([data-c]){background:var(--wa-soft)!important;background-image:none!important;color:var(--wa-ink)!important;border:0!important;border-radius:12px!important;box-shadow:none!important}
+html body #scrParam .lg .it{padding:14px 16px;color:var(--wa-ink)!important}
+html body #lgLinks,html body #scrLogin #lgLinks{background:var(--wa-bg)!important;color:var(--wa-mut)!important}
+html body #scrWelcome.wl{background:var(--wa-bg)!important;color:var(--wa-ink)}
+html body #scrWelcome h1{font-family:var(--wa-sys)!important;color:var(--wa-ac)!important;-webkit-text-fill-color:var(--wa-ac)!important;background:none!important;font-size:30px;font-weight:800;letter-spacing:0!important}
+html body #scrWelcome p{color:var(--wa-mut)!important;font-size:15px}
+html body #scrWelcome .b1,html body #scrInscr #iGo,html body #scrLogin #go{background:var(--wa-ac)!important;background-image:none!important;color:#fff!important;border:0!important;border-radius:26px!important;height:50px;font-size:16px;font-weight:600;box-shadow:none!important}
+html body #scrWelcome .b2,html body #scrLogin #up{background:transparent!important;background-image:none!important;color:var(--wa-ac)!important;border:1.5px solid var(--wa-ac)!important;border-radius:26px!important;height:50px;font-size:16px;font-weight:600;box-shadow:none!important}
+html body #scrInscr input,html body #scrLogin input{background:var(--wa-soft)!important;color:var(--wa-ink)!important;border:0!important;border-radius:12px!important;height:50px;padding:0 16px;font-size:16px;box-shadow:none!important}
+html body #scrInscr a,html body #scrLogin a,html body #scrInscr .lk{color:var(--wa-ac)!important}

@@ -1,0 +1,102 @@
+:root{--main:#00c2e0;--accent:#2f6fe0;--ink:#0a2a66;--muted:#4a6178;--bg:#f4fbfe;--card:#ffffff;--line:#d6ebf4}
+body{color:var(--ink)}
+.scr{background:var(--bg)}
+.row,.sx-card,.sx-row,.card,.menu,.gcard{background:var(--card);border:1px solid var(--line);color:var(--ink)}
+.rn,.sx-n,.gcard h3,.cn{color:var(--ink)!important}
+.sub,.sx-s,.gcard p,.gsub,.t{color:var(--muted)!important}
+button.on,.chip.on{background:linear-gradient(135deg,var(--main),var(--accent))!important;color:#fff!important}
+.scr{background:linear-gradient(180deg,#f7fdff 0%,#eef9fd 100%);animation:fadeIn .4s ease both}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.hdr,.chead{background:rgba(255,255,255,.88)!important;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.tabs{position:fixed;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom) + 10px);margin:0 auto;max-width:440px;border-radius:28px;background:rgba(255,255,255,.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line);box-shadow:0 10px 30px rgba(0,120,160,.18);padding:6px 4px;z-index:20}
+.tabs button{border-radius:20px;transition:background .25s ease,color .25s ease,transform .15s ease}
+.tabs button.on{background:linear-gradient(135deg,rgba(0,194,224,.18),rgba(47,111,224,.18));color:var(--accent)}
+.scr .body{padding-bottom:120px}
+button{transition:transform .15s ease,box-shadow .2s ease,background .2s ease}
+button:active{transform:scale(.96)}
+.sa,.row,.chip,.tabs button,.gcard{position:relative;overflow:hidden}
+.rp{position:absolute;border-radius:50%;background:rgba(0,194,224,.35);transform:scale(0);animation:rip .6s ease-out forwards;pointer-events:none}
+@keyframes rip{to{transform:scale(4);opacity:0}}
+#cxBtn{position:fixed;right:18px;bottom:96px;width:58px;height:58px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#8ff3ff,var(--main) 45%,var(--accent));border:0;box-shadow:0 10px 26px rgba(0,194,224,.45);transform:none!important;z-index:25;touch-action:none}
+#cxBtn::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid rgba(0,194,224,.45);animation:halo 2.4s ease-out infinite;pointer-events:none}
+@keyframes halo{0%{opacity:.8;transform:scale(.9)}100%{opacity:0;transform:scale(1.35)}}
+#cxBtn svg{width:28px;height:28px;stroke:#fff;fill:none;stroke-width:1.8}
+#scrChat .m,#scrGroup .m{border-radius:18px 18px 18px 6px;background:#ffffff;color:var(--ink);box-shadow:0 2px 10px rgba(0,194,224,.10)}
+#scrChat .m.me,#scrGroup .m.me{border-radius:18px 18px 6px 18px;background:linear-gradient(135deg,var(--main),var(--accent));color:#ffffff}
+.hdr,.chead{background:#ffffff!important}
+.hdr .ttl,.hdr span,.hdr b,.chead .cn,.chead .cs,.chead span{color:#0a2a66!important}
+.hdr .ic,.hdr button,.chead .bk{background:#eef8fc!important;border:1px solid #d6ebf4!important;color:#0a2a66!important}
+.hdr .ic svg,.hdr button svg,.chead svg,.chead .bk svg{stroke:#0a2a66!important;fill:none!important}
+.hdr .ic svg circle,.hdr .ic svg rect,.hdr .ic svg path{stroke:#0a2a66!important}
+.hdr,.chead{background:#ffffff!important}
+.hdr .ttl,.hdr span,.hdr b,.chead .cn,.chead .cs,.chead span{color:#0a2a66!important}
+.hdr .ic,.hdr button,.chead .bk{background:#eef8fc!important;border:1px solid #d6ebf4!important;color:#0a2a66!important}
+.hdr .ic svg,.hdr button svg,.chead svg,.chead .bk svg{stroke:#0a2a66!important;fill:none!important}
+.hdr .ic svg circle,.hdr .ic svg rect,.hdr .ic svg path{stroke:#0a2a66!important}
+.sh,#shBg .sh{background:#ffffff!important;color:var(--ink)!important;border:1px solid var(--line)!important;box-shadow:0 -10px 30px rgba(0,120,160,.18)!important}
+.sh .sa,.sh button.sa{background:transparent!important;color:var(--ink)!important}
+.sh .sa:active,.sh button.sa:active{background:#eefbff!important}
+.sh .sht{color:var(--accent)!important}
+.sh .si{background:#eef8fc!important;color:var(--accent)!important}
+.sh .si svg{stroke:var(--accent)!important}
+.sh input,.sh textarea{background:#f4fbfe!important;color:var(--ink)!important;border:1px solid var(--line)!important}
+.sh .dz,.sh button.dz{color:#c92a2a!important}
+.sh .cc{color:var(--accent)!important}
+.sh .sx-s{color:var(--muted)!important}
+#scrCanix{background:linear-gradient(180deg,#f7fdff 0%,#eef9fd 100%)!important}
+#scrCanix .cxtop{padding:calc(env(safe-area-inset-top) + 16px) 18px 14px}
+#scrCanix .cxcard{margin:16px 18px 10px;padding:16px 18px;border-radius:24px}
+#scrCanix #cxMsgs{padding:18px 18px 12px;gap:18px}
+#scrCanix .cxrow{gap:12px}
+#scrCanix .cxb{padding:14px 18px;border-radius:22px;line-height:1.55;font-size:15px}
+#scrCanix .cxfb{margin:6px 0 0 44px;gap:10px}
+#scrCanix .cxfb button{padding:8px 14px;border-radius:16px}
+#scrCanix .cxqa{padding:10px 18px 14px;gap:10px}
+#scrCanix .cxqa button{padding:10px 16px;border-radius:20px}
+#scrCanix #cxBar{bottom:92px;padding:14px 16px;gap:12px;border-radius:26px;margin:0 12px;left:0;right:0;box-shadow:0 8px 24px rgba(0,120,160,.14)}
+#scrCanix #cxBar input{padding:14px 18px;border-radius:24px}
+#scrCanix .cxcard{background:#ffffff!important;border:1px solid var(--line)!important}
+#scrCanix .cxn{color:#0a2a66!important}
+#scrCanix .cxs{color:#1f9d55!important}
+#scrCanix .cxav{background:linear-gradient(135deg,var(--main),var(--accent))!important}
+#scrCanix .cxav svg{stroke:#ffffff!important;fill:none!important}
+.tabs button.on{background:rgba(0,194,224,.16)!important;color:#0a2a66!important}
+.tabs button.on span{color:#0a2a66!important;font-weight:700}
+.tabs button.on svg{stroke:var(--accent)!important}
+body.incanix .tabs,body.incanix #tabs{display:none!important}
+body.incanix #cxBtn{display:none!important}
+#scrCanix #cxBar{bottom:0!important;margin:0!important;border-radius:0!important;padding:12px 16px calc(env(safe-area-inset-bottom) + 14px)!important;background:#ffffff!important;box-shadow:0 -6px 20px rgba(0,120,160,.10)!important}
+#scrCanix .cxcard{display:flex!important;align-items:center;gap:14px;background:#ffffff!important;border:1px solid var(--line)!important;color:#0a2a66!important}
+#scrCanix .cxcard *{color:#0a2a66}
+#scrCanix .cxcard .cxs,#scrCanix .cxcard .cxs *{color:#1f9d55!important}
+#scrCanix .cxcard .cxav{flex:none;width:52px;height:52px}
+#scrCanix #cxMsgs{padding-bottom:140px!important}
+#scrCanix{display:flex!important;flex-direction:column!important;height:100%}
+#scrCanix #cxMsgs{flex:1 1 auto!important;overflow-y:auto!important;min-height:0}
+#scrCanix #cxBar{position:relative!important;left:auto!important;right:auto!important;bottom:auto!important;margin:0!important;border-radius:0!important;padding:12px 16px calc(env(safe-area-inset-bottom) + 12px)!important;background:#ffffff!important;flex:none}
+#scrCanix .cxqa{flex:none}
+#scrCanix.hide{display:none!important}
+#scrCanix:not(.hide){display:flex!important}
+body.incanix #tabs,body.incanix .tabs,body.incanix #cxBtn{display:none!important}
+#scrCanix{background:linear-gradient(180deg,#f7fdff 0%,#eef9fd 100%)!important}
+#scrCanix .cxcard{display:flex!important;align-items:center;gap:14px;margin:16px 18px 10px;padding:14px 18px;border-radius:24px;background:#ffffff!important;border:1px solid #d6ebf4!important;box-shadow:0 6px 18px rgba(0,120,160,.08)}
+#scrCanix .cxcard,#scrCanix .cxcard *{color:#0a2a66!important;visibility:visible!important;opacity:1!important}
+#scrCanix .cxcard .cxs,#scrCanix .cxcard .cxs *{color:#1f9d55!important}
+#scrCanix .cxcard .cxav{width:52px!important;height:52px!important;border-radius:50%!important;background:linear-gradient(135deg,#00c2e0,#2f6fe0)!important;display:flex!important;align-items:center!important;justify-content:center!important;flex:none}
+#scrCanix .cxcard .cxav svg,#scrCanix .cxcard .cxav svg *{stroke:#ffffff!important;fill:none!important;color:#ffffff!important}
+#scrCanix #cxMsgs{padding:18px 18px 12px!important;gap:16px!important}
+#scrCanix .cxb{padding:14px 18px!important;border-radius:22px!important;line-height:1.55!important;font-size:15px!important;background:#ffffff!important;color:#0a2a66!important;box-shadow:0 4px 14px rgba(0,120,160,.08)}
+#scrCanix .cxrow.u .cxb{background:linear-gradient(135deg,#00c2e0,#2f6fe0)!important;color:#ffffff!important;border:0!important}
+#scrCanix .cxqa{display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;gap:10px!important;padding:10px 18px 14px!important}
+#scrCanix .cxqa button{flex:none!important;width:auto!important;border-radius:20px!important;padding:10px 16px!important;background:#ffffff!important;color:#0a3d91!important;border:1px solid #d6ebf4!important}
+#scrCanix #cxBar{position:relative!important;left:auto!important;right:auto!important;bottom:auto!important;margin:0!important;border-radius:0!important;padding:12px 16px calc(env(safe-area-inset-bottom) + 12px)!important;background:#ffffff!important;box-shadow:0 -6px 20px rgba(0,120,160,.10)!important}
+#scrCanix #cxBar input{flex:1;border-radius:24px!important;padding:14px 18px!important;background:#f4fbfe!important;color:#0a2a66!important;border:1px solid #d6ebf4!important}
+#scrCanix .cxcard *{color:#0a2a66!important;-webkit-text-fill-color:#0a2a66!important;visibility:visible!important}
+#scrCanix .cxcard .cxs,#scrCanix .cxcard .cxs *{color:#1f9d55!important;-webkit-text-fill-color:#1f9d55!important}
+#scrCanix .cxcard .cxav svg,#scrCanix .cxcard .cxav svg *{stroke:#ffffff!important;-webkit-text-fill-color:#ffffff!important}
+body:has(#scrGame:not(.hide)) #tabs,body:has(#scrGame:not(.hide)) .tabs{display:none!important}
+#scrGame{background:#bff3ff}
+.tabs{display:flex!important;justify-content:space-around!important;overflow:visible!important;padding:6px 8px!important}
+.tabs button{flex:1 1 0!important;min-width:0!important;max-width:none!important;width:auto!important;display:flex!important;flex-direction:column!important;align-items:center!important}
+.tabs{display:flex!important;justify-content:space-evenly!important;align-items:center!important;padding:6px 10px!important;gap:0!important}
+.tabs button{flex:0 0 auto!important;width:auto!important;min-width:64px!important;padding:6px 10px!important;margin:0!important;display:flex!important;flex-direction:column!important;align-items:center!important}
