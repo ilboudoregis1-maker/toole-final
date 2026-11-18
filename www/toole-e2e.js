@@ -35,7 +35,7 @@
   setInterval(function () { publish().catch(function () { }); }, 4000);
   var pkC = {}, shC = {};
   async function peerPub(id) {
-    var c = pkC[id]; if (c && Date.now() - c.t < 600000) return c.s;
+    var c = pkC[id]; if (c && Date.now() - c.t < 20000) return c.s;
     var s = null;
     if (id === uid()) s = (await myKP()).pub;
     else {
@@ -97,7 +97,7 @@
     }
     return "G1." + b64(TE.encode(JSON.stringify({ s: me0, i: b64(iv), c: b64(new Uint8Array(ct)), k: k })));
   }
-  async function decStr(str) {
+  async function decStr(str, again) {
     try {
       var me0 = uid(), pt;
       if (str.slice(0, 3) === "E1.") {
@@ -113,7 +113,16 @@
       var t = TD.decode(pt);
       try { var j = JSON.parse(t); if (j && typeof j.b === "string") { if (j.m) { for (var x in j.m) MK[x] = j.m[x]; saveMK(); } return j.b; } } catch (e) { }
       return t;
-    } catch (e) { return null; }
+    } catch (e) {
+      /* clé du contact changée (réinstallation...) : on la recharge une fois, au plus toutes les 30 s par contact */
+      try {
+        if (!again && str.slice(0, 3) === "E1.") {
+          var q = str.split("."), pr = q[1] === uid() ? q[2] : q[1]; window.__e2eRt = window.__e2eRt || {};
+          if (!window.__e2eRt[pr] || Date.now() - window.__e2eRt[pr] > 30000) { window.__e2eRt[pr] = Date.now(); delete pkC[pr]; delete shC[pr]; return await decStr(str, true); }
+        }
+      } catch (x) { }
+      return null;
+    }
   }
   window.__e2eDec = decStr;
   async function walk(x) {
@@ -126,7 +135,7 @@
     }
   }
   async function encRow(row, group) {
-    if (!row || typeof row.body !== "string" || /^(E1|G1)\./.test(row.body)) return;
+    if (!row || typeof row.body !== "string" || /^(E1|G1)\./.test(row.body) || row.body.indexOf("[[wall]]") === 0) return;
     await publish();
     if (!group && !(await shared(row.receiver))) {
       /* contact pas à jour (pas de clé) : envoi en clair, sauf si le message porte un média déjà chiffré */
