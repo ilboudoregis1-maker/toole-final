@@ -88,7 +88,7 @@ var n5=0;
 function wtoast(m){try{var d=document.createElement("div");d.textContent=m;d.style.cssText="position:fixed;left:16px;right:16px;bottom:90px;z-index:100090;padding:12px;border-radius:14px;background:#0f172a;color:#fff;text-align:center;font-size:13px";document.body.appendChild(d);setTimeout(function(){d.remove()},5000)}catch(e){}}
 function scanPrev(){try{var ex=["chat","gMsgs","cxMsgs"].map(function(i){return document.getElementById(i)});var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,null),n,L=[];while((n=w.nextNode())){if(n.nodeValue.indexOf(MARK)>=0)L.push(n)}L.forEach(function(n){for(var i=0;i<ex.length;i++){if(ex[i]&&ex[i].contains(n))return}n.nodeValue=n.nodeValue.replace(/\[\[wall\]\][^\n]*/,"Fond de conversation modifi\u00e9")})}catch(e){}}
 setInterval(function(){
-  scan();if(++n5>=5){n5=0;scanPrev()}
+  scan();if(++n5>=15){n5=0;scanPrev()}
   if(!myName&&me_())getName(function(){});
   var h=H();if(!h)return;
   var now=Date.now();
@@ -97,5 +97,5 @@ setInterval(function(){
   var k=h.key();
   if(k!==lastKey){lastKey=k;n3=0;if(k)pull()}
   if(++n3>=10){n3=0;pull()}
-},300);
+},900);
 })();

@@ -52,8 +52,24 @@
       var body = it.kind === "u"
         ? Object.assign({ sender: me(), receiver: it.to, body: it.body }, extra)
         : Object.assign({ group_id: it.to, sender: me(), body: it.body }, extra);
-      await timeout(api(it.kind === "u" ? "/rest/v1/messages" : "/rest/v1/group_messages",
-        { method: "POST", headers: { Prefer: "return=minimal" }, body: JSON.stringify(body) }), 40000);
+      /* clé unique par message : si l'envoi est répété (réseau lent, app relancée), le serveur ignore le doublon */
+      var cid = me() + ":" + it.id, url = it.kind === "u" ? "/rest/v1/messages" : "/rest/v1/group_messages";
+      function post(withCid) {
+        return timeout(api(url + (withCid ? "?on_conflict=cid" : ""), {
+          method: "POST",
+          headers: { Prefer: withCid ? "resolution=ignore-duplicates,return=minimal" : "return=minimal" },
+          body: JSON.stringify(withCid ? Object.assign({ cid: cid }, body) : body)
+        }), 40000);
+      }
+      if (window.__tcidOK === false) await post(false);
+      else {
+        try { await post(true); window.__tcidOK = true; }
+        catch (e) {
+          /* colonne cid pas encore créée dans Supabase : on envoie comme avant */
+          if (/cid|PGRST204|42703|42P10|on_conflict/i.test(String((e && e.message) || e))) { window.__tcidOK = false; await post(false); }
+          else throw e;
+        }
+      }
     })();
     inflight[it.id] = p;
     var done = function () { delete inflight[it.id]; };
