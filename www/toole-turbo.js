@@ -20,7 +20,7 @@ function download(v){
 var st=document.createElement("style");
 st.textContent=".dc-vid{position:relative}.tt-dl{position:absolute;top:8px;right:8px;z-index:4;width:38px;height:38px;border-radius:50%;border:0;padding:0;margin:0;background:rgba(0,0,0,.5);color:#fff;font-size:18px;line-height:38px;text-align:center}.tt-dl:active{background:rgba(0,0,0,.8)}"
 +"#tvScr .tvr .tt-dl{position:static;width:50px;height:auto;background:none;line-height:1.1;font-size:12px;font-weight:700;text-shadow:0 1px 5px #000;display:flex;flex-direction:column;align-items:center;gap:2px}#tvScr .tvr .tt-dl i{font-style:normal;font-size:28px;filter:drop-shadow(0 1px 4px #000)}";
-document.head.appendChild(st);
+st.textContent+="html body #tvScr .tvr .tt-dl{order:10!important}html body #tvScr .tvr .tv3s{order:20!important}html body #tvScr .tvr .tkdisc{order:30!important}";document.head.appendChild(st);
 function addDc(){document.querySelectorAll(".dc-vid").forEach(function(w){
   var v=w.querySelector("video");if(!v||w.querySelector(".tt-dl"))return;
   var b=document.createElement("button");b.type="button";b.className="tt-dl";b.textContent="⬇";b.setAttribute("aria-label","Télécharger");
@@ -28,7 +28,7 @@ function addDc(){document.querySelectorAll(".dc-vid").forEach(function(w){
 function addTv(){document.querySelectorAll("#tvScr .tvi").forEach(function(it){
   var r=it.querySelector(".tvr");if(!r||r.querySelector(".tk-dw,.tt-dl"))return;
   if(/Officiel/.test(it.textContent||"")&&false)return;
-  var b=document.createElement("button");b.type="button";b.className="tt-dl";b.innerHTML="<i>⬇</i><span>Télécharger</span>";
-  b.onclick=function(e){e.stopPropagation();e.preventDefault();download(it.querySelector("video"))};r.appendChild(b)})}
-setInterval(addDc,1800);
+  var b=document.createElement("button");b.type="button";b.className="tt-dl";b.innerHTML='<i><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"/><path d="M7 11l5 5 5-5"/><path d="M5 20h14"/></svg></i>';b.setAttribute("aria-label","Télécharger");
+  b.onclick=function(e){e.stopPropagation();e.preventDefault();download(it.querySelector("video"))};var sh=[].filter.call(r.children,function(x){return /Partager/i.test(x.textContent)})[0];if(sh)r.insertBefore(b,sh);else r.appendChild(b)})}
+setInterval(addDc,1800);setInterval(addTv,1500);
 })();
