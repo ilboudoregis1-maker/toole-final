@@ -30,5 +30,5 @@ function addTv(){document.querySelectorAll("#tvScr .tvi").forEach(function(it){
   if(/Officiel/.test(it.textContent||"")&&false)return;
   var b=document.createElement("button");b.type="button";b.className="tt-dl";b.innerHTML="<i>⬇</i><span>Télécharger</span>";
   b.onclick=function(e){e.stopPropagation();e.preventDefault();download(it.querySelector("video"))};r.appendChild(b)})}
-setInterval(function(){addDc();setTimeout(addTv,1200)},1800);
+setInterval(addDc,1800);
 })();
