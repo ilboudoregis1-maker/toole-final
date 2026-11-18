@@ -101,9 +101,9 @@ var ta=E("textarea");ta.placeholder="Légende (facultatif)";ta.maxLength=(window
 cn.onclick=function(){stopPv();o.remove()};
 go.onclick=function(){go.disabled=true;toast("Envoi de la vidéo…");upV(f).then(function(path){return api("videos",{method:"POST",headers:{Prefer:"return=representation"},body:JSON.stringify({author:uid(),caption:ta.value.trim(),path:path})})}).then(function(r){go.disabled=false;if(Array.isArray(r)&&r[0]){stopPv();o.remove();toast("Vidéo publiée ✓");mode="all";var tb=document.querySelectorAll("#tvFeed .tvt button");tb.forEach(function(x,i){x.className=i?"":"on"});feed()}else toast("Section vidéos pas encore activée (SQL Supabase)")}).catch(function(e){go.disabled=false;toast((e&&e.message)||"Envoi impossible")})}}
 function pick(cb){toast("Ouverture du sélecteur…");if(window.__tpick&&window.__tpick("video/*",function(f){toast("Vidéo reçue "+(f.size/1048576).toFixed(1)+" Mo");cb(f)}))return;var i=document.createElement("input");i.type="file";i.accept="video/*";i.style.display="none";document.body.appendChild(i);i.onchange=function(){var f=i.files&&i.files[0];toast(f?"Vidéo reçue":"Rien reçu");if(f)cb(f);setTimeout(function(){i.remove()},60000)};i.click()}
-function chk(f){var L=window.__tvDur?window.__tvDur():30,v=document.createElement("video"),u=URL.createObjectURL(f),done=0;
-function ok(){if(done)return;done=1;URL.revokeObjectURL(u);cap(f)}
-v.preload="metadata";v.onloadedmetadata=function(){if(done)return;if(isFinite(v.duration)&&v.duration>L+0.5){done=1;URL.revokeObjectURL(u);toast("Vidéo trop longue ("+L+" s maximum"+(L<60?", 1 min pour les comptes certifiés":"")+")")}else ok()};
+function chk(f){var L=window.__tvDur?window.__tvDur():30,v=document.createElement("video"),u=window.URL.createObjectURL(f),done=0;
+function ok(){if(done)return;done=1;window.URL.revokeObjectURL(u);cap(f)}
+v.preload="metadata";v.onloadedmetadata=function(){if(done)return;if(isFinite(v.duration)&&v.duration>L+0.5){done=1;window.URL.revokeObjectURL(u);toast("Vidéo trop longue ("+L+" s maximum"+(L<60?", 1 min pour les comptes certifiés":"")+")")}else ok()};
 v.onerror=ok;setTimeout(ok,4000);v.src=u}
 function publish(){pick(function(f0){
 function step(f){if(f.size>(window.__tvMax?window.__tvMax():18)*1048576){var P=window.Capacitor&&window.Capacitor.Plugins;if(P&&P.VideoEditor&&window.tooleZip){return window.tooleZip(f,0,0,0).then(function(z){if(z)chk(z)})}toast("Vidéo trop lourde ("+(window.__tvMax?window.__tvMax():18)+" Mo maximum)");return}chk(f)}

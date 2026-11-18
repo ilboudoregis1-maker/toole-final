@@ -287,7 +287,7 @@ var N=window.TooleNative,S=window.TooleSaver,P=window.Capacitor&&window.Capacito
 if(S&&S.saveBase64)return b64(bl).then(function(d){S.saveBase64(d,name,bl.type||"video/mp4");toast("Vidéo enregistrée dans Téléchargements")});
 if(N&&N.saveVideoBase64)return b64(bl).then(function(d){N.saveVideoBase64(d,name);toast("Vidéo enregistrée dans Téléchargements")});
 if(P&&P.Filesystem)return b64(bl).then(function(d){return P.Filesystem.writeFile({path:"Download/"+name,data:d,directory:"EXTERNAL_STORAGE",recursive:true})}).then(function(){toast("Vidéo enregistrée dans Téléchargements")});
-var a=document.createElement("a");a.href=URL.createObjectURL(bl);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){a.remove()},1000);toast("Téléchargement lancé : vérifie ton dossier Téléchargements")
+var a=document.createElement("a");a.href=window.URL.createObjectURL(bl);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){a.remove()},1000);toast("Téléchargement lancé : vérifie ton dossier Téléchargements")
 }).catch(function(){toast("Téléchargement impossible pour cette vidéo")})}
 setInterval(function(){var sc=document.getElementById("tvScr");if(!sc)return;
 sc.querySelectorAll(".tvi").forEach(function(it){it.querySelectorAll(".tvr button").forEach(function(b){var i=b.querySelector("i");if(!i)return;if(/↗/.test(i.textContent)&&!b.__dw){b.__dw=1;b.classList.remove("tk-sh");b.classList.add("tk-dw");b.onclick=function(e){e.stopPropagation();dl(it)}}})})},1200);

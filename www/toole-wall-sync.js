@@ -41,7 +41,7 @@ function doPush(p){
 }
 function doMsg(m){
   getName(function(n){
-    var body=MARK+n+"|"+nameOf(m.v),isG=m.k.charAt(0)==="g",id=m.k.slice(2);
+    var body=MARK+n+"|"+nameOf(m.v)+"|"+me_(),isG=m.k.charAt(0)==="g",id=m.k.slice(2);
     API(isG?"/rest/v1/group_messages":"/rest/v1/messages",{method:"POST",headers:{Prefer:"return=minimal"},
       body:JSON.stringify(isG?{group_id:id,sender:me_(),body:body}:{sender:me_(),receiver:id,body:body})
     }).then(function(){
@@ -68,10 +68,10 @@ function scan1(c){
     L.forEach(function(n){
       var b=n;while(b.parentNode&&b.parentNode!==c)b=b.parentNode;
       if(!b.parentNode||b===n)return;
-      var t=n.nodeValue.slice(MARK.length).split("|"),who=t[0],what=t[1]||"";
+      var t=n.nodeValue.slice(MARK.length).split("|"),who=t[0],what=t[1]||"",wid=t[2]||"";
       var d=document.createElement("div");
       d.style.cssText="text-align:center;font-size:12px;color:#7b8a99;margin:10px 24px;line-height:1.4;align-self:center;clear:both";
-      d.textContent=(who===myName?"Vous avez modifié":who+" a modifié")+" le fond en "+what;
+      d.textContent=((wid?wid===me_():who===myName)?"Vous avez modifié":who+" a modifié")+" le fond en "+what;
       c.replaceChild(d,b);
     });
   }catch(e){}

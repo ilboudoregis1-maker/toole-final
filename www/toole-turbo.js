@@ -11,7 +11,7 @@ function save(bl,name){
   if(S&&S.saveBase64)return b64(bl).then(function(d){S.saveBase64(d,name,bl.type||"video/mp4")});
   if(N&&N.saveVideoBase64)return b64(bl).then(function(d){N.saveVideoBase64(d,name)});
   if(P&&P.Filesystem)return b64(bl).then(function(d){return P.Filesystem.writeFile({path:"Download/"+name,data:d,directory:"EXTERNAL_STORAGE",recursive:true})});
-  var a=document.createElement("a");a.href=URL.createObjectURL(bl);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){a.remove()},1000);return Promise.resolve()}
+  var a=document.createElement("a");a.href=window.URL.createObjectURL(bl);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){a.remove()},1000);return Promise.resolve()}
 function download(v){
   var src=v&&(v.currentSrc||v.src);if(!src)return toast("Vidéo pas encore chargée");
   toast("Téléchargement…");
