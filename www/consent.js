@@ -5,7 +5,7 @@
   d.innerHTML='<div style="background:#111;color:#fff;border-radius:16px;padding:20px;max-width:380px">'
    +'<h3>Bienvenue dans TÕÕLé : phase de test</h3>'
    +'<p>Acceptes-tu de participer à cette première étape ?</p>'
-   +'<ul><li>Nous collectons ton <b>numéro de téléphone</b>, uniquement pour vérifier ton compte et sécuriser l\'accès.</li>'
+   +'<ul><li>Nous collectons ton <b>numéro de téléphone</b>, ton <b>nom</b> et ton <b>prénom</b> pour vérifier ton compte. Nous ne lisons pas tes messages : nous savons seulement qui écrit à qui.</li><li>Données hébergées hors du Burkina Faso (Supabase, Cloudinary, Firebase). Médias via Telegram, connexion chiffrée (pas de bout en bout).</li>'
    +'<li>Le <b>genre est libre</b> : tu choisis, ou tu ne précises rien.</li>'
    +'<li>Participation volontaire.</li></ul>'
    +'<button id="cOk">J\'accepte</button> <button id="cNo">Je refuse</button></div>';
