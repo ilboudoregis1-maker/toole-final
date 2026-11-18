@@ -273,7 +273,7 @@ s.onclick=function(e){e.stopPropagation();window.__vm=!window.__vm;
 document.querySelectorAll(".dc-vid video").forEach(function(x){x.muted=window.__vm;if(!window.__vm&&x.paused&&x.__on)vplay(x)});
 document.querySelectorAll(".dc-snd").forEach(function(x){x.__ic()})};
 return s}
-function vshow(m){var d=el("div","",m);d.style.cssText="position:fixed;left:8px;right:8px;top:70px;z-index:100070;background:#0f172a;color:#fff;font:12px monospace;padding:10px;border-radius:10px;word-break:break-all";
+function vshow(m){return;var d=el("div","",m);d.style.cssText="position:fixed;left:8px;right:8px;top:70px;z-index:100070;background:#0f172a;color:#fff;font:12px monospace;padding:10px;border-radius:10px;word-break:break-all";
 d.onclick=function(){d.remove()};document.body.appendChild(d);setTimeout(function(){d.remove()},30000)}
 function vdiag(path,done){var u=window.tgUrl(path,"video"),t0=Date.now();
 fetch(u,{headers:{Range:"bytes=0-65535"}}).then(function(r){
@@ -293,7 +293,7 @@ function load(){if(busy||v)return;busy=true;w.classList.add("ld");
 function build(u){v=el("video");v.setAttribute("playsinline","");v.setAttribute("webkit-playsinline","");
 v.loop=true;v.muted=window.__vm;v.preload="auto";v.__on=on;
 v.style.cssText="width:100%;max-height:520px;display:block;background:#000;object-fit:contain";
-v.onerror=function(){if(u.indexOf("/functions/v1/tg?")>-1){window.__vd=false;v=null;busy=false;load()}else bad(u)};v.src=u;if(u.indexOf("/functions/v1/tg?")>-1){var vv=v;setTimeout(function(){if(v===vv&&vv.readyState<2){vdiag(path,vshow);window.__vd=false;v=null;busy=false;load()}},8000)}
+v.onerror=function(){if(u.indexOf("/functions/v1/tg?")>-1){window.__vd=false;v=null;busy=false;load()}else bad(u)};v.src=u;if(u.indexOf("/functions/v1/tg?")>-1){var vv=v;setTimeout(function(){if(v===vv&&vv.readyState<2){window.__vd=false;v=null;busy=false;load()}},8000)}
 var bar=el("div");bar.style.cssText="position:absolute;left:0;bottom:0;height:3px;width:0;background:#00c2e0;z-index:2";
 v.ontimeupdate=function(){if(v.duration)bar.style.width=(v.currentTime/v.duration*100)+"%"};
 v.onclick=function(){if(v.paused)vplay(v);else v.pause()};

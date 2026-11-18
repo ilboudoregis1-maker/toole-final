@@ -79,7 +79,7 @@ var el=(v&&(v.currentSrc||v.src))?v:i;
 return(el&&(el.currentSrc||el.src))?el:null}
 function add(n){
 if(!n||n.nodeType!==1||n._v9||n.parentNode!==document.body)return;
-if(n.id==="tonceV"||(n.dataset&&n.dataset.noshare)||(n.querySelector&&n.querySelector("#tonceV")))return;
+if(n.id==="tmEd"||n.id==="tvCap"||n.id==="tonceV"||(n.dataset&&n.dataset.noshare)||(n.querySelector&&n.querySelector("#tonceV")))return;
 if(getComputedStyle(n).position!=="fixed"||!media(n))return;
 n._v9=1;
 var cls=n.id==="stv"?" v9-bot":((n.textContent||"").indexOf("\u2715")>-1?" v9-x":"");
