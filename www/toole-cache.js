@@ -1,9 +1,12 @@
 (function(){
-var TTL=300000,MAX=600,CAP=300000,KEEP=7*864e5;var BG={};
+var TTL=300000,MAX=600,CAP=300000;var BG={};
 var RE=new RegExp("^/rest/v1/messages\\?select=\\*&or=\\(and\\(sender\\.eq\\.([^,]+),"+
 "receiver\\.eq\\.([^)]+)\\),and\\(sender\\.eq\\.([^,]+),receiver\\.eq\\.([^)]+)\\)\\)"+
 "&order=created_at\\.asc$");
+var GRE=/^\/rest\/v1\/group_messages\?select=([^&]+)&group_id=eq\.([^&]+)&order=created_at\.asc$/;
 function pm(p){var m=RE.exec(p);return m&&m[1]===m[4]&&m[2]===m[3]?{a:m[1],b:m[2]}:null}
+function gm(p){var m=GRE.exec(p);if(!m)return null;var s=m[1];
+if(s!=="*"&&(s.split(",").indexOf("id")<0||s.indexOf("created_at")<0))return null;return{g:m[2]}}
 function rd(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
 function cl(x){return Object.assign({},x)}
 function wr(k,o){try{var r=o.r;while(r.length>MAX)r.shift();var s=JSON.stringify(o);
@@ -18,7 +21,7 @@ if(t===null)t=r[r.length-1].created_at;return new Date(Date.parse(t)-1).toISOStr
 function mark(r,u){if(localStorage.getItem("toole_readconf")==="0")return r;
 var t=new Date().toISOString();
 r.forEach(function(x){if(x.receiver===u&&!x.read_at)x.read_at=t});return r}
-/* historique complet : IndexedDB, chiffre AES-GCM (cle non exportable) */
+try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
 var DB=null,KP=null;
 function db(){return DB||(DB=new Promise(function(res,rej){var r=indexedDB.open("toole_hist",1);
 r.onupgradeneeded=function(){r.result.createObjectStore("k");r.result.createObjectStore("m")};
@@ -38,10 +41,7 @@ await is("m",k,{iv:iv,ct:await crypto.subtle.encrypt({name:"AES-GCM",iv:iv},K,ne
 function bad(x){return typeof x.body==="string"&&/^(E1\.|G1\.|\uD83D\uDD12 Message chiffr)/.test(x.body)}
 async function arch(k,srv,full){
 var h=await hget(k);if(h===null)return srv;
-var lim=Date.now()-KEEP,m={},i;
-h.forEach(function(x){m[x.id]=x});
-if(full&&srv.length){var ids={};srv.forEach(function(x){ids[x.id]=1});
-h.forEach(function(x){if(!ids[x.id]&&Date.parse(x.created_at)>lim)delete m[x.id]})}
+var m={},i;h.forEach(function(x){m[x.id]=x});
 srv.forEach(function(x){if(bad(x)&&m[x.id])return;m[x.id]=x});
 var o=[];for(i in m)o.push(m[i]);o.sort(cmp);
 var s=JSON.stringify(o.filter(function(x){return !bad(x)})),good=true;
@@ -52,26 +52,31 @@ async function load(a,s,q){var k="tmc:"+q.a+":"+q.b,c=rd(k),now=Date.now();
 var ok=c&&Array.isArray(c.r)&&c.r.length>0,full=!ok||!localStorage.getItem("tmh:"+k),stale=ok&&now-c.t>TTL;
 try{
 if(full){var rows=await a(s);if(!Array.isArray(rows))return rows;
-wr(k,{r:mark(rows.map(cl),q.a),t:now});return await arch(k,rows,true)}
+var o1=await arch(k,rows,true);wr(k,{r:mark(o1.map(cl),q.a),t:now});return o1}
 var nw=await a(s+"&created_at=gt."+encodeURIComponent(since(c.r,q.a)));
 if(!Array.isArray(nw))return nw;
 var all=merge(c.r,nw);wr(k,{r:mark(all.map(cl),q.a),t:c.t});
-if(stale&&!BG[k]){BG[k]=1;a(s).then(function(rw){if(Array.isArray(rw)){wr(k,{r:mark(rw.map(cl),q.a),t:Date.now()});return arch(k,rw,true)}}).catch(function(){}).then(function(){delete BG[k]})}
+if(stale&&!BG[k]){BG[k]=1;a(s).then(function(rw){if(Array.isArray(rw))return arch(k,rw,true).then(function(o2){wr(k,{r:mark(o2.map(cl),q.a),t:Date.now()})})}).catch(function(){}).then(function(){delete BG[k]})}
 return await arch(k,all,false)
 }catch(e){var r2=await arch(k,ok?c.r:[],false);if(r2.length)return r2;throw e}}
-var P="/rest/v1/messages?id=eq.";
-function del(s){var id=s.slice(P.length).split("&")[0];
-try{Object.keys(localStorage).forEach(function(k){if(k.indexOf("tmc:")!==0)return;
+async function gload(a,s,q){var k="g:"+q.g;
+try{var rows=await a(s);if(!Array.isArray(rows))return rows;return await arch(k,rows,false)}
+catch(e){var h=await hget(k);if(h&&h.length)return h;throw e}}
+var P="/rest/v1/messages?id=eq.",PG="/rest/v1/group_messages?id=eq.";
+function del(s,p0,pre){var id=s.slice(p0.length).split("&")[0];
+if(pre==="tmc:")try{Object.keys(localStorage).forEach(function(k){if(k.indexOf("tmc:")!==0)return;
 var c=rd(k);if(!c||!c.r)return;
 var n=c.r.filter(function(x){return String(x.id)!==id});
 if(n.length!==c.r.length){c.r=n;wr(k,c)}})}catch(e){}
-try{ik().then(function(ks){ks.forEach(function(k){hget(k).then(function(h){if(!h)return;
+try{ik().then(function(ks){ks.forEach(function(k){if(String(k).indexOf(pre)!==0)return;hget(k).then(function(h){if(!h)return;
 var n=h.filter(function(x){return String(x.id)!==id});if(n.length!==h.length)hset(k,JSON.stringify(n))})})}).catch(function(){})}catch(e){}}
 var done=0;
 function wrap(){if(done)return;var a=window.api;if(typeof a!=="function")return;done=1;
 var w=function(p,o){var s=String(p),g=!o||!o.method||o.method==="GET";
-if(o&&o.method==="DELETE"&&s.indexOf(P)===0)del(s);
-var q=g?pm(s):null;return q?load(a,s,q):a.apply(this,arguments)};
+if(o&&o.method==="DELETE"){if(s.indexOf(P)===0)del(s,P,"tmc:");else if(s.indexOf(PG)===0)del(s,PG,"g:")}
+var q=g?pm(s):null;if(q)return load(a,s,q);
+var r=g?gm(s):null;if(r)return gload(a,s,r);
+return a.apply(this,arguments)};
 window.api=w}
 wrap();setTimeout(wrap,1500);
 var lo=window.logout;if(typeof lo==="function")window.logout=function(){
