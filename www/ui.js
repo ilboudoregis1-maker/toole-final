@@ -8,7 +8,7 @@ var m=document.getElementById('msg');
 if(m)new MutationObserver(function(){var t=m.textContent,s=document.getElementById('scrInscr'),mi=document.getElementById('msgI');if(!t||!s||!mi||s.classList.contains('hide'))return;mi.textContent=t;if(/Compte cr|Account created/.test(t))setTimeout(function(){showOnly('scrLogin')},1500)}).observe(m,{childList:true,characterData:true,subtree:true});
 var sb=document.getElementById('supportStatic'),pr=document.getElementById('scrProfil');
 if(sb&&pr){var bd=pr.querySelector('.body'),w=sb.parentNode;if(bd&&w&&w!==bd){w.style.padding='16px 0 0';bd.appendChild(w)}
-if(bd&&!document.getElementById('cnsLink')){var p=document.createElement('p');p.id='cnsLink';p.style.cssText='text-align:center;margin:22px 0 0';p.innerHTML='<a href="https://ilboudoregis1-maker.github.io/CNS.corp/" target="_system" style="font-weight:700;text-decoration:none">Site CNS.corp</a>';bd.appendChild(p)}}
+if(bd&&!document.getElementById('cnsLink')){var p=document.createElement('p');p.id='cnsLink';p.style.cssText='text-align:center;margin:22px 0 0';p.innerHTML='<a href="https://ilboudoregis1-maker.github.io/toole-officiel/" target="_system" style="font-weight:700;text-decoration:none">Site TÕÕLé</a>';bd.appendChild(p)}}
 }
 init();
 try{if(localStorage.getItem('toole_lang')==='en'&&typeof tp==='function')tp('en')}catch(e){}

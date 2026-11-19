@@ -4,7 +4,7 @@
   var D = {
     "Numéro (+226 70 12 34 56)": "Number (+226 70 12 34 56)",
     "Mot de passe (6 car. min)": "Password (6 chars min)",
-    "Accéder à CNS.corp": "Visit CNS.corp",
+    "Accéder à TÕÕLé": "Visit TÕÕLé",
     "Nouveau message": "New message",
     "Chargement…": "Loading…",
     "Voulez-vous vraiment vous déconnecter ?": "Do you really want to log out?",
@@ -90,7 +90,7 @@
     /* profil */
     "Profil utilisateur": "User profile", "Mon compte": "My account", "Modifier mes infos": "Edit my info", "Sécurité": "Security",
     "Déconnexion": "Log out", "Oui, me déconnecter": "Yes, log me out", "Messages": "Messages", "Amis": "Friends",
-    "♥ Soutenir TÕÕLé": "♥ Support TÕÕLé", "Soutenir TÕÕLé": "Support TÕÕLé", "Site CNS.corp": "CNS.corp website",
+    "♥ Soutenir TÕÕLé": "♥ Support TÕÕLé", "Soutenir TÕÕLé": "Support TÕÕLé", "Site TÕÕLé": "TÕÕLé website",
     "Pseudo mis à jour": "Username updated", "Mot de passe modifié": "Password changed",
     /* réglages */
     "Compte": "Account", "Changer le mot de passe": "Change password", "Confidentialité": "Privacy",
@@ -104,7 +104,7 @@
     "Données": "Data", "Vider le cache local": "Clear local cache", "Réinitialiser les réglages": "Reset settings",
     "Cache vidé": "Cache cleared", "Réglages réinitialisés": "Settings reset",
     "Réinitialiser les réglages d'affichage ?": "Reset display settings?", "À propos": "About", "Version": "Version",
-    "Contacter l'équipe": "Contact the team", "Éditée par CNS.corp (Burkina Faso)": "Published by CNS.corp (Burkina Faso)",
+    "Contacter l'équipe": "Contact the team", "Éditée par TÕÕLé (Burkina Faso)": "Published by TÕÕLé (Burkina Faso)",
     "Messages envoyés": "Sent messages", "Messages vocaux": "Voice messages", "Suppression des messages": "Message deletion",
     "Appels vocaux et vidéo": "Voice and video calls", "Assistant intelligent": "Smart assistant", "Discussions": "Discussions",
     "Définition automatique": "Automatic setting", "Email, mot de passe": "Email, password",
@@ -134,7 +134,7 @@
     "Avertissement de TÕÕLé": "TÕÕLé notice", "Politique de TÕÕLé": "TÕÕLé policy", "Lire la suite": "Read more", "Réduire": "Collapse",
     "J’ai payé": "I have paid", "Choisis ton opérateur": "Choose your operator", "Confirmer ton soutien": "Confirm your support",
     "Opérateur indisponible": "Operator unavailable", "Ton numéro (facultatif)": "Your number (optional)",
-    "Référence du SMS (facultatif)": "SMS reference (optional)", "Accéder à CNS.corp": "Go to CNS.corp",
+    "Référence du SMS (facultatif)": "SMS reference (optional)", "Accéder à TÕÕLé": "Go to TÕÕLé",
     "Merci ! Ton soutien aide à améliorer TÕÕLé.": "Thank you! Your support helps improve TÕÕLé.",
     "Merci ! Ta déclaration est enregistrée.": "Thank you! Your declaration has been recorded."
   };

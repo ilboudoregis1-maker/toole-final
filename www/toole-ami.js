@@ -1,7 +1,7 @@
 (function(){
 "use strict";
 if(window.__tami)return;window.__tami=1;
-var D=document,SITE="https://ilboudoregis1-maker.github.io/CNS.corp/tooole.html";
+var D=document,SITE="https://ilboudoregis1-maker.github.io/toole-officiel/tooole.html";
 function en(){try{return localStorage.getItem("toole_lang")==="en"}catch(e){return false}}
 function msg(){
   return en()

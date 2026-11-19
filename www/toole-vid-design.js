@@ -1,6 +1,6 @@
 /* TÕÕLé : design du fil Vidéos */
 (function(){"use strict";if(window.__tvd)return;window.__tvd=1;
-var VER=["TÕÕLé_Officiel","CNS.corp","Canisius Régis"];
+var VER=["TÕÕLé_Officiel","Canisius Régis"];
 var s=document.createElement("style");s.textContent=
 "#tvFeed .tvh{flex-wrap:wrap!important;row-gap:8px!important;padding-bottom:10px!important}"
 +"#tvFeed .tvh .sq:not(.tvp){order:1!important}"

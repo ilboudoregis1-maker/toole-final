@@ -14,7 +14,7 @@ st.textContent='#annBand{display:none!important}.ann-card{display:flex;gap:12px;
 D.head.appendChild(st);
 var IC='<svg viewBox="0 0 24 24"><path d="M3 11v2a1 1 0 0 0 1 1h3l6 4V6L7 10H4a1 1 0 0 0-1 1z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/></svg>';
 function card(id){var c=D.createElement('div');c.id=id;c.className='ann-card';return c}
-function fill(c,a){c.innerHTML='<div class="ann-ic">'+IC+'</div><div class="ann-tx"><small>ANNONCE OFFICIELLE · CNS.corp</small><div>'+esc(a.texte)+'</div></div><button class="ann-x" aria-label="Fermer">×</button>';
+function fill(c,a){c.innerHTML='<div class="ann-ic">'+IC+'</div><div class="ann-tx"><small>ANNONCE OFFICIELLE · TÕÕLé</small><div>'+esc(a.texte)+'</div></div><button class="ann-x" aria-label="Fermer">×</button>';
  c.querySelector('.ann-x').onclick=function(){try{localStorage.setItem('toole_ann_x',String(a.id))}catch(e){}paint()}}
 function homeSpot(){var s=$('scrList');if(!s||!s.offsetHeight)return null;
  var i=s.querySelector('input[type=search],input[type=text],input:not([type])');
