@@ -14,7 +14,7 @@ import com.getcapacitor.BridgeActivity;
 public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState); try{getBridge().getWebView().addJavascriptInterface(new Dictation(this),"TooleDict");}catch(Throwable t){}
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         try { getBridge().getWebView().setBackgroundColor(Color.WHITE); } catch (Exception e) { }
