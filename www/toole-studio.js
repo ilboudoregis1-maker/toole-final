@@ -14,7 +14,7 @@ var css=[
 "#tzCam,#tzEd{position:fixed;inset:0;z-index:2147482000;background:#000;color:#fff;font-family:sans-serif;display:flex;flex-direction:column;overflow:hidden;touch-action:manipulation}",
 "#tzEd{z-index:2147483000}",
 ".tz-btn{border:0;color:#fff;background:rgba(255,255,255,.14);width:42px;height:42px;border-radius:50%;font-size:19px;display:grid;place-items:center;padding:0}",
-"#tzCam .cv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000}",
+"#tzCam .cv{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000}",
 "#tzCam .top{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:calc(env(safe-area-inset-top,0px) + 10px) 12px 10px;background:linear-gradient(#000a,transparent);z-index:2}",
 "#tzCam .len{display:flex;gap:6px}#tzCam .len button{border:0;border-radius:16px;padding:7px 13px;background:rgba(255,255,255,.14);color:#fff;font-weight:800;font-size:13px}#tzCam .len button.on{background:#fff;color:#0a2a66}",
 "#tzCam .bot{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-around;padding:20px 12px calc(env(safe-area-inset-bottom,0px) + 26px);background:linear-gradient(transparent,#000b);z-index:2}",
@@ -109,7 +109,7 @@ function openCam(){
   function start(){
     stopStream();ms.textContent="";
     if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){ms.textContent="Caméra indisponible ici.\nUtilise la Galerie.";return}
-    var vc={facingMode:face,width:{ideal:720},height:{ideal:1280}};
+    var vc={facingMode:face,width:{ideal:1080},height:{ideal:1920}};
     navigator.mediaDevices.getUserMedia({video:vc,audio:true}).catch(function(){return navigator.mediaDevices.getUserMedia({video:{facingMode:face}})})
     .then(function(s){if(cancelled){s.getTracks().forEach(function(t){t.stop()});return}stream=s;cv.srcObject=s;cv.style.transform=face==="user"?"scaleX(-1)":"none";var p=cv.play();if(p&&p.catch)p.catch(function(){})})
     .catch(function(){ms.textContent="Autorise la caméra et le micro pour filmer.\nTu peux aussi choisir une vidéo dans la Galerie."});
