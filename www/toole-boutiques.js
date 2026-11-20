@@ -83,6 +83,6 @@ var b1=E("button",BTN,"🏪 Boutiques");b1.type="button";b1.onclick=listView;BOX
 if(m&&m.length){var b2=E("button",BTN,"🛍️ Mes produits");b2.type="button";b2.onclick=function(){shopView(m[0],true)};BOX.appendChild(b2)}
 body.insertBefore(BOX,body.firstChild)}catch(e){}
 busy=false}
-setInterval(mount,900);
+window.TooleBiz={list:listView,shop:function(x){shopView(x,true)}};setInterval(mount,900);
 try{var Ap=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.App;if(Ap&&Ap.addListener)Ap.addListener("backButton",function(){if(OV&&CB)CB()})}catch(e){}
 })();
