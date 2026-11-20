@@ -271,6 +271,18 @@ var ST={en_attente:'⏳ En attente',acceptee:'✅ Acceptée',refusee:'❌ Refus�
 var h=L.length?L.map(function(r){var w=r.statut==='en_attente';return '<div class="sec"><h3>'+esc(r.shop_name)+'</h3><p class="sub">'+esc(nm[r.user_id]||('Utilisateur '+String(r.user_id).slice(0,8)))+' · '+new Date(r.created_at).toLocaleString('fr-FR')+'</p><p>'+esc(r.description||'Sans description')+'</p><p class="'+(r.statut==='refusee'?'err':'ok')+'">'+ST[r.statut]+'</p>'+(w?'<div class="grid"><button data-bz="'+r.id+'" data-ok="1">Accepter</button><button class="ghost" data-bz="'+r.id+'" data-ok="0">Refuser</button></div>':'')+'</div>'}).join(''):'<p class="sub">Aucune demande pour le moment.</p>';
 $('bzL').innerHTML=h;
 el.querySelectorAll('[data-bz]').forEach(function(b){b.onclick=async function(){var ok=b.getAttribute('data-ok')==='1',id=b.getAttribute('data-bz');el.querySelectorAll('[data-bz]').forEach(function(x){x.disabled=true});var fin=function(){try{audit(ok?'business_acceptee':'business_refusee','business_requests',{id:id,par:ME.email})}catch(e){}VIEWS.biz(el)};try{await rpc('admin_business_decider',{req:id,accepter:ok});fin()}catch(e){if(/JSON|Unexpected end/i.test(String(e&&e.message))){fin()}else{el.querySelectorAll('[data-bz]').forEach(function(x){x.disabled=false});msg('bzMsg',e.message||'Erreur')}}}})};
+/*BIZ2*/
+var _bzV=VIEWS.biz;
+VIEWS.biz=async function(el){
+await _bzV(el);
+try{
+var A2=await api('GET','/rest/v1/business_accounts?select=user_id,shop_name,avant_jusqua&order=created_at.desc&limit=50');
+var d=document.createElement('div');
+d.innerHTML='<h2 style="margin-top:18px">Boutiques actives</h2>'+(A2.length?A2.map(function(a){var on=a.avant_jusqua&&new Date(a.avant_jusqua)>new Date();return '<div class="sec"><h3>'+esc(a.shop_name)+'</h3><p class="'+(on?'ok':'sub')+'">'+(on?'⭐ En avant jusqu\'au '+new Date(a.avant_jusqua).toLocaleDateString('fr-FR'):'Pas en avant')+'</p><div class="grid"><button data-av="'+a.user_id+'" data-j="7">En avant 7 j</button><button class="ghost" data-av="'+a.user_id+'" data-j="0">Retirer</button></div></div>'}).join(''):'<p class="sub">Aucune boutique active.</p>');
+el.appendChild(d);
+d.querySelectorAll('[data-av]').forEach(function(b){b.onclick=async function(){var u=b.getAttribute('data-av'),j=parseInt(b.getAttribute('data-j'),10);d.querySelectorAll('[data-av]').forEach(function(x){x.disabled=true});var fin=function(){try{audit(j>0?'business_en_avant':'business_avant_retire','business_accounts',{id:u,par:ME.email})}catch(e){}VIEWS.biz(el)};try{await rpc('admin_business_avant',{uid:u,jours:j});fin()}catch(e){if(/JSON|Unexpected end/i.test(String(e&&e.message)))fin();else{d.querySelectorAll('[data-av]').forEach(function(x){x.disabled=false});msg('bzMsg',e.message||'Erreur')}}}})
+}catch(e){}};
+
 
 ACT.annpub=async function(){var t=($('annTxt').value||'').trim();if(!t){msg('annMsg',"Écris le texte de l'annonce");return}
   try{await api('POST','/rest/v1/statuts_admin',{texte:t,expire_le:new Date(Date.now()+parseInt($('annDur').value,10)*3600000).toISOString(),actif:true},{Prefer:'return=minimal'});await audit('annonce_publiee','statuts_admin',{par:ME.email});$('annTxt').value='';msg('annMsg','Annonce publiée',1)}catch(e){msg('annMsg',e.message)}};
