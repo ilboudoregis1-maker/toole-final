@@ -3,7 +3,7 @@ if(window.__tbiz)return;window.__tbiz=1;
 var BOX=null,busy=false;
 var BTN="display:block;width:100%;margin-top:10px;border:0;border-radius:12px;padding:12px;font-size:15px;font-weight:800;color:#fff;background:linear-gradient(135deg,#00c2e0,#2f6fe0)";
 var INP="display:block;width:100%;box-sizing:border-box;margin-top:8px;padding:11px;border-radius:10px;border:1px solid rgba(128,128,128,.4);font-size:15px;background:transparent;color:inherit";
-function E(t,c,h){var e=document.createElement(t);if(c)e.style.cssText=c;if(h!=null)e.innerHTML=h;return e}
+function ic(n,s,m){return window.TIco?window.TIco(n,s,m):""}function E(t,c,h){var e=document.createElement(t);if(c)e.style.cssText=c;if(h!=null)e.innerHTML=h;return e}
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function ME(){try{if(typeof me==="function")return me()}catch(e){}try{return sess().user.id}catch(e){return null}}
 async function A(path,opt){var r=await api(path,opt||{});if(r&&typeof r.json==="function"){try{r=await r.json()}catch(e){r=null}}return r}
@@ -27,11 +27,11 @@ try{await A("/rest/v1/business_requests",{method:"POST",headers:{Prefer:"return=
 catch(e){go.disabled=false;er.textContent=/duplicate|23505|une_ouverte/i.test(String(e&&e.message))?"Tu as déjà une demande en attente.":"Envoi impossible. Réessaie."}}}
 function draw(s){
 BOX.innerHTML="";
-BOX.appendChild(E("div","font-weight:800;font-size:16px;margin-bottom:6px","🏪 Compte business"));
+BOX.appendChild(E("div","font-weight:800;font-size:16px;margin-bottom:6px",ic("store",18)+"Compte business"));
 var m=E("div","font-size:14px;opacity:.85;line-height:1.4");BOX.appendChild(m);
-if(s.k==="actif"){m.innerHTML="✅ Compte business actif : <b>"+esc(s.n)+"</b>";return}
-if(s.k==="en_attente"){m.innerHTML="⏳ Demande envoyée pour « <b>"+esc(s.n)+"</b> ». Elle sera traitée prochainement.";return}
-m.textContent=s.k==="refusee"?"❌ Ta dernière demande a été refusée. Tu peux en faire une nouvelle.":"Ouvre ta boutique sur TÕÕLé : présente tes produits et reçois des commandes.";
+if(s.k==="actif"){m.innerHTML=ic("check",16)+"Compte business actif : <b>"+esc(s.n)+"</b>";return}
+if(s.k==="en_attente"){m.innerHTML=ic("clock",16)+"Demande envoyée pour « <b>"+esc(s.n)+"</b> ». Elle sera traitée prochainement.";return}
+m.textContent=s.k==="refusee"?"Ta dernière demande a été refusée. Tu peux en faire une nouvelle.":"Ouvre ta boutique sur TÕÕLé : présente tes produits et reçois des commandes.";
 var b=E("button",BTN,s.k==="refusee"?"Faire une nouvelle demande":"Créer un compte business");b.type="button";BOX.appendChild(b);
 b.onclick=function(){b.remove();form()}}
 async function render(){

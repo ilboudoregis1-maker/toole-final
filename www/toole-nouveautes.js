@@ -17,9 +17,9 @@ if(!sc||sc.classList.contains("hide")){if(strip){strip.remove();strip=null}retur
 var seg=sc.querySelector(".dc-seg");if(!seg||!SH.length||(strip&&strip.isConnected))return;
 strip=document.createElement("div");
 strip.style.cssText="margin:10px 12px;padding:10px 12px;border-radius:14px;background:linear-gradient(135deg,rgba(0,194,224,.14),rgba(47,111,224,.14));border:1px solid rgba(47,111,224,.3)";
-var h=document.createElement("div");h.style.cssText="font-weight:800;font-size:14px;color:#0a2a66;margin-bottom:8px";h.textContent="⭐ Boutiques à la une";strip.appendChild(h);
+var h=document.createElement("div");h.style.cssText="font-weight:800;font-size:14px;color:#0a2a66;margin-bottom:8px";h.innerHTML=(window.TIco?window.TIco("star",15):"")+"Boutiques à la une";strip.appendChild(h);
 var row=document.createElement("div");row.style.cssText="display:flex;gap:8px;overflow-x:auto";strip.appendChild(row);
-SH.forEach(function(s){var b=document.createElement("button");b.type="button";b.textContent="🏪 "+s.shop_name;
+SH.forEach(function(s){var b=document.createElement("button");b.type="button";b.textContent=s.shop_name;b.insertAdjacentHTML("afterbegin",window.TIco?window.TIco("store",15):"");
 b.style.cssText="flex:none;border:0;border-radius:20px;padding:9px 14px;font-weight:800;font-size:14px;color:#fff;background:linear-gradient(135deg,#00c2e0,#2f6fe0)";
 b.onclick=function(){if(window.TooleBiz&&window.TooleBiz.shop)window.TooleBiz.shop(s)};row.appendChild(b)});
 seg.insertAdjacentElement("afterend",strip)}
