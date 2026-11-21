@@ -75,7 +75,7 @@ catch(e){if($("cdN")){$("cdN").textContent="—";$("cdL").textContent="—"}}
 try{var pr=await api("/rest/v1/profiles?select=id,pseudo,avatar_v&id=eq."+p.id);var v=pr&&pr[0]&&pr[0].avatar_v;
 if(v){var u=base()+"/storage/v1/object/public/avatars/"+p.id+"/avatar.jpg?v="+v;var im=new Image();
 im.onload=function(){var av=$("cdAv");if(av&&CUR===p){av.style.backgroundImage='url("'+u+'")';av.textContent="";av.dataset.u=u}};im.src=u}}catch(e){}}
-async function load(){var box=$("tcList");if(!box)return;var gen=++G;box.innerHTML="";
+window.__tcLoad=function(){return load()};async function load(){var box=$("tcList");if(!box)return;var gen=++G;box.innerHTML="";
 try{var rows=await api("/rest/v1/saved_contacts?select=contact&owner=eq."+me());if(gen!==G)return;
 var h=LS("tsc_"),ids=rows.map(function(r){return r.contact}).filter(function(i){return h.indexOf(i)<0});
 if(!ids.length){box.innerHTML='<div class="sx-s" style="padding:14px">Aucun contact enregistré.</div>';return}

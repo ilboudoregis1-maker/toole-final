@@ -17,7 +17,7 @@ function knLoad(){var me=uid();if(!me||Date.now()-KT<30000)return;KT=Date.now();
 Promise.all([api("saved_contacts?select=contact&owner=eq."+me+"&limit=1000"),api("messages?select=receiver&sender=eq."+me+"&order=created_at.desc&limit=1000")]).then(function(r){var n={};(Array.isArray(r[0])?r[0]:[]).forEach(function(x){if(x&&x.contact)n[x.contact]=1});(Array.isArray(r[1])?r[1]:[]).forEach(function(x){if(x&&x.receiver)n[x.receiver]=1});KN=n;[].forEach.call(document.querySelectorAll("[data-avid]"),avPaint)}).catch(function(){})}
 function avx(id,t,cls){var d=el("div",cls==null?"dc-av":cls,t);if(id)d.setAttribute("data-avid",id);avPaint(d);return d}
 function gUrl(g){return U+"/storage/v1/object/public/avatars/"+g.created_by+"/g_"+g.id+".jpg"}
-function invBtn(p){var b=el("button","dc-inv","+ Groupe");b.type="button";b.onclick=function(e){e.stopPropagation();invSheet(p)};return b}
+window.__dcInv=function(p){invSheet(p)};function invBtn(p){var b=el("button","dc-inv","+ Groupe");b.type="button";b.onclick=function(e){e.stopPropagation();invSheet(p)};return b}
 function invSheet(p){var ov=el("div","dc-sheet"),bd=el("div","dc-bd"),pn=el("div","dc-pn dc-mn"),hd=el("div","dc-ch","Inviter "+(p.pseudo||"")+" dans un groupe"),L=el("div","dc-cl");
 bd.onclick=function(){ov.remove()};pn.appendChild(hd);pn.appendChild(L);ov.appendChild(bd);ov.appendChild(pn);sec.appendChild(ov);L.appendChild(el("div","dc-empty","Chargement…"));
 api("groups?select=id,name,created_by,invite_code&order=created_at.desc").then(function(gs){L.innerHTML="";if(!Array.isArray(gs)||!gs.length){L.appendChild(empty("Tu n'as pas encore de groupe.\nCrée-en un dans Groupes."));return}
@@ -365,7 +365,7 @@ function init(){var ref=$("scrList");if(!ref)return setTimeout(init,300);
 (function(){var l=document.createElement("link");l.rel="stylesheet";l.href="toole-explorer2.css";document.head.appendChild(l)})();sec=el("section","scr hide");sec.id="scrDecouvrir";
 var h=el("div","dc-hd"),bk=el("button","dc-ib"),t=el("h1","","EXPLORER"),rf=el("button","dc-ib");bk.innerHTML=IC.back;bk.setAttribute("aria-label","Retour");rf.innerHTML=IC.ref;rf.setAttribute("aria-label","Actualiser");bk.onclick=back;rf.onclick=render;var lg=el("img","dc-logo");lg.src="logo.png";lg.alt="";lg.onerror=function(){lg.style.display="none"};h.appendChild(bk);h.appendChild(lg);h.appendChild(t);h.appendChild(rf);
 var bar_=el("div","dc-bar"),si=el("input","dc-srch");si.type="search";si.placeholder="Rechercher une publication ou une personne";var tm;si.oninput=function(){clearTimeout(tm);tm=setTimeout(function(){Q=si.value.trim();render()},300)};
-var sg=el("div","dc-seg");[["posts","Pour toi"],["saved","Enregistrés"],["people","Gens"]].forEach(function(k){var b=el("button","",k[1]);b.dataset.k=k[0];b.onclick=function(){tab=k[0];LIM=30;render()};sg.appendChild(b)});
+var sg=el("div","dc-seg");[["posts","Pour toi"],["saved","Enregistrés"]].forEach(function(k){var b=el("button","",k[1]);b.dataset.k=k[0];b.onclick=function(){tab=k[0];LIM=30;render()};sg.appendChild(b)});
 chipsEl=el("div","dc-chips");[["all","Tout"],["img","Photos"],["vid","Vidéos"],["txt","Texte"]].forEach(function(k){var b=el("button",k[0]===FILT?"on":"",k[1]);b.dataset.k=k[0];b.onclick=function(){FILT=k[0];LIM=30;[].forEach.call(chipsEl.children,function(x){x.classList.toggle("on",x.dataset.k===FILT)});render()};chipsEl.appendChild(b)});
 bar_.appendChild(si);bar_.appendChild(sg);bar_.appendChild(chipsEl);
 box=el("div","dc-body");sec.appendChild(h);sec.appendChild(bar_);sec.appendChild(box);ref.parentNode.appendChild(sec);
