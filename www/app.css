@@ -1979,3 +1979,7 @@ html body #scrDecouvrir .dc-list .dc-card:has(.dc-go2) button{white-space:nowrap
 .tsed>div:first-child b{flex:1 1 auto!important;min-width:0!important;font-size:13px!important;letter-spacing:.05em!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
 .tsed>div:first-child .tsstab{flex:0 0 auto!important;width:auto!important;min-width:0!important;padding:9px 16px!important;white-space:nowrap!important}
 .tsed>div:first-child button:first-child{flex:0 0 auto!important;width:auto!important}
+
+/* v2.9.12 barre a 6 boutons */
+html #v4nav .t span{font-size:10px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+html #v4nav .mid{margin-left:4px;margin-right:4px}

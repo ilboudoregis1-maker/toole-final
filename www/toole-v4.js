@@ -4,10 +4,10 @@
 (function(){
   'use strict';
   var L=(localStorage.getItem('toole_lang')||'fr')==='en'?'en':'fr';
-  var T={fr:{disc:'Discussions',cont:'Contacts',comm:'Communautés',calls:'Appels',tv:'Divertissement',st:'Mon statut',sts:'Statuts',all:'Tous',unread:'Non lus',fav:'Favoris',grp:'Groupes',
+  var T={fr:{disc:'Discussions',cont:'Contacts',comm:'Communautés',calls:'Appels',tv:'Divertissement',shop:'Boutique',st:'Mon statut',sts:'Statuts',all:'Tous',unread:'Non lus',fav:'Favoris',grp:'Groupes',
     newChat:'Nouvelle discussion',newGrp:'Nouveau groupe',newSt:'Publier un statut',close:'Fermer',noFav:'Aucun favori. Touchez l\u2019étoile d\u2019une discussion pour l\u2019ajouter.',
     noCalls:'Aucun appel pour l\u2019instant.',callsErr:'Historique indisponible pour le moment.',out:'Sortant',inc:'Entrant',miss:'Manqué',dec:'Refusé',now:'à l\u2019instant',call:'Appeler'},
-    en:{disc:'Chats',cont:'Contacts',comm:'Communities',calls:'Calls',tv:'Entertainment',st:'My status',sts:'Status',all:'All',unread:'Unread',fav:'Favorites',grp:'Groups',
+    en:{disc:'Chats',cont:'Contacts',comm:'Communities',calls:'Calls',tv:'Entertainment',shop:'Shop',st:'My status',sts:'Status',all:'All',unread:'Unread',fav:'Favorites',grp:'Groups',
     newChat:'New chat',newGrp:'New group',newSt:'Post a status',close:'Close',noFav:'No favorites yet. Tap the star on a chat to add it.',
     noCalls:'No calls yet.',callsErr:'History unavailable right now.',out:'Outgoing',inc:'Incoming',miss:'Missed',dec:'Declined',now:'just now',call:'Call'}}[L];
   var $=function(i){return document.getElementById(i)};
@@ -20,7 +20,7 @@
     chat:'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>',
     user:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M17 5a3.5 3.5 0 0 1 0 6M19 14.5A6.5 6.5 0 0 1 21.5 20"/>',
     comm:'<circle cx="12" cy="6" r="2.6"/><circle cx="5.5" cy="17" r="2.6"/><circle cx="18.5" cy="17" r="2.6"/><path d="M10.5 8.3L6.8 14.6M13.5 8.3l3.7 6.3M8.2 17h7.6"/>',
-    phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',film:'<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9.5v5l4.5-2.5z"/>',
+    phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',film:'<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9.5v5l4.5-2.5z"/>',shop:'<path d="M4 9l1.5-5h13L20 9"/><path d="M4 9a2.7 2.7 0 005.3 0 2.7 2.7 0 005.4 0A2.7 2.7 0 0020 9"/><path d="M5 12v8h14v-8M10 20v-5h4v5"/>',
     plus:'<path d="M12 5v14M5 12h14"/>',
     me:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
     ring:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/>',
@@ -79,7 +79,7 @@
       '<button class="t" data-n="contacts">'+svg(S.user)+'<span>'+T.cont+'</span></button>'+
       '<button class="mid" data-n="new" aria-label="+">'+svg(S.plus)+'</button>'+
       '<button class="t" data-n="comm">'+svg(S.comm)+'<span>'+T.comm+'</span></button>'+
-      '<button class="t" data-n="tv">'+svg(S.film)+'<span>'+T.tv+'</span></button>';
+      '<button class="t" data-n="tv">'+svg(S.film)+'<span>'+T.tv+'</span></button>'+'<button class="t" data-n="shop">'+svg(S.shop)+'<span>'+T.shop+'</span></button>';
     document.body.appendChild(n);
     n.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;go(b.dataset.n)});
   }
@@ -88,7 +88,7 @@
       if(k==='chats'){mode='chats';await goList();setSection()}
       else if(k==='contacts'){mode='contacts';if(typeof renderContacts==='function')await renderContacts();setSection();setChip(null)}
       else if(k==='comm'){mode='comm';openGroupes()}
-      else if(k==='calls'){openCalls()}else if(k==='tv'){if(typeof window.__tvOpen==='function')window.__tvOpen()}
+      else if(k==='calls'){openCalls()}else if(k==='tv'){if(typeof window.__tvOpen==='function')window.__tvOpen()}else if(k==='shop'){if(typeof window.__tbTab==='function')window.__tbTab()}
       else if(k==='new'){newSheet()}
     }catch(e){}
     sync();

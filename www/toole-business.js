@@ -41,5 +41,13 @@ if(!BOX||!BOX.isConnected){BOX=E("div","margin:14px 0;padding:14px;border-radius
 draw(s)}catch(e){}
 busy=false}
 function hook(){var o=window.openSettings;if(typeof o!=="function"||o.__tb)return;var f=function(){var r=o.apply(this,arguments);setTimeout(render,80);return r};f.__tb=1;window.openSettings=f}
+function skin(){var c=getComputedStyle(document.body),bg=c.backgroundColor;if(!bg||bg==="transparent"||bg==="rgba(0, 0, 0, 0)"){bg=getComputedStyle(document.documentElement).backgroundColor;if(!bg||bg==="transparent"||bg==="rgba(0, 0, 0, 0)")bg="#fff"}return{bg:bg,fg:c.color||"#111"}}
+function ovl(title){var k=skin(),o=E("div","position:fixed;left:0;top:0;right:0;bottom:0;z-index:2147480000;overflow-y:auto;background:"+k.bg+";color:"+k.fg+";font-family:system-ui,sans-serif;padding:calc(12px + env(safe-area-inset-top,0px)) 14px calc(16px + env(safe-area-inset-bottom,0px))");
+var h=E("div","display:flex;align-items:center;gap:8px;margin-bottom:12px"),b=E("button","border:0;background:transparent;font-size:24px;padding:2px 8px;color:inherit","←");b.type="button";b.onclick=function(){o.remove()};h.appendChild(b);h.appendChild(E("div","font-weight:800;font-size:17px",esc(title)));o.appendChild(h);document.body.appendChild(o);return o}
+function mine(){var o=ovl("Ma boutique");BOX=E("div","margin:14px 0;padding:14px;border-radius:16px;border:1px solid rgba(47,111,224,.35);background:rgba(47,111,224,.07)");o.appendChild(BOX);BOX.textContent="Chargement…";state().then(draw).catch(function(){BOX.textContent="Indisponible pour le moment."})}
+window.__tbTab=function(){if(document.getElementById("tbTab"))return;var o=ovl("Boutique");o.id="tbTab";
+var a=E("button",BTN,ic("store",18)+" Voir les boutiques");a.type="button";a.onclick=function(){o.remove();if(window.TooleBiz&&window.TooleBiz.list)window.TooleBiz.list()};
+var b=E("button",BTN,ic("plus",18)+" Ma boutique / Ouvrir ma boutique");b.type="button";b.onclick=function(){o.remove();mine()};
+o.appendChild(a);o.appendChild(b)};
 hook();setInterval(hook,1500);
 })();
