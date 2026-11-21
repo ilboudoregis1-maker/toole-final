@@ -1985,5 +1985,5 @@ html #v4nav .t span{font-size:10px;max-width:100%;overflow:hidden;text-overflow:
 html #v4nav .mid{margin-left:4px;margin-right:4px}
 
 /* v2.9.13 bouton Enregistrer un contact bien visible */
-html #scContacts #tcAdd{display:flex!important;align-items:center;justify-content:center;gap:8px;width:100%;min-height:54px;margin:4px 0 14px!important;padding:0 16px;border:0!important;border-radius:16px!important;font-size:17px!important;font-weight:800!important;color:#fff!important;background:linear-gradient(135deg,#00c2e0,#2f6fe0)!important;box-shadow:0 6px 18px rgba(47,111,224,.38)}
-html #scContacts #tcAdd:active{transform:scale(.98)}
+html #scrContacts #tcAdd{display:flex!important;align-items:center;justify-content:center;gap:8px;width:100%;min-height:54px;margin:4px 0 14px!important;padding:0 16px;border:0!important;border-radius:16px!important;font-size:17px!important;font-weight:800!important;color:#fff!important;background:linear-gradient(135deg,#00c2e0,#2f6fe0)!important;box-shadow:0 6px 18px rgba(47,111,224,.38)}
+html #scrContacts #tcAdd:active{transform:scale(.98)}
