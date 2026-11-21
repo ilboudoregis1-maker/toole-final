@@ -168,7 +168,7 @@ function pcard(p){var c=el("div","dc-pc");c.appendChild(avx(p.id,ini(p.pseudo)))
 function suggestions(P){var s=el("div","dc-sug");P.forEach(function(p){s.appendChild(pcard(p))});return s}
 function person(p){var c=el("div","dc-card"),t=el("div","dc-top");t.appendChild(avx(p.id,ini(p.pseudo)));t.appendChild(el("div","dc-n",p.pseudo||"Sans nom"));c.appendChild(t);if(p.id!==uid()){var b=el("button","dc-go2","Écrire ›");b.onclick=function(){chat(p)};c.appendChild(b);c.appendChild(invBtn(p))}return c}
 function people(){var L=el("div","dc-list");box.appendChild(head("Annuaire"));box.appendChild(L);skel(L);
-api("profiles?select=id,pseudo,avatar_v&order=pseudo.asc&limit=60"+(Q?"&pseudo=ilike."+encodeURIComponent("*"+Q+"*"):"")).then(function(r){L.innerHTML="";if(!r.length)L.appendChild(empty("Personne trouvée."));r.forEach(function(p){L.appendChild(person(p))})})}
+api("profiles?select=id,pseudo,avatar_v&order=pseudo.asc&limit=60"+(Q?"&pseudo=ilike."+encodeURIComponent("*"+Q+"*"):"")).then(function(r){L.innerHTML="";r=(r||[]).filter(function(p){return !/^t[õo][õo]l[ée]$/i.test(String(p.pseudo||"").trim())});if(!r.length)L.appendChild(empty("Personne trouvée."));r.forEach(function(p){L.appendChild(person(p))})})}
 function stories(){var s=el("div","dc-stories");api("profiles?select=id,pseudo,avatar_v&order=pseudo.asc&limit=20").then(function(r){r.filter(function(p){return p.id!==uid()}).forEach(function(p){var d=el("div","dc-st"),g=el("div","rg");g.appendChild(avx(p.id,ini(p.pseudo),""));d.appendChild(g);d.appendChild(el("span","",p.pseudo||"?"));d.onclick=function(){chat(p)};s.appendChild(d)});if(!s.children.length)s.style.display="none"});return s}
 
 /* ---------- Publier ---------- */
