@@ -2,6 +2,6 @@
 <resources>
   <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
     <item name="android:windowSplashScreenBackground">#ffffff</item>
-    <item name="android:windowSplashScreenAnimatedIcon">@null</item>
+    <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_vide</item>
   </style>
 </resources>
