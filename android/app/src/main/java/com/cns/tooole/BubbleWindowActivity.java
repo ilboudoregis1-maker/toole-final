@@ -50,8 +50,8 @@ public class BubbleWindowActivity extends BridgeActivity {
     private void floating() {
         DisplayMetrics dm = getResources().getDisplayMetrics();
         final float dn = dm.density;
-        getWindow().setLayout((int) (dm.widthPixels * 0.94f), (int) (dm.heightPixels * 0.54f));
-        getWindow().setGravity(Gravity.TOP); android.view.WindowManager.LayoutParams lp = getWindow().getAttributes(); lp.y = (int) (dm.heightPixels * 0.03f); getWindow().setAttributes(lp); getWindow().setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED);
+        getWindow().setLayout((int) (dm.widthPixels * 1.0f), (int) (dm.heightPixels * 0.92f));
+        getWindow().setGravity(Gravity.TOP); android.view.WindowManager.LayoutParams lp = getWindow().getAttributes(); lp.y = (int) (dm.heightPixels * 0f); getWindow().setAttributes(lp); getWindow().setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED);
         GradientDrawable g = new GradientDrawable();
         g.setColor(0xFFFFFFFF);
         g.setCornerRadius(22 * dn);
