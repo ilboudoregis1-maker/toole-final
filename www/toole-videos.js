@@ -112,6 +112,6 @@ function open(){close();stopAll();var ov=E("div");ov.id="tvFeed";var h=E("div","
 var tb=E("div","tvt");[["all","Pour toi"],["follow","Abonnements"],["liked","J'aime"]].forEach(function(k){var b=E("button",mode===k[0]?"on":"",k[1]);b.onclick=function(){mode=k[0];tb.querySelectorAll("button").forEach(function(x){x.className=""});b.className="on";feed()};tb.appendChild(b)});
 var pl=E("button","sq tvp","+");pl.onclick=publish;
 h.appendChild(bk);h.appendChild(tb);h.appendChild(pl);var sc=E("div");sc.id="tvScr";ov.appendChild(h);ov.appendChild(sc);document.body.appendChild(ov);feed()}
-function ensure(){var sg=document.querySelector("#scrDecouvrir .dc-seg");if(sg&&!sg.querySelector(".tv-b")){var b=E("button","tv-b","🎬 Vidéos");b.type="button";b.onclick=open;sg.appendChild(b)}}
+window.__tvOpen=open;function ensure(){}
 setInterval(ensure,800);ensure();
 })();
