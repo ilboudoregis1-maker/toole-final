@@ -64,10 +64,10 @@ Promise.resolve().then(function(){return fetch(window.tgUrl(path,"video"))}).the
 v.onloadeddata=ok;v.onerror=blobWay;
 try{v.src=window.tgUrl(path,"video")}catch(e){return blobWay()}
 tm=setTimeout(function(){if(v.readyState<1)blobWay()},12000)}
-var ioP=new IntersectionObserver(function(es){es.forEach(function(e){var it=e.target;if(e.isIntersecting&&e.intersectionRatio>.6){it.__act=1;load(it);if(it.__v.src&&it.__v.readyState>=2)play(it.__v)}else{it.__act=0;it.__v.pause()}})},{root:sc,threshold:[0,.6]});
+var ioP=new IntersectionObserver(function(es){es.forEach(function(e){var it=e.target;if(e.isIntersecting&&e.intersectionRatio>.6){it.__act=1;it.__v.preload="auto";load(it);if(it.__v.src)play(it.__v)}else{it.__act=0;it.__v.pause()}})},{root:sc,threshold:[0,.6]});
 var ioL=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)load(e.target)})},{root:sc,rootMargin:"150% 0px"});
 ios.push(ioP,ioL);
-list.forEach(function(p){var it=E("div","tvi"),v=E("video"),l=E("div","tvl","Chargement…");v.setAttribute("playsinline","");v.setAttribute("webkit-playsinline","");v.loop=true;v.preload="auto";v.poster="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+list.forEach(function(p){var it=E("div","tvi"),v=E("video"),l=E("div","tvl","Chargement…");v.setAttribute("playsinline","");v.setAttribute("webkit-playsinline","");v.loop=true;v.preload="metadata";v.poster="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 var rail=E("div","tvr"),lk=E("button"),cm=E("button");lk.innerHTML="<i></i><span></span>";cm.innerHTML="<i>💬</i><span></span>";
 function upd(){lk.firstChild.textContent=p.me?"❤️":"🤍";lk.lastChild.textContent=p.lk;cm.lastChild.textContent=p.cc}
 function doLike(){if(!me)return toast("Connecte-toi");if(p.me){p.me=false;p.lk=Math.max(0,p.lk-1);api("video_likes?video_id=eq."+p.id+"&user_id=eq."+me,{method:"DELETE"})}else{p.me=true;p.lk++;api("video_likes",{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify({video_id:p.id,user_id:me})})}upd()}
@@ -75,7 +75,7 @@ lk.onclick=function(e){e.stopPropagation();doLike()};cm.onclick=function(e){e.st
 var OF=/^t[õo][õo]l[ée]$/i.test(nm(p.author));if(!OF){rail.appendChild(lk);rail.appendChild(cm)}
 if(p.author===me){var dl=E("button");dl.innerHTML="<i>🗑</i><span></span>";dl.onclick=function(e){e.stopPropagation();if(confirm("Supprimer cette vidéo ?")){api("videos?id=eq."+p.id,{method:"DELETE"});v.pause();it.remove()}};rail.appendChild(dl)}
 upd();it.__upd=upd;
-var c=E("div","tvc"),n=E("div","tvn");n.appendChild(E("b","","@"+nm(p.author)));
+var c=E("div","tvc"),n=E("div","tvn");n.appendChild(E("b","","@"+nm(p.author)));if(window.__INF&&window.__INF[p.author])n.appendChild(E("span","tvinf","⭐ Influenceur"));
 if(FOK){var fc=E("span","tvfc"),fb=E("button","tvf");(FB[p.author]=FB[p.author]||[]).push({b:fb,c:fc});if(p.author!==me&&!OF){fb.onclick=function(e){e.stopPropagation();follow(p.author)};n.appendChild(fb)}n.appendChild(fc);fbRefresh(p.author)}
 c.appendChild(n);c.appendChild(E("div","tvx",p.caption||""));
 it.appendChild(v);it.appendChild(l);it.appendChild(rail);it.appendChild(c);
@@ -83,7 +83,7 @@ it.__v=v;it.__l=l;it.__p=p.path;
 var lt=0,tm;it.onclick=function(){var t=Date.now();if(t-lt<320){clearTimeout(tm);lt=0;if(!p.me&&!OF)doLike();return}lt=t;tm=setTimeout(function(){if(v.muted&&!v.paused){v.muted=false;return}if(v.paused)play(v);else v.pause()},320)};
 sc.appendChild(it);ioP.observe(it);ioL.observe(it)});__soc.then(function(r){arr(r[0]).forEach(function(x){var p=by[x.video_id];if(p){p.lk++;if(x.user_id===me)p.me=true}});arr(r[1]).forEach(function(x){var p=by[x.video_id];if(p)p.cc++});if(Array.isArray(r[2]))r[2].forEach(function(x){FC[x.followed]=(FC[x.followed]||0)+1;if(x.follower===me)FM[x.followed]=1});Object.keys(FB).forEach(function(a){fbRefresh(a)});sc.querySelectorAll(".tvi").forEach(function(it){if(it.__upd)it.__upd()})})})}
 function feed(){var sc=document.getElementById("tvScr");if(!sc)return;ios.forEach(function(o){o.disconnect()});ios=[];killVids(sc);sc.innerHTML="";sc.appendChild(E("div","tve","Chargement…"));
-var me=uid(),base="videos?select=id,author,caption,path,created_at&order=created_at.desc&limit=30",q;
+var me=uid(),base="videos?select=id,author,caption,path,created_at&order=created_at.desc&limit=15",q;
 function none(t){sc.innerHTML="";sc.appendChild(E("div","tve",t))}
 if(mode==="follow")q=api("follows?select=followed&follower=eq."+me).then(function(r){if(!Array.isArray(r))return null;var a=r.map(function(x){return x.followed});return a.length?api(base+"&author=in.("+a.join(",")+")"):[]});
 else if(mode==="liked")q=api("video_likes?select=video_id&user_id=eq."+me+"&limit=100").then(function(r){var a=arr(r).map(function(x){return x.video_id});return a.length?api(base+"&id=in.("+a.join(",")+")"):[]});
