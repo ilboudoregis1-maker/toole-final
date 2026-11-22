@@ -14,8 +14,8 @@ var CSS="#scrDecouvrir>*:not(#nvx){display:none!important}#scrDecouvrir:not(.hid
 +"#nvx{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#f3f8ff;color:#0b1d3a;font-family:sans-serif;padding-bottom:110px;box-sizing:border-box}#nvx *{box-sizing:border-box}"
 +"#nvx .top{display:flex;align-items:center;gap:10px;padding:calc(env(safe-area-inset-top,0px) + 14px) 14px 8px}#nvx .top h1{flex:1;margin:0;font-size:26px;font-weight:900;letter-spacing:-.6px;color:#0a2a66}"
 +"#nvx .req{display:flex;align-items:center;gap:6px;border:0;border-radius:18px;padding:0 14px;height:40px;font-weight:800;font-size:13.5px;color:#fff;background:linear-gradient(135deg,#00c2e0,#2f6fe0);box-shadow:0 8px 18px rgba(47,111,224,.3)}"
-+"#nvx .chips{display:flex;gap:8px;overflow-x:auto;padding:6px 14px 10px;scrollbar-width:none}#nvx .chips::-webkit-scrollbar{display:none}"
-+"#nvx .chip{flex:none;border:0;border-radius:18px;padding:9px 15px;font-weight:800;font-size:13.5px;color:#35507d;background:#fff;box-shadow:inset 0 0 0 1px #d9e5f6}#nvx .chip.on{color:#fff;background:#0a2a66;box-shadow:none}"
++"#nvx .nvch{display:flex;gap:8px;overflow-x:auto;padding:6px 14px 10px;scrollbar-width:none}#nvx .nvch::-webkit-scrollbar{display:none}"
++"#nvx .nvc{flex:none;border:0;border-radius:18px;padding:9px 15px;font-weight:800;font-size:13.5px;color:#35507d;background:#fff;box-shadow:inset 0 0 0 1px #d9e5f6}#nvx .nvc.on{color:#fff;background:#0a2a66;box-shadow:none}"
 +"#nvx .sec{display:flex;align-items:center;padding:14px 14px 8px;font-size:17px;font-weight:900;color:#0a2a66}"
 +"#nvx .hs{display:flex;gap:12px;overflow-x:auto;padding:0 14px 4px;scrollbar-width:none}#nvx .hs::-webkit-scrollbar{display:none}"
 +"#nvx .inf{flex:none;width:92px;text-align:center}#nvx .inf .av{width:62px;height:62px;border-radius:50%;margin:0 auto 6px;display:grid;place-items:center;font-weight:900;font-size:22px;color:#fff;background:linear-gradient(135deg,#ffb020,#ef3b5c)}#nvx .inf b{display:block;font-size:12.5px;color:#0a2a66;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}"
@@ -54,7 +54,7 @@ return'<div class="card" data-id="'+p.id+'"><div class="ch"><div class="lg">T</d
 +'<div class="ac"><button data-a="like" class="'+(LM[p.id]?"on":"")+'">'+ic("heart",20,LM[p.id])+'<span>'+l+'</span></button><button data-a="cm">'+ic("msg",20)+'<span>'+c+'</span></button></div></div>'}
 function draw(){if(!ROOT||!ROOT.isConnected)return;var keep=ROOT.scrollTop,h='';
 h+='<div class="top"><h1>Nouveautés</h1><button class="req" data-a="req">'+ic("plus",18)+'Publier</button></div>';
-h+='<div class="chips">'+[["tout","Tout"],["apps","Apps & Jeux"]].concat(RUB.map(function(n){return[n,n]})).map(function(c){return'<button class="chip'+(sel===c[0]?" on":"")+'" data-a="chip" data-v="'+esc(c[0])+'">'+esc(c[1])+'</button>'}).join("")+'</div>';
+h+='<div class="nvch">'+[["tout","Tout"],["apps","Apps & Jeux"]].concat(RUB.map(function(n){return[n,n]})).map(function(c){return'<button class="nvc'+(sel===c[0]?" on":"")+'" data-a="chip" data-v="'+esc(c[0])+'">'+esc(c[1])+'</button>'}).join("")+'</div>';
 var infos=POSTS.filter(function(p){return p.kind==="info"}),apps=POSTS.filter(function(p){return p.kind!=="info"});
 if(sel==="tout"&&INF.length){h+='<div class="sec">Influenceurs à suivre</div><div class="hs">'+INF.map(function(x){var n=x.nom||"?";return'<div class="inf"><div class="av">'+esc(n.charAt(0).toUpperCase())+'</div><b>'+esc(n)+'</b><button class="fb'+(FOL[x.user_id]?" on":"")+'" data-a="fol" data-u="'+x.user_id+'">'+(FOL[x.user_id]?"Suivi":"Suivre")+'</button></div>'}).join("")+'</div>'}
 var une=infos.filter(function(p){return p.a_la_une});
@@ -75,7 +75,8 @@ try{if(on)await A("/rest/v1/nv_likes?post_id=eq."+id+"&user_id=eq."+u,{method:"D
 async function follow(uid){var u=ME(),on=!!FOL[uid];if(on)delete FOL[uid];else FOL[uid]=1;draw();
 try{if(on)await A("/rest/v1/follows?follower=eq."+u+"&followed=eq."+uid,{method:"DELETE"});else await A("/rest/v1/follows",{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify({follower:u,followed:uid})})}catch(e){}}
 function shrink(f){return new Promise(function(ok,ko){var rd=new FileReader();rd.onerror=ko;rd.onload=function(){var i=new Image();i.onerror=ko;i.onload=function(){var k=Math.min(1,1080/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=Math.round(i.width*k);c.height=Math.round(i.height*k);c.getContext("2d").drawImage(i,0,0,c.width,c.height);c.toBlob(function(b){b?ok(b):ko()},"image/jpeg",.82)};i.src=rd.result};rd.readAsDataURL(f)})}
-function upload(b,tag){var p=ME()+"/nv_"+tag+"_"+Date.now()+".jpg";window.__e2ePlain=window.__e2ePlain||{};window.__e2ePlain[p]=1;if(!window.tgUpload)return Promise.reject(new Error("upload"));return window.tgUpload(b,p).then(function(){return"tg:"+p})}
+function upload(b,tag){var f=new FormData();f.append("file",b);f.append("upload_preset","TÕÕLé-app");f.append("public_id","toole/nv/"+ME()+"_"+tag+"_"+Date.now());
+return fetch("https://api.cloudinary.com/v1_1/mydh3xtz/image/upload",{method:"POST",body:f}).then(function(r){return r.json().then(function(j){if(!r.ok||!j.secure_url)throw new Error((j.error&&j.error.message)||"upload");return j.secure_url})})}
 function prix(k){return parseInt(CFG["prix_"+(k==="photos"?"photos":k)],10)||0}
 async function request(){var kind="photos",files=[];
 var o=sheet("Demander une publication",'<div class="seg" id="nvK"><button type="button" data-k="photos" class="on">Photos</button><button type="button" data-k="app">Application</button><button type="button" data-k="jeu">Jeu</button></div>'
@@ -83,11 +84,14 @@ var o=sheet("Demander une publication",'<div class="seg" id="nvK"><button type="
 +'<div id="nvL" style="display:none"><label>Lien de téléchargement</label><input class="in" id="nvU" placeholder="https://…"></div>'
 +'<label id="nvFl">Photos (4 maximum)</label><input class="in" id="nvF" type="file" accept="image/*" multiple>'
 +'<div class="pay" id="nvP"></div>'
-+'<label>Opérateur utilisé</label><div class="seg" id="nvO"><button type="button" data-o="orange" class="on">Orange Money</button><button type="button" data-o="moov">Moov Money</button></div>'
++'<label>Opérateur utilisé</label><div class="seg" id="nvO"><button type="button" data-o="orange" class="on">Orange Money</button><button type="button" data-o="wave">Wave</button></div>'
 +'<label>Ton numéro qui a payé</label><input class="in" id="nvN" inputmode="tel" placeholder="Ex : 70 00 00 00"><label>Référence de la transaction</label><input class="in" id="nvR" placeholder="Reçue par SMS">'
 +'<button class="go" type="button" id="nvG">Envoyer la demande</button><div class="er" id="nvE"></div><div id="nvM"></div>');
 var op="orange";
-function pay(){var m=prix(kind),n=CFG["num_"+op];$("nvP").innerHTML="Frais de publication : <b>"+m+" FCFA</b>.<br>Envoie ce montant par "+(op==="orange"?"Orange":"Moov")+" Money au <b>"+esc(n||"numéro communiqué par l’équipe")+"</b>, puis remplis ta référence ci-dessous. Ta demande est examinée une fois le paiement vérifié."}
+function pay(){var m=prix(kind),el=$("nvP");
+if(op==="orange"){var code="*144*10*"+(CFG.num_orange||"44383201")+"*"+m+"#";
+el.innerHTML="Frais de publication : <b>"+m+" FCFA</b>.<br>Compose ce code Orange Money :<br><b style=\"font-size:15px;user-select:all\">"+esc(code)+"</b><a class=\"go\" style=\"display:flex;align-items:center;justify-content:center;text-decoration:none;height:46px;margin-top:10px\" href=\"tel:"+encodeURIComponent(code)+"\">Payer "+m+" FCFA avec Orange Money</a><div style=\"margin-top:8px\">Ensuite, copie la référence reçue par SMS dans le champ ci-dessous.</div>"}
+else{var n=CFG.num_wave;el.innerHTML="Frais de publication : <b>"+m+" FCFA</b>.<br>Ouvre Wave et envoie <b>"+m+" FCFA</b> au <b>"+esc(n||"numéro communiqué par l’équipe")+"</b>. Ensuite, copie la référence de la transaction dans le champ ci-dessous."}}
 pay();
 o.querySelector("#nvK").onclick=function(e){var b=e.target.closest("button");if(!b)return;kind=b.getAttribute("data-k");[].forEach.call(this.children,function(x){x.className=x===b?"on":""});$("nvL").style.display=kind==="photos"?"none":"block";$("nvFl").textContent=kind==="photos"?"Photos (4 maximum)":"Icône / capture de l’"+(kind==="jeu"?"jeu":"application")+" (4 maximum)";pay()};
 o.querySelector("#nvO").onclick=function(e){var b=e.target.closest("button");if(!b)return;op=b.getAttribute("data-o");[].forEach.call(this.children,function(x){x.className=x===b?"on":""});pay()};
