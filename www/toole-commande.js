@@ -154,7 +154,7 @@ if(num.length!==8){er.textContent="Numéro Orange Money invalide (8 chiffres).";
 if(!idBlob){er.textContent="La photo de la pièce d’identité est obligatoire.";return}
 if(!acc){er.textContent="Lis et accepte la politique avant de continuer.";return}
 go.disabled=true;er.textContent="Envoi…";var ref=ME()+"/id-"+Date.now()+".jpg";
-try{await window.tgUpload(idBlob,ref)}catch(e){go.disabled=false;er.textContent="Photo non "+
+window.__e2ePlain=window.__e2ePlain||{};window.__e2ePlain[ref]=1;try{await window.tgUpload(idBlob,ref)}catch(e){go.disabled=false;er.textContent="Photo non "+
 "envoyée. Réessaie.";return}
 try{await A("/rest/v1/business_requests",{method:"POST",headers:{Prefer:"return=minimal"},
 body:JSON.stringify({user_id:ME(),shop_name:nm,description:d.value.trim()||null,momo:num,
@@ -175,7 +175,7 @@ o.appendChild(E("div","font-size:12px;opacity:.75;margin-top:8px;line-height:1.4
 var pd=E("button",BTN,"✅ J’ai payé (joindre la capture)");pd.type="button";
 pd.onclick=function(){pick(async function(blob){
 pd.disabled=true;var ref=ME()+"/pay-"+Date.now()+".jpg";
-try{await window.tgUpload(blob,ref)}catch(e){pd.disabled=false;toast("Capture non envoyée, "+
+window.__e2ePlain=window.__e2ePlain||{};window.__e2ePlain[ref]=1;try{await window.tgUpload(blob,ref)}catch(e){pd.disabled=false;toast("Capture non envoyée, "+
 "réessaie.");return}
 try{await A("/rest/v1/business_orders?id=eq."+r.id,{method:"PATCH",headers:{Prefer:"return=minimal"},
 body:JSON.stringify({statut:"paye",proof_ref:ref,paid_at:new Date().toISOString()})})}
