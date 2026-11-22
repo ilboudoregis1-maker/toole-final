@@ -2,7 +2,8 @@
 (function(){"use strict";if(window.__tcad)return;window.__tcad=1;window.__INF=window.__INF||{};
 /* Texte affiché après la commande d'un cadeau (à adapter : numéro Mobile Money, etc.) */
 var PAY_INFO="Pour valider ton cadeau, paie le montant par Mobile Money en suivant les instructions de l'équipe TÕÕLé. Le cadeau est envoyé dès que le paiement est confirmé.";
-var GIFTS=[{id:"calebasse",n:"Calebasse",p:500,a:"cal"},{id:"flag",n:"Faso flag",p:750,a:"flag"},{id:"cheval",n:"Cheval",p:1000,a:"horse"}];
+var GIFTS=[{id:"coris",n:"Coris",p:200,a:"coris"},{id:"calebasse",n:"Calebasse",p:500,a:"cal"},{id:"flag",n:"Faso flag",p:750,a:"flag"},{id:"cheval",n:"Cheval",p:1000,a:"horse"},{id:"rose",n:"La rose",p:5000,a:"rose",sp:1}];
+var CERT={};function GL(to){var inf=!!window.__INF[to],ce=!!CERT[to];return GIFTS.filter(function(g){if(inf&&ce)return true;if(inf)return g.id!=="coris"&&g.id!=="rose";return g.id==="coris"})}function loadCert(){try{api("/rest/v1/profiles?select=id&certified=eq.true&limit=2000").then(function(r){return r&&typeof r.json==="function"?r.json():r}).then(function(r){CERT={};(Array.isArray(r)?r:[]).forEach(function(x){CERT[x.id]=1})}).catch(function(){})}catch(e){}}setTimeout(loadCert,2500);setInterval(loadCert,60000);
 var IP={
 back:'<path d="M15 5l-7 7 7 7"/>',
 star:'<path d="M12 2.8l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17l-5.6 3 1.1-6.2L3 9.4l6.2-.9z" fill="currentColor" stroke="none"/>',
@@ -12,7 +13,7 @@ heart:'<path d="M12 20.6S3.6 15.6 3.6 9.4A4.6 4.6 0 0 1 12 6.9a4.6 4.6 0 0 1 8.4
 check:'<circle cx="12" cy="12" r="9.2"/><path d="M7.8 12.4l3 3 5.6-6.2"/>',
 close:'<path d="M6 6l12 12M18 6L6 18"/>'};
 function ic(n,s){return '<svg viewBox="0 0 24 24" width="'+(s||22)+'" height="'+(s||22)+'" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+IP[n]+'</svg>'}
-function art(k){var A=window.__TGART||{};return A[k]||""}
+function art(k){var A=window.__TGART||{};return A[k]||("<b style=font-size:34px;font-style:normal;line-height:1>"+(({cal:"🥣",flag:"🇧🇫",horse:"🐴",rose:"🌹",coris:"🐚"})[k]||"🎁")+"</b>")}
 var CSS="#tcpf{position:fixed;inset:0;z-index:100020;overflow-y:auto;-webkit-overflow-scrolling:touch;background:radial-gradient(520px 300px at 100% -5%,rgba(0,194,224,.2),transparent),#f3f8ff;color:#0b1d3a;font-family:sans-serif;animation:tcF .22s ease}"
 +"@keyframes tcF{from{opacity:0;transform:translateY(14px)}}"
 +"#tcpf *{box-sizing:border-box}"
@@ -75,7 +76,7 @@ var sh=E("div","sh");sh.appendChild(E("div","gp"));
 var x=E("button","x",ic("close",20));x.type="button";x.onclick=function(){o.remove()};sh.appendChild(x);
 sh.appendChild(E("h3","","Envoyer un cadeau"));sh.appendChild(E("div","sb","à <b>"+esc(name)+"</b>"));
 var gs=E("div","gs"),btns={};
-GIFTS.forEach(function(g){var b=E("button","g",'<div class="ga">'+art(g.a)+'</div><div class="gn">'+g.n+'</div><span class="gpx">'+g.p+' FCFA</span>');b.type="button";
+GL(to).forEach(function(g){var b=E("button","g"+(g.sp?" sp":""),'<div class="ga">'+art(g.a)+'</div><div class="gn">'+g.n+'</div><span class="gpx">'+g.p+' FCFA</span>');b.type="button";
 b.onclick=function(){sel=g;Object.keys(btns).forEach(function(k){btns[k].classList.remove("on")});b.classList.add("on");go.disabled=false;go.querySelector("span").textContent="Envoyer · "+g.p+" FCFA"};btns[g.id]=b;gs.appendChild(b)});
 sh.appendChild(gs);
 var ta=E("textarea");ta.maxLength=200;ta.placeholder="Un petit mot (facultatif)";sh.appendChild(ta);
@@ -130,10 +131,11 @@ if(window.__INF[aid])openProfile(aid)},true);
 /* ---------- bouton cadeau dans le rail ---------- */
 function rails(){try{[].forEach.call(document.querySelectorAll("#tvScr .tvi"),function(it){
 var aid=(it.__p||"").split("/")[0],r=it.querySelector(".tvr");if(!aid||!r)return;
-var has=r.querySelector(".tcgb"),want=!!window.__INF[aid]&&aid!==ME();
+var has=r.querySelector(".tcgb"),want=(!!window.__INF[aid]||!!CERT[aid])&&aid!==ME();
 if(has&&!want){has.remove();return}
 if(!has&&want){var b=E("button","tcgb",'<i>'+ic("gift",26)+'</i><span>Cadeau</span>');b.type="button";
 b.onclick=function(e){e.stopPropagation();var nb=it.querySelector(".tv3n"),n=nb?nb.textContent:"cet influenceur";giftSheet(aid,n)};
 var d=r.querySelector(".tkdisc");if(d)r.insertBefore(b,d);else r.appendChild(b)}})}catch(e){}}
 setInterval(rails,700);
 })();
+(function(){var s=document.createElement("style");s.textContent="#tcgo .g.sp,#tcgo .gs .g:only-child{grid-column:1/-1;display:flex;align-items:center;justify-content:center;gap:14px;padding:14px 16px}#tcgo .g.sp{background:linear-gradient(135deg,#fff4d6,#ffe3ea);box-shadow:0 8px 20px rgba(239,59,92,.16),inset 0 0 0 2px #f5b942}#tcgo .g.sp.on{box-shadow:0 10px 24px rgba(239,59,92,.3),inset 0 0 0 2px #ef3b5c}#tcgo .g.sp .gn{font-size:16px;font-weight:900}";document.head.appendChild(s)})();
