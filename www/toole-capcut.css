@@ -46,3 +46,7 @@ html body #tcp .h b{flex:1 1 0!important;min-width:0;overflow:hidden;text-overfl
 #tcp .tt{font:800 13px monospace;color:#0a2a66!important}
 #tcp .pg button.cx{margin-top:6px;height:40px;padding:0 22px;font-size:14px}
 #tcp .c{background-color:#2f6fe0;background-size:auto 100%;background-repeat:repeat-x;background-position:left center}
+
+#tcp .dg{position:absolute;inset:0;z-index:6;background:#fff;padding:18px;display:flex;flex-direction:column;gap:10px;overflow:auto}
+#tcp .dg pre{flex:1;margin:0;white-space:pre-wrap;word-break:break-word;font:12px monospace;color:#0a2a66;user-select:text}
+#tcp .dg button{height:46px;font-size:14px}
