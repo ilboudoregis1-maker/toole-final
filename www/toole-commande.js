@@ -69,14 +69,14 @@ var POL=[
 ["1. Objet","Cette politique encadre l’ouverture et l’usage des boutiques sur TÕÕLé. Elle "+
 "s’applique aux marchands et aux acheteurs dès qu’ils utilisent la section Boutiques. La lire "+
 "jusqu’au bout est obligatoire avant toute demande d’ouverture."],
-["2. Ouverture d’une boutique","L’ouverture est payante (800 FCFA, à régler une fois la demande "+
+["2. Ouverture d’une boutique","L’ouverture est payante (1000 FCFA, à régler une fois la demande "+
 "traitée). Elle exige : le nom de la boutique, un numéro de réception Orange Money valide, "+
 "et la photo d’une pièce d’identité officielle lisible (CNIB, passeport ou permis). Toute "+
 "information fausse, pièce d’un tiers ou pièce falsifiée entraîne le refus ou la fermeture "+
 "immédiate."],
 ["3. Pièce d’identité","La pièce d’identité sert uniquement à vérifier l’identité du marchand "+
 "et à prévenir la fraude. Elle n’est jamais visible des autres utilisateurs. Elle n’est consultée "+
-"que par l’équipe CNS.corp habilitée et peut être transmise aux autorités compétentes en cas "+
+"que par l’équipe TÕÕLé habilitée et peut être transmise aux autorités compétentes en cas "+
 "d’infraction."],
 ["4. Produits et services interdits","Sont interdits : armes, drogues, médicaments non autorisés, "+
 "produits contrefaits ou volés, contenus sexuels, produits dangereux, et tout article dont "+
