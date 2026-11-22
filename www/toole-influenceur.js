@@ -26,7 +26,7 @@ horse:"<svg viewBox='0 0 64 64' width='54' height='54'><defs><linearGradient id=
 };
 var CSS="#tinfOv{position:fixed;inset:0;z-index:100050;background:rgba(8,20,50,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);display:flex;align-items:flex-end;animation:tiF .2s ease}"
 +"@keyframes tiF{from{opacity:0}}@keyframes tiU{from{transform:translateY(40px);opacity:0}}"
-+"#tinfOv .tsh{position:relative;width:100%;max-height:92%;display:flex;flex-direction:column;box-sizing:border-box;background:#f3f8ff;color:#0b1d3a;border-radius:30px 30px 0 0;font-family:sans-serif;animation:tiU .28s cubic-bezier(.2,.8,.2,1)}"
++"#tinfOv .tsx{position:relative;width:100%;max-height:92%;display:flex;flex-direction:column;box-sizing:border-box;background:#f3f8ff;color:#0b1d3a;border-radius:30px 30px 0 0;font-family:sans-serif;animation:tiU .28s cubic-bezier(.2,.8,.2,1)}"
 +"#tinfOv .tgr{flex:none;width:44px;height:5px;border-radius:3px;background:#cdd9ee;margin:10px auto 6px}"
 +"#tinfOv .tcl{position:absolute;top:14px;right:14px;z-index:3;width:38px;height:38px;border:0;border-radius:13px;display:grid;place-items:center;background:rgba(255,255,255,.28);color:#fff;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}"
 +"#tinfOv .tbd{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:6px 16px calc(env(safe-area-inset-bottom,0px) + 24px)}"
@@ -130,6 +130,6 @@ if(h&&h.parentNode)h.parentNode.insertBefore(s,h.nextSibling);else if(n)n.append
 window.__tinfLoad=loadInf;loadInf();setInterval(loadInf,60000);setInterval(render,1500);setInterval(badges,1200);
 window.__tinfOpen=function(){var o=document.getElementById("tinfOv");if(o)o.remove();
 o=E("div");o.id="tinfOv";
-var sh=E("div","tsh"),gr=E("div","tgr"),x=E("button","tcl",ic("close",20));x.type="button";x.setAttribute("aria-label","Fermer");x.onclick=function(){o.remove()};
+var sh=E("div","tsx"),gr=E("div","tgr"),x=E("button","tcl",ic("close",20));x.type="button";x.setAttribute("aria-label","Fermer");x.onclick=function(){o.remove()};
 var h=E("div","tbd");sh.appendChild(gr);sh.appendChild(x);sh.appendChild(h);o.appendChild(sh);o.onclick=function(e){if(e.target===o)o.remove()};document.body.appendChild(o);window.__tinfHost=h;BOX=null;render()};
 })();
