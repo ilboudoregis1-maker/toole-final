@@ -98,7 +98,7 @@
       return r;
     });
     if (!hit) return net;
-    var tm = new Promise(function (ok) { setTimeout(function () { ok(hit.clone()); }, 800); });
+    var tm = new Promise(function (ok) { setTimeout(function () { ok(hit.clone()); }, u.indexOf("/rest/v1/videos?") > -1 ? 0 : 800); });
     return Promise.race([net.catch(function () { return hit.clone(); }), tm]);
   }
   window.fetch = function (input, init) {
