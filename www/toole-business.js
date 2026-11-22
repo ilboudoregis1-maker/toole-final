@@ -32,7 +32,7 @@ var m=E("div","font-size:14px;opacity:.85;line-height:1.4");BOX.appendChild(m);
 if(s.k==="actif"){m.innerHTML=ic("check",16)+"Compte business actif : <b>"+esc(s.n)+"</b>";return}
 if(s.k==="en_attente"){m.innerHTML=ic("clock",16)+"Demande envoyée pour « <b>"+esc(s.n)+"</b> ». Elle sera traitée prochainement.";return}
 m.textContent=s.k==="refusee"?"Ta dernière demande a été refusée. Tu peux en faire une nouvelle.":"Ouvre ta boutique sur TÕÕLé : présente tes produits et reçois des commandes.";
-BOX.appendChild(E("div","margin-top:10px;padding:10px 12px;border-radius:12px;background:rgba(245,165,36,.14);border:1px solid rgba(245,165,36,.5);font-size:13px;line-height:1.45;text-align:left","<b>💳 Boutique payante</b><br>L’ouverture d’une boutique est payante : 800 FCFA, à régler une fois ta demande traitée."));var b=E("button",BTN,s.k==="refusee"?"Faire une nouvelle demande":"Créer un compte business");b.type="button";BOX.appendChild(b);
+BOX.appendChild(E("div","margin-top:10px;padding:10px 12px;border-radius:12px;background:rgba(245,165,36,.14);border:1px solid rgba(245,165,36,.5);font-size:13px;line-height:1.45;text-align:left","<b>💳 Boutique payante</b><br>L’ouverture d’une boutique est payante : <b>1000 FCFA</b>, à régler une fois ta demande traitée."));var b=E("button",BTN,s.k==="refusee"?"Faire une nouvelle demande":"Créer un compte business");b.type="button";BOX.appendChild(b);
 b.onclick=function(){b.remove();form()}}
 async function render(){
 var body=(window.__tbizHost&&window.__tbizHost.isConnected?window.__tbizHost:null);if(!body||busy)return;busy=true;
