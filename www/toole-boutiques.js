@@ -75,7 +75,7 @@ inf.appendChild(E("div","flex:1;min-height:8px",""));
 if(mine){inf.appendChild(E("div","margin-bottom:6px;font-size:12px",ic("users",16)+(cnt[p.id]||0)+" intéressé(e)(s)"));
 var rm=E("button","display:block;width:100%;border:1px solid #e5484d;border-radius:10px;padding:8px;background:transparent;color:#e5484d;font-weight:700;font-size:13px","Retirer");rm.type="button";
 rm.onclick=async function(){if(!confirm("Retirer ce produit ?"))return;try{await A("/rest/v1/business_products?id=eq."+p.id,{method:"DELETE",headers:{Prefer:"return=minimal"}});shopView(s,own)}catch(e){toast("Impossible de retirer le produit")}};inf.appendChild(rm)}
-else{var cm=E("button",BTN2,ic("bag",16)+"Commander");cm.type="button";cm.onclick=function(){order(s,p,cm)};inf.appendChild(cm)}
+else{var cm=E("button",BTN2,ic("bag",16)+"Commander");cm.type="button";cm.onclick=function(){if(window.TooleCmd)window.TooleCmd.order(s,p);else order(s,p,cm)};inf.appendChild(cm)}
 c.appendChild(inf);L.appendChild(c)})}
 async function order(s,p,btn){btn.disabled=true;
 try{await A("/rest/v1/business_interest",{method:"POST",headers:{Prefer:"resolution=ignore-duplicates,return=minimal"},body:JSON.stringify({product_id:p.id,user_id:ME()})})}catch(e){}
@@ -105,7 +105,7 @@ if(!sc||sc.classList.contains("hide")){if(BOX){BOX.remove();BOX=null}return}
 var body=sc.querySelector(".body");if(!body||(BOX&&BOX.isConnected)||busy)return;busy=true;
 try{var m=await A("/rest/v1/business_accounts?select=user_id,shop_name,description&user_id=eq."+ME());
 BOX=E("div","margin:14px 0");
-var b1=E("button",BTN,ic("store",18)+"Boutiques");b1.type="button";b1.onclick=listView;BOX.appendChild(b1);
+var b1=E("button",BTN,ic("store",18)+"Boutiques");b1.type="button";b1.onclick=listView;BOX.appendChild(b1);if(window.TooleCmd){var b3=E("button",BTN,ic("bag",18)+"Mes achats");b3.type="button";b3.onclick=window.TooleCmd.achats;BOX.appendChild(b3);if(m&&m.length){var b4=E("button",BTN,ic("bag",18)+"Commandes reçues");b4.type="button";b4.onclick=window.TooleCmd.recues;BOX.appendChild(b4)}}
 if(m&&m.length){var b2=E("button",BTN,ic("bag",18)+"Mes produits");b2.type="button";b2.onclick=function(){shopView(m[0],true)};BOX.appendChild(b2)}
 body.insertBefore(BOX,body.firstChild)}catch(e){}
 busy=false}
