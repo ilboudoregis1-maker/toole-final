@@ -26,7 +26,7 @@ function shrink(f){return new Promise(function(res,rej){var u=window.URL.createO
 im.onload=function(){var M=900,w=im.naturalWidth,h=im.naturalHeight,k=Math.min(1,M/Math.max(w,h)),c=document.createElement("canvas");c.width=Math.round(w*k);c.height=Math.round(h*k);c.getContext("2d").drawImage(im,0,0,c.width,c.height);window.URL.revokeObjectURL(u);c.toBlob(function(b){b?res(b):rej()},"image/jpeg",0.8)};
 im.onerror=rej;im.src=u})}
 async function listView(){
-var t=th(),b=shell("Boutiques",ovClose);
+var t=th(),b=shell("Boutiques",ovClose);window.__tbizHost=b;
 var q=E("input",INP(t)+";margin-top:0;margin-bottom:12px");q.placeholder="Rechercher une boutique";
 var L=E("div","","<p style='opacity:.7'>Chargement…</p>");b.appendChild(q);b.appendChild(L);
 var rows=[];try{rows=await A("/rest/v1/business_accounts?select=user_id,shop_name,description&order=created_at.desc&limit=100")||[]}catch(e){L.innerHTML="<p>Impossible de charger les boutiques.</p>";return}

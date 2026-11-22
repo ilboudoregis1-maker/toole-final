@@ -35,7 +35,7 @@ m.textContent=s.k==="refusee"?"Ta dernière demande a été refusée. Tu peux en
 var b=E("button",BTN,s.k==="refusee"?"Faire une nouvelle demande":"Créer un compte business");b.type="button";BOX.appendChild(b);
 b.onclick=function(){b.remove();form()}}
 async function render(){
-var body=document.querySelector("#scrParam .body");if(!body||busy)return;busy=true;
+var body=(window.__tbizHost&&window.__tbizHost.isConnected?window.__tbizHost:null);if(!body||busy)return;busy=true;
 try{var s=await state();
 if(!BOX||!BOX.isConnected){BOX=E("div","margin:14px 0;padding:14px;border-radius:16px;border:1px solid rgba(47,111,224,.35);background:rgba(47,111,224,.07)");body.insertBefore(BOX,body.firstChild)}
 draw(s)}catch(e){}

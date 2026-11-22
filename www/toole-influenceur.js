@@ -36,7 +36,12 @@ try{var st=await stats(ME());var g=E("div","display:flex;gap:8px;margin-top:10px
 if(s.k==="en_attente"){m.innerHTML="Demande envoyée pour « <b>"+esc(s.n)+"</b> ». Elle sera traitée prochainement.";return}
 m.textContent=s.k==="refusee"?"Ta dernière demande a été refusée. Tu peux en faire une nouvelle.":"Publie des vidéos, gagne des abonnés et reçois le badge Influenceur.";
 var b=E("button",BTN,"Devenir influenceur");b.type="button";BOX.appendChild(b);b.onclick=function(){b.remove();form()}}
-async function render(){var body=document.querySelector("#scrParam .body");if(!body||busy||(BOX&&BOX.isConnected))return;busy=true;
+async function render(){var body=(window.__tinfHost&&window.__tinfHost.isConnected?window.__tinfHost:null);if(!body||busy||(BOX&&BOX.isConnected))return;busy=true;
 try{var s=await state();BOX=E("div","margin:14px 0;padding:14px;border-radius:16px;border:1px solid rgba(229,72,77,.35);background:rgba(229,72,77,.07)");body.insertBefore(BOX,body.firstChild);await draw(s)}catch(e){}busy=false}
 loadInf();setInterval(loadInf,60000);setInterval(render,1500);
+window.__tinfOpen=function(){var o=document.getElementById("tinfOv");if(o)o.remove();
+o=E("div","position:fixed;inset:0;z-index:100050;background:rgba(0,0,0,.6);display:flex;align-items:flex-end");o.id="tinfOv";
+var sh=E("div","width:100%;max-height:85%;overflow:auto;box-sizing:border-box;background:#fff;color:#0b1b2b;border-radius:22px 22px 0 0;padding:16px 16px calc(env(safe-area-inset-bottom,0px) + 20px)");
+var x=E("button","float:right;border:0;background:rgba(128,128,128,.15);width:34px;height:34px;border-radius:17px;font-size:18px;color:inherit","\u2715");x.type="button";x.onclick=function(){o.remove()};
+var h=E("div","");sh.appendChild(x);sh.appendChild(h);o.appendChild(sh);o.onclick=function(e){if(e.target===o)o.remove()};document.body.appendChild(o);window.__tinfHost=h;BOX=null;render()};
 })();

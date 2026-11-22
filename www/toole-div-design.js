@@ -12,7 +12,7 @@ s.textContent="#tvScr .tvi::before{content:'';position:absolute;left:0;right:0;t
 +"#tvScr .tvl{padding:8px 16px;border-radius:20px;background:rgba(255,255,255,.12);animation:tvp 1.2s ease-in-out infinite}@keyframes tvp{50%{opacity:.45}}"
 +".tvpb{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(255,255,255,.25);z-index:4}.tvpb i{display:block;height:100%;width:0;background:linear-gradient(90deg,#00c2e0,#2f6fe0)}"
 +".tvpi{position:absolute;left:50%;top:50%;width:84px;height:84px;margin:-42px 0 0 -42px;border-radius:50%;background:rgba(0,0,0,.45);color:#fff;font-size:38px;display:flex;align-items:center;justify-content:center;z-index:5;pointer-events:none;opacity:0;transform:scale(.7);transition:opacity .2s,transform .2s}.tvpi.on{opacity:1;transform:scale(1)}"
-+".tvh{position:absolute;left:50%;top:50%;font-size:90px;margin:-50px 0 0 -45px;z-index:6;pointer-events:none;animation:tvh .7s ease-out forwards}@keyframes tvh{0%{opacity:0;transform:scale(.3)}25%{opacity:1;transform:scale(1.15)}100%{opacity:0;transform:translateY(-60px) scale(1)}}"
++".tvheart{position:absolute;left:50%;top:50%;font-size:90px;margin:-50px 0 0 -45px;z-index:6;pointer-events:none;animation:tvheart .7s ease-out forwards}@keyframes tvheart{0%{opacity:0;transform:scale(.3)}25%{opacity:1;transform:scale(1.15)}100%{opacity:0;transform:translateY(-60px) scale(1)}}"
 +".tvmu{position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 70px);z-index:2147483000;padding:8px 14px;border-radius:20px;background:rgba(0,0,0,.65);color:#fff;font-size:13px;font-weight:700;pointer-events:none;display:none}";
 document.head.appendChild(s);
 var mu=document.createElement("div");mu.className="tvmu";mu.textContent="🔇 Touche la vidéo pour le son";document.body.appendChild(mu);
@@ -25,7 +25,7 @@ function dec(it){if(it.__dd)return;it.__dd=1;
   v.addEventListener("play",function(){pi.classList.remove("on")})}
  var tx=it.querySelector(".tvx");if(tx)tx.addEventListener("click",function(e){e.stopPropagation();tx.classList.toggle("open")});
  it.addEventListener("click",function(e){if(e.target.closest&&e.target.closest(".tvr,.tvc"))return;var t=Date.now();
-  if(it.__tt&&t-it.__tt<320){it.__tt=0;var h=document.createElement("div");h.className="tvh";h.textContent="❤️";it.appendChild(h);setTimeout(function(){h.remove()},750)}else it.__tt=t})}
+  if(it.__tt&&t-it.__tt<320){it.__tt=0;var h=document.createElement("div");h.className="tvheart";h.textContent="❤️";it.appendChild(h);setTimeout(function(){h.remove()},750)}else it.__tt=t})}
 function tick(){try{var sc=document.getElementById("tvScr");
  if(!sc||!sc.offsetParent){mu.style.display="none";return}
  [].forEach.call(sc.querySelectorAll(".tvi"),dec);
@@ -33,3 +33,6 @@ function tick(){try{var sc=document.getElementById("tvScr");
  var v=a&&a.querySelector("video");mu.style.display=(v&&v.muted&&!v.paused)?"block":"none"}catch(e){}}
 setInterval(tick,600);
 })();
+
+/* bouton Influenceur dans l'en-tete du fil */
+(function(){setInterval(function(){try{var hd=document.querySelector("#tvFeed .tvh");if(!hd||hd.querySelector(".tvinfb"))return;var b=document.createElement("button");b.type="button";b.className="sq tvinfb";b.textContent="⭐";b.setAttribute("aria-label","Compte influenceur");b.onclick=function(e){e.stopPropagation();if(window.__tinfOpen)window.__tinfOpen()};hd.appendChild(b)}catch(e){}},700)})();
