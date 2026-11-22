@@ -120,3 +120,7 @@ S.clips=[];S.texts=[];S.sel=0;S.t=0;S.playing=false;S.fit="fit";S.ex=false;S.ts=
 build();V.onseeked=V.onloadeddata=function(){draw()};aud();addFile(f)}
 setInterval(function(){if(window.tooleEdit!==mine){ORIG=window.tooleEdit;window.tooleEdit=mine}},800);
 })();
+(function(){setInterval(function(){var open=!!document.getElementById("tcp");
+document.querySelectorAll("video").forEach(function(v){
+if(open){if(v.__tm===undefined)v.__tm=v.muted;v.muted=true;if(!v.paused)v.pause()}
+else if(v.__tm!==undefined){v.muted=v.__tm;delete v.__tm}})},250)})();
