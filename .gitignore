@@ -13,3 +13,4 @@ android/app/build
 android/local.properties
 android/app/google-services.json
 android/app/src/main/assets/public
+*.bak-avant-v2
