@@ -1,11 +1,30 @@
-#nvx{background:radial-gradient(1200px 500px at 50% -10%,#0b2a66 0,#050b18 60%)!important;color:#e6f4ff!important}
-#nvx::before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(0,194,224,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,194,224,.06) 1px,transparent 1px);background-size:32px 32px}
-#nvx .top h1{color:#00e5ff!important;text-shadow:0 0 14px rgba(0,229,255,.6);letter-spacing:2px;text-transform:uppercase;font-size:20px!important}
-#nvx .sec{color:#00e5ff!important;text-transform:uppercase;letter-spacing:1.5px;font-size:13px!important}
-#nvx .nvc{background:rgba(255,255,255,.05)!important;color:#9fd8ff!important;box-shadow:inset 0 0 0 1px rgba(0,229,255,.25)!important}
-#nvx .nvc.on{background:linear-gradient(135deg,#00c2e0,#2f6fe0)!important;color:#fff!important;box-shadow:0 0 16px rgba(0,229,255,.5)!important}
-#nvx .card,#nvx .app,#nvx .une,#nvx .pi,#nvx .ct{background:rgba(255,255,255,.05)!important;border:1px solid rgba(0,229,255,.22)!important;color:#e6f4ff!important;backdrop-filter:blur(8px);box-shadow:0 0 18px rgba(0,194,224,.12)!important}
-#nvx .req{box-shadow:0 0 18px rgba(0,229,255,.55)!important}
-#nvx .vide{color:#7fb6e6!important}
-.nvback{width:40px;height:40px;flex:none;border:1px solid rgba(0,229,255,.5);border-radius:12px;background:rgba(0,229,255,.1);color:#00e5ff;display:flex;align-items:center;justify-content:center;box-shadow:0 0 14px rgba(0,229,255,.35)}
-.nvback:active{transform:scale(.92);background:rgba(0,229,255,.25)}
+#scrDecouvrir>#nvhd.nvh{display:block!important;flex:none;background:#fff;padding:calc(env(safe-area-inset-top,0px) + 10px) 14px 10px;border-bottom:1px solid #e3ebf8;box-shadow:0 4px 14px rgba(30,80,160,.07);z-index:5;box-sizing:border-box}
+.nvh .r1{display:flex;align-items:center;gap:10px}
+.nvh h1{flex:1;margin:0;font:900 22px sans-serif;color:#0a2a66;letter-spacing:-.4px}
+.nvh .bk{width:40px;height:40px;border:0;border-radius:12px;background:#eef4ff;color:#2f6fe0;display:grid;place-items:center;flex:none}
+.nvh .bk:active,.nvh .pb:active{transform:scale(.93)}
+.nvh .pb{height:40px;border:0;border-radius:14px;padding:0 14px;font:800 13.5px sans-serif;color:#fff;background:linear-gradient(135deg,#00c2e0,#2f6fe0);box-shadow:0 6px 14px rgba(47,111,224,.28);flex:none}
+.nvh .r2{display:flex;align-items:center;gap:8px;margin-top:10px;height:42px;padding:0 12px;border-radius:14px;background:#eef4ff;color:#6a7fa5}
+.nvh .r2 input{flex:1;min-width:0;border:0;outline:0;background:none;font:600 15px sans-serif;color:#0a2a66}
+.nvh .r2 .cl{border:0;background:none;color:#6a7fa5;font-size:16px;display:none;padding:0 4px}
+.nvh .no{display:none;padding:10px 4px 0;color:#6a7fa5;font:600 13px sans-serif;text-align:center}
+#nvx{background:#f4f7fc!important;color:#0b1d3a!important;padding-top:6px!important}
+#nvx .top,#nvx .nvch,#nvx .rb{display:none!important}
+#nvx .sec{display:flex;align-items:center;gap:8px;padding:18px 16px 10px;font-size:16px;font-weight:900;color:#0a2a66}
+#nvx .sec::before{content:"";width:4px;height:16px;border-radius:2px;background:linear-gradient(180deg,#00c2e0,#2f6fe0)}
+#nvx .hs{gap:12px;padding:0 16px 6px;scroll-snap-type:x proximity}
+#nvx .hs>*{scroll-snap-align:start}
+#nvx .une{width:78%;max-width:320px;min-height:180px;border-radius:20px;box-shadow:0 8px 20px rgba(10,42,102,.18)}
+#nvx .une img{height:180px}
+#nvx .inf{width:96px;padding:12px 6px;border-radius:18px;background:#fff;box-shadow:0 4px 14px rgba(30,80,160,.08),0 0 0 1px rgba(47,111,224,.07)}
+#nvx .inf b{display:block;font-size:12.5px;color:#0a2a66;margin:6px 0 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#nvx .app{width:108px;padding:12px 8px;border-radius:18px;background:#fff;box-shadow:0 4px 14px rgba(30,80,160,.08),0 0 0 1px rgba(47,111,224,.07)}
+#nvx .card{margin:0 16px 14px!important;border-radius:20px!important;background:#fff!important;border:1px solid #e3ebf8!important;color:#0b1d3a!important;box-shadow:0 6px 18px rgba(30,80,160,.07)!important}
+#nvx .ch{padding:14px 14px 8px}
+#nvx .ct{padding:0 14px 12px}
+#nvx .ct h3{font-size:17px;line-height:1.3;margin:0 0 6px;color:#0a2a66}
+#nvx .ct p{font-size:14.5px;line-height:1.55;color:#3a4f78}
+#nvx .pi{aspect-ratio:16/9;height:auto;max-height:none;object-fit:cover}
+#nvx .ac{padding:2px 8px}
+#nvx .ac button{height:44px}
+#nvx .vide{padding:34px 20px;text-align:center;color:#6a7fa5}
