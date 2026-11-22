@@ -83,7 +83,7 @@ it.__v=v;it.__l=l;it.__p=p.path;
 var lt=0,tm;it.onclick=function(){var t=Date.now();if(t-lt<320){clearTimeout(tm);lt=0;if(!p.me&&!OF)doLike();return}lt=t;tm=setTimeout(function(){if(v.muted&&!v.paused){v.muted=false;return}if(v.paused)play(v);else v.pause()},320)};
 sc.appendChild(it);ioP.observe(it);ioL.observe(it)});__soc.then(function(r){arr(r[0]).forEach(function(x){var p=by[x.video_id];if(p){p.lk++;if(x.user_id===me)p.me=true}});arr(r[1]).forEach(function(x){var p=by[x.video_id];if(p)p.cc++});if(Array.isArray(r[2]))r[2].forEach(function(x){FC[x.followed]=(FC[x.followed]||0)+1;if(x.follower===me)FM[x.followed]=1});Object.keys(FB).forEach(function(a){fbRefresh(a)});sc.querySelectorAll(".tvi").forEach(function(it){if(it.__upd)it.__upd()})})})}
 function feed(){var sc=document.getElementById("tvScr");if(!sc)return;ios.forEach(function(o){o.disconnect()});ios=[];killVids(sc);sc.innerHTML="";sc.appendChild(E("div","tve","Chargement…"));
-var me=uid(),base="videos?select=id,author,caption,path,created_at&order=created_at.desc&limit=15",q;
+var me=uid(),base="videos?select=id,author,caption,path,created_at&order=created_at.desc&limit=30",q;
 function none(t){sc.innerHTML="";sc.appendChild(E("div","tve",t))}
 if(mode==="follow")q=api("follows?select=followed&follower=eq."+me).then(function(r){if(!Array.isArray(r))return null;var a=r.map(function(x){return x.followed});return a.length?api(base+"&author=in.("+a.join(",")+")"):[]});
 else if(mode==="liked")q=api("video_likes?select=video_id&user_id=eq."+me+"&limit=100").then(function(r){var a=arr(r).map(function(x){return x.video_id});return a.length?api(base+"&id=in.("+a.join(",")+")"):[]});
