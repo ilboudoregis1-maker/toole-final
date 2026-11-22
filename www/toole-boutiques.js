@@ -98,7 +98,7 @@ ok.disabled=true;er.textContent="";var ref=null;
 if(blob){ref=ME()+"/biz-"+Date.now()+".jpg";try{await window.tgUpload(blob,ref)}catch(e){ok.disabled=false;er.textContent="Photo non envoyée. Vérifie ta connexion et réessaie.";return}}
 try{await A("/rest/v1/business_products",{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify({owner_id:ME(),name:nm,price:price,description:d.value.trim()||null,photo_ref:ref})});shopView(s,own)}
 catch(e){ok.disabled=false;er.textContent="Publication impossible. Réessaie."}};
-[n,pr,d,pb,pf,pv,ok,er].forEach(function(x){b.appendChild(x)})}
+var cm=E("div","display:none;margin-top:10px;padding:10px 12px;border-radius:12px;background:"+t.bd+";font-size:13px;line-height:1.6");function upc(){var v=parseInt(pr.value,10);if(!(v>0)){cm.style.display="none";return}var c=Math.round(v*0.05);cm.style.display="block";cm.innerHTML="Prix affiché aux acheteurs : <b>"+fmt(v)+"</b><br>Commission TÕÕLé (5 %) : <b>− "+fmt(c)+"</b><br>Tu reçois : <b>"+fmt(v-c)+"</b>"}pr.addEventListener("input",upc);[n,pr,cm,d,pb,pf,pv,ok,er].forEach(function(x){b.appendChild(x)})}
 async function mount(){
 var sc=document.getElementById("scrParam");
 if(!sc||sc.classList.contains("hide")){if(BOX){BOX.remove();BOX=null}return}
