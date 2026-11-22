@@ -124,3 +124,7 @@ setInterval(function(){if(window.tooleEdit!==mine){ORIG=window.tooleEdit;window.
 document.querySelectorAll("video").forEach(function(v){
 if(open){if(v.__tm===undefined)v.__tm=v.muted;v.muted=true;if(!v.paused)v.pause()}
 else if(v.__tm!==undefined){v.muted=v.__tm;delete v.__tm}})},250)})();
+(function(){setInterval(function(){var open=!!document.getElementById("tcp");
+document.querySelectorAll("video").forEach(function(v){
+if(open){if(v.__tm===undefined)v.__tm=v.muted;v.muted=true;if(!v.paused)v.pause()}
+else if(v.__tm!==undefined){v.muted=v.__tm;delete v.__tm}})},250)})();
