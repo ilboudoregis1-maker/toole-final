@@ -17,7 +17,7 @@ function mk(u){
 if(!u||/(^|[\/_.-])once([\/_.-]|$)/i.test(u)||u.indexOf("/object/public/avatars")>-1||u.indexOf("/photos/logos/")>-1)return null;
 var p=u.replace(/^https?:\/\/[^\/]+/,"");
 if(p.indexOf("/storage/v1/object/")===0)return p.split("?")[0];
-if(p.indexOf("/functions/v1/tg?")===0)return p;
+if(p.indexOf("/functions/v1/tg?")===0)return /[?&]t=video(&|$)/.test(p)?null:p;
 return null}
 function sig(u){if(u.length<12)return false;var a=u[0],b=u[1],c=u[2],d=u[3];
 if(a===255&&b===216&&c===255)return true;

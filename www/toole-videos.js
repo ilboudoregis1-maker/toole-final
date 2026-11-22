@@ -9,7 +9,7 @@ function E(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)
 function toast(m){var d=E("div","",m);d.style.cssText="position:fixed;left:16px;right:16px;bottom:90px;z-index:100060;padding:12px;border-radius:14px;background:#0f172a;color:#fff;font:600 14px sans-serif;text-align:center";document.body.appendChild(d);setTimeout(function(){d.remove()},3800)}
 function nm(id){return NAMES[id]||"Utilisateur"}
 function names(ids){var m=ids.filter(function(i,k){return i&&!NAMES[i]&&ids.indexOf(i)===k});if(!m.length)return Promise.resolve();return api("profiles?select=id,pseudo&id=in.("+m.join(",")+")").then(function(r){arr(r).forEach(function(p){NAMES[p.id]=p.pseudo})})}
-function play(v){var p=v.play();if(p&&p.catch)p.catch(function(){v.muted=true;v.play().catch(function(){})})}
+function play(v){try{[].forEach.call(document.querySelectorAll("#tvScr video"),function(x){if(x!==v&&!x.paused)x.pause()})}catch(e){}if(v.readyState<2){v.addEventListener("loadeddata",function(){var it=v.closest&&v.closest(".tvi");if(it&&it.__act)play(v)},{once:true});return}var p=v.play();if(p&&p.catch)p.catch(function(){v.muted=true;v.play().catch(function(){})})}
 var st=document.createElement("style");st.textContent="#tvFeed{position:fixed;inset:0;z-index:100000;background:#000;color:#fff;font-family:sans-serif}"
 +"#tvFeed .tvh{position:absolute;top:0;left:0;right:0;z-index:3;display:flex;align-items:center;gap:6px;padding:calc(env(safe-area-inset-top,0px) + 8px) 10px 8px;background:linear-gradient(#000b,transparent)}"
 +"#tvFeed .tvh button{border:0;color:#fff;background:rgba(255,255,255,.16);height:36px;border-radius:18px;font-size:12px;font-weight:700;padding:0 9px;white-space:nowrap}"
@@ -56,7 +56,7 @@ arr(b[1]).forEach(function(x){var p=by[x.video_id];if(p){p.lk++;if(x.user_id===m
 arr(b[2]).forEach(function(x){var p=by[x.video_id];if(p)p.cc++});
 FOK=Array.isArray(b[3]);FC={};FM={};FB={};if(FOK)b[3].forEach(function(x){FC[x.followed]=(FC[x.followed]||0)+1;if(x.follower===me)FM[x.followed]=1});
 sc.innerHTML="";
-function load(it){if(it.__ld)return;it.__ld=1;var v=it.__v,path=it.__p,tried=0,tm;
+function load(it){if(it.__ld)return;it.__ld=1;var v=it.querySelector("video"),path=it.__p,tried=0,tm;
 function ok(){clearTimeout(tm);if(it.__l.parentNode)it.__l.remove();if(it.__act)play(v)}
 function bad(m){clearTimeout(tm);it.__l.textContent="Vidéo indisponible"+(m?" ("+m+")":"");if(!it.__l.parentNode)it.appendChild(it.__l)}
 function blobWay(){if(tried++)return;clearTimeout(tm);it.__l.textContent="Chargement…";var ty=/webm$/.test(path)?"video/webm":"video/mp4";
@@ -64,8 +64,8 @@ Promise.resolve().then(function(){return fetch(window.tgUrl(path,"video"))}).the
 v.onloadeddata=ok;v.onerror=blobWay;
 try{v.src=window.tgUrl(path,"video")}catch(e){return blobWay()}
 tm=setTimeout(function(){if(v.readyState<1)blobWay()},12000)}
-var ioP=new IntersectionObserver(function(es){es.forEach(function(e){var it=e.target;if(e.isIntersecting&&e.intersectionRatio>.6){it.__act=1;it.__v.preload="auto";load(it);if(it.__v.src)play(it.__v)}else{it.__act=0;it.__v.pause()}})},{root:sc,threshold:[0,.6]});
-var ioL=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)load(e.target)})},{root:sc,rootMargin:"150% 0px"});
+var ioP=new IntersectionObserver(function(es){es.forEach(function(e){try{var it=e.target,vd=it.querySelector("video");if(!vd)return;if(e.isIntersecting&&e.intersectionRatio>.6){it.__act=1;vd.preload="auto";load(it);if(vd.src)play(vd)}else{it.__act=0;vd.pause()}}catch(x){}})},{root:sc,threshold:[0,.6]});
+var ioL=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)load(e.target)})},{root:sc,rootMargin:(window.__tvMargin?window.__tvMargin():"50% 0px 250% 0px")});
 ios.push(ioP,ioL);
 list.forEach(function(p){var it=E("div","tvi"),v=E("video"),l=E("div","tvl","Chargement…");v.setAttribute("playsinline","");v.setAttribute("webkit-playsinline","");v.loop=true;v.preload="metadata";v.poster="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 var rail=E("div","tvr"),lk=E("button"),cm=E("button");lk.innerHTML="<i></i><span></span>";cm.innerHTML="<i>💬</i><span></span>";
@@ -88,7 +88,7 @@ function none(t){sc.innerHTML="";sc.appendChild(E("div","tve",t))}
 if(mode==="follow")q=api("follows?select=followed&follower=eq."+me).then(function(r){if(!Array.isArray(r))return null;var a=r.map(function(x){return x.followed});return a.length?api(base+"&author=in.("+a.join(",")+")"):[]});
 else if(mode==="liked")q=api("video_likes?select=video_id&user_id=eq."+me+"&limit=100").then(function(r){var a=arr(r).map(function(x){return x.video_id});return a.length?api(base+"&id=in.("+a.join(",")+")"):[]});
 else q=api(base);
-q.then(function(r){if(r===null)return none("Les abonnements ne sont pas encore activés.");if(!Array.isArray(r))return none("La section vidéos n'est pas encore activée (lance le SQL dans Supabase).");if(!r.length)return none(mode==="follow"?"Abonne-toi à des personnes pour voir leurs vidéos ici.":mode==="liked"?"Tu n'as encore aimé aucune vidéo.":"Aucune vidéo pour l'instant. Appuie sur + pour envoyer la première !");render(r,sc)})}
+q.then(function(r){try{if(window.__tvPre&&Array.isArray(r))window.__tvPre(r)}catch(e){}if(r===null)return none("Les abonnements ne sont pas encore activés.");if(!Array.isArray(r))return none("La section vidéos n'est pas encore activée (lance le SQL dans Supabase).");if(!r.length)return none(mode==="follow"?"Abonne-toi à des personnes pour voir leurs vidéos ici.":mode==="liked"?"Tu n'as encore aimé aucune vidéo.":"Aucune vidéo pour l'instant. Appuie sur + pour envoyer la première !");render(r,sc)})}
 function cloudV(f,p){var fd=new FormData();fd.append("file",f);fd.append("upload_preset","TÕÕLé-app");fd.append("public_id","toole/"+p.replace(/\.[^.\/]+$/,""));return fetch("https://api.cloudinary.com/v1_1/mydh3xtz/video/upload",{method:"POST",body:fd}).then(function(r){if(!r.ok)throw new Error("Envoi impossible ("+r.status+")")})}
 function upV(f){var me=uid(),p=me+"/"+Date.now()+"-"+Math.random().toString(36).slice(2)+(/webm/.test(f.type)?".webm":".mp4");
 window.__e2ePlain=window.__e2ePlain||{};window.__e2ePlain[p]=1;var tg=window.tgUpload?window.tgUpload(f,p):Promise.reject(1);

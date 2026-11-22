@@ -7,14 +7,16 @@ function ahead(){var c=cn(),e=c.effectiveType;
 if(c.saveData)return 1;
 if(wifi())return 4;
 if(e==="2g"||e==="slow-2g")return 1;
-return 2}
-function first(){if(cn().saveData)return 0;return wifi()?3:1}
+return 3}
+function first(){if(cn().saveData)return 0;return wifi()?4:2}
 function pre(path){
 if(!path||typeof window.tgUrl!=="function")return;
 var n=Date.now();if(seen[path]&&n-seen[path]<600000)return;seen[path]=n;
 try{window.fetch(window.tgUrl(path,"video")).then(function(r){return r.blob()})
 .catch(function(){delete seen[path]})}catch(e){delete seen[path]}}
-function many(L){for(var i=L.length-1;i>=0;i--)pre(L[i])}
+function many(L){for(var i=0;i<L.length;i++)pre(L[i])}
+window.__tvPre=function(r){try{many(r.slice(0,first()).map(function(x){return x&&x.path}))}catch(e){}};
+window.__tvMargin=function(){var c=cn(),e=c.effectiveType;if(c.saveData||e==="2g"||e==="slow-2g")return"20% 0px 100% 0px";if(wifi()||e==="4g"||!e)return"50% 0px 300% 0px";return"30% 0px 180% 0px"};
 var st=document.createElement("style");
 st.textContent="#tvScr .tvl{opacity:0;animation:tvlin .2s 1.6s forwards}@keyframes tvlin{to{opacity:1}}";
 document.head.appendChild(st);

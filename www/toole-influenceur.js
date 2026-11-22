@@ -70,10 +70,11 @@ function E(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function ME(){try{if(typeof me==="function")return me()}catch(e){}try{return JSON.parse(localStorage.getItem("toole_session")).user.id}catch(e){return null}}
 async function A(p,o){var r=await api(p,o||{});if(r&&typeof r.json==="function"){try{r=await r.json()}catch(e){r=null}}return r}
-async function loadInf(){try{var r=await A("/rest/v1/influencer_accounts?select=user_id&limit=500");if(Array.isArray(r))r.forEach(function(x){window.__INF[x.user_id]=1})}catch(e){}}
+async function loadInf(){window.__tinfAt=Date.now();try{var r=await T("/rest/v1/influencer_accounts?select=user_id&limit=500");if(Array.isArray(r))r.forEach(function(x){window.__INF[x.user_id]=1})}catch(e){}}
+async function T(p){try{return await Promise.race([A(p),new Promise(function(_,j){setTimeout(function(){j(new Error("timeout"))},6000)})])}catch(e){return null}}
 async function state(){var u=ME();
-var a=await A("/rest/v1/influencer_accounts?select=nom&user_id=eq."+u);if(a&&a.length)return{k:"actif",n:a[0].nom};
-var q=await A("/rest/v1/influencer_requests?select=statut,nom&user_id=eq."+u+"&order=created_at.desc&limit=1");if(q&&q.length)return{k:q[0].statut,n:q[0].nom};
+var pq=T("/rest/v1/influencer_requests?select=statut,nom&user_id=eq."+u+"&order=created_at.desc&limit=1");var a=await T("/rest/v1/influencer_accounts?select=nom&user_id=eq."+u);if(a&&a.length)return{k:"actif",n:a[0].nom};
+var q=await pq;if(q&&q.length)return{k:q[0].statut,n:q[0].nom};
 return{k:"aucun"}}
 async function stats(u){var v=await A("/rest/v1/videos?select=id&author=eq."+u+"&limit=200");v=Array.isArray(v)?v:[];
 var f=await A("/rest/v1/follows?select=follower&followed=eq."+u+"&limit=5000");
@@ -93,7 +94,7 @@ go.onclick=async function(){var nm=n.value.trim();if(nm.length<2){er.textContent
 go.disabled=true;er.textContent="";
 try{var r=await A("/rest/v1/influencer_requests",{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify({user_id:ME(),nom:nm,description:d.value.trim()||null})});
 if(r&&!Array.isArray(r)&&(r.code||r.message))throw new Error(r.code||r.message);draw({k:"en_attente",n:nm})}
-catch(e){go.disabled=false;er.textContent=/duplicate|23505/i.test(String(e&&e.message))?"Tu as déjà une demande en attente.":"Envoi impossible. Réessaie."}}}
+catch(e){go.disabled=false;er.textContent=/duplicate|23505/i.test(String(e&&e.message))?"Tu as déjà une demande en attente.":/relation|schema cache|PGRST20|42P01|404/i.test(String(e&&e.message))?"Le compte influenceur n'est pas encore activé sur le serveur.":"Envoi impossible. Vérifie ta connexion et réessaie."}}}
 async function draw(s){BOX.innerHTML="";
 if(s.k==="actif"){window.__INF[ME()]=1;
 BOX.innerHTML=hero("Compte Influenceur","Bienvenue <b>"+esc(s.n)+"</b>. Ton badge est visible sur toutes tes vidéos.","Compte actif","check");
@@ -118,9 +119,15 @@ BOX.appendChild(E("div","card",'<!--tg--><div class="st">'+ic("gift",20)+'Cadeau
 +'<div class="g"><div class="ga">'+ART.flag+'</div><div class="gn">Faso flag</div><span class="gp">750 FCFA</span></div>'
 +'<div class="g"><div class="ga">'+ART.horse+'</div><div class="gn">Cheval</div><span class="gp">1000 FCFA</span></div></div><!--/tg-->'));
 var b=E("button","cta",'Devenir influenceur'+ic("arrow",20));b.type="button";BOX.appendChild(b);b.onclick=function(){b.remove();form()}}
-async function render(){var body=(window.__tinfHost&&window.__tinfHost.isConnected?window.__tinfHost:null);if(!body||busy||(BOX&&BOX.isConnected))return;busy=true;
-try{var s=await state();BOX=E("div","tin");body.insertBefore(BOX,body.firstChild);await draw(s)}catch(e){}busy=false}
-loadInf();setInterval(loadInf,60000);setInterval(render,1500);
+async function render(){var body=(window.__tinfHost&&window.__tinfHost.isConnected?window.__tinfHost:null);if(!body||busy||(BOX&&BOX.isConnected))return;busy=true;var mine=null;
+try{mine=E("div","tin");BOX=mine;body.insertBefore(mine,body.firstChild);mine.innerHTML=hero("Compte Influenceur","Chargement…");
+var s;try{s=await state()}catch(e){s={k:"aucun"}}if(!mine.isConnected)return;
+try{await draw(s)}catch(e){mine.innerHTML=hero("Compte Influenceur","Impossible d'afficher la page. Ferme et rouvre.","","")}}catch(e){}finally{busy=false}}
+function badges(){try{var fd=document.getElementById("tvFeed");if(!fd)return;if(Date.now()-(window.__tinfAt||0)>20000)loadInf();
+[].forEach.call(fd.querySelectorAll("#tvScr .tvi"),function(it){var a=(it.__p||"").split("/")[0];if(!a||!window.__INF[a]||it.querySelector(".tvinf"))return;
+var s=document.createElement("span");s.className="tvinf";s.textContent="Influenceur";var h=it.querySelector(".tv3n"),n=it.querySelector(".tvn");
+if(h&&h.parentNode)h.parentNode.insertBefore(s,h.nextSibling);else if(n)n.appendChild(s)})}catch(e){}}
+window.__tinfLoad=loadInf;loadInf();setInterval(loadInf,60000);setInterval(render,1500);setInterval(badges,1200);
 window.__tinfOpen=function(){var o=document.getElementById("tinfOv");if(o)o.remove();
 o=E("div");o.id="tinfOv";
 var sh=E("div","tsh"),gr=E("div","tgr"),x=E("button","tcl",ic("close",20));x.type="button";x.setAttribute("aria-label","Fermer");x.onclick=function(){o.remove()};

@@ -40,19 +40,37 @@
     while (imgs().length > MAXI) await drop(imgs()[0]);
     saveIdx(a);
   }
-  var act = 0, qu = [];
+  var act = 0, urgent = 0, qu = [], seq = 0;
+  /* priorité : 0 = vidéo à l'écran, 1,2,3… = les suivantes dans l'ordre, 50+ = déjà vues, 100 = préchargement hors fil */
+  function prio(p) {
+    var its = [], i, cur = 0;
+    try { its = [].slice.call(document.querySelectorAll("#tvScr .tvi")); } catch (e) { }
+    for (i = 0; i < its.length; i++) { if (its[i].__act === 1) { cur = i; break; } }
+    for (i = 0; i < its.length; i++) {
+      if (its[i].__p === p) { var d = i - cur; return d === 0 ? 0 : d > 0 ? d : 50 - d; }
+    }
+    return 100;
+  }
   function pump() {
-    while (act < 2 && qu.length) {
-      var j = qu.pop(); act++;
-      (function (j) {
-        function fin() { act--; pump(); }
-        j.run().then(function (b) { j.ok(b); fin(); }, function (e) { j.ko(e); fin(); });
-      })(j);
+    while (qu.length) {
+      var b = 0, bp = 1e18, i;
+      for (i = 0; i < qu.length; i++) { var v = prio(qu[i].p) * 1e6 + qu[i].n; if (v < bp) { bp = v; b = i; } }
+      /* urgent = vidéo à l'écran ; fil pas encore ouvert : la 1re de la liste, une par une */
+      var urg = bp < 1e6 || (act === 0 && !document.querySelector("#tvScr .tvi"));
+      /* tant que la vidéo à l'écran se télécharge, les autres attendent : elle prend toute la bande passante */
+      if (!urg && (urgent > 0 || act >= 2)) break;
+      var j = qu.splice(b, 1)[0]; act++; if (urg) urgent++;
+      (function (j, urg) {
+        function fin() { act--; if (urg) urgent--; pump(); }
+        j.run().then(function (r) { j.ok(r); fin(); }, function (e) { j.ko(e); fin(); });
+      })(j, urg);
     }
   }
-  function queued(fn) { return new Promise(function (ok, ko) { qu.push({ run: fn, ok: ok, ko: ko }); pump(); }); }
+  function queued(fn, p) { return new Promise(function (ok, ko) { qu.push({ run: fn, ok: ok, ko: ko, p: p, n: ++seq }); pump(); }); }
   function dl(url) {
-    return prev(url).then(function (r) { if (!r.ok) throw new Error("tg " + r.status); return r.blob(); });
+    var ac = typeof AbortController !== "undefined" ? new AbortController() : null, t = ac ? setTimeout(function () { ac.abort(); }, 150000) : 0;
+    return prev(url, ac ? { signal: ac.signal } : undefined).then(function (r) { if (!r.ok) throw new Error("tg " + r.status); return r.blob(); })
+      .then(function (b) { clearTimeout(t); return b; }, function (e) { clearTimeout(t); throw e; });
   }
   var inflight = {};
   function tgBlob(url, m) {
@@ -64,7 +82,7 @@
       if (c) { try { var h = await c.match(k); if (h) { b = await h.blob(); touch(k, b.size, isV); } } catch (e) { } }
       if (!b) {
         if (navigator.onLine === false) throw new Error("hors ligne");
-        b = await (isV ? queued(function () { return dl(url); }) : dl(url));
+        b = await (isV ? queued(function () { return dl(url); }, m.p) : dl(url));
         if (c) {
           try {
             await c.put(k, new Response(b, { headers: { "content-type": b.type || "application/octet-stream" } }));
