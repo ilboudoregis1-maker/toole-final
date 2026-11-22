@@ -35,7 +35,7 @@ try{var st=await stats(ME());var g=E("div","display:flex;gap:8px;margin-top:10px
 [[st.v,"Vidéos"],[st.f,"Abonnés"],[st.l,"J'aime"]].forEach(function(a){g.appendChild(E("div","flex:1;text-align:center;padding:10px 4px;border-radius:12px;background:rgba(128,128,128,.12)","<b style='font-size:18px'>"+a[0]+"</b><br><small style='opacity:.7'>"+a[1]+"</small>"))});BOX.appendChild(g)}catch(e){}return}
 if(s.k==="en_attente"){m.innerHTML="Demande envoyée pour « <b>"+esc(s.n)+"</b> ». Elle sera traitée prochainement.";return}
 m.textContent=s.k==="refusee"?"Ta dernière demande a été refusée. Tu peux en faire une nouvelle.":"Publie des vidéos, gagne des abonnés et reçois le badge Influenceur.";
-var b=E("button",BTN,"Devenir influenceur");b.type="button";BOX.appendChild(b);b.onclick=function(){b.remove();form()}}
+BOX.appendChild(E("div","margin-top:10px;padding:10px 12px;border-radius:12px;background:rgba(245,165,36,.14);border:1px solid rgba(245,165,36,.5);font-size:13px;line-height:1.45;text-align:left","<b>💳 Compte payant</b><br>La création d’un compte influenceur est payante. Ta demande est d’abord examinée par l’équipe TÕÕLé."));var b=E("button",BTN,"Devenir influenceur");b.type="button";BOX.appendChild(b);b.onclick=function(){b.remove();form()}}
 async function render(){var body=(window.__tinfHost&&window.__tinfHost.isConnected?window.__tinfHost:null);if(!body||busy||(BOX&&BOX.isConnected))return;busy=true;
 try{var s=await state();BOX=E("div","margin:14px 0;padding:14px;border-radius:16px;border:1px solid rgba(229,72,77,.35);background:rgba(229,72,77,.07)");body.insertBefore(BOX,body.firstChild);await draw(s)}catch(e){}busy=false}
 loadInf();setInterval(loadInf,60000);setInterval(render,1500);
