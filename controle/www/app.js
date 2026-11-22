@@ -284,6 +284,25 @@ d.querySelectorAll('[data-av]').forEach(function(b){b.onclick=async function(){v
 }catch(e){}};
 
 
+/*INF*/
+async function infCount(){try{var r=await api('GET','/rest/v1/influencer_requests?select=id&statut=eq.en_attente');var s=document.getElementById('infN');if(s&&r&&r.length)s.textContent='('+r.length+')'}catch(e){}}
+var _infH=VIEWS.home;
+VIEWS.home=async function(el){await _infH(el);try{var tl=el.querySelector('.tiles');if(tl&&!tl.querySelector('[data-go="inf"]')){var b=document.createElement('button');b.className='tile';b.setAttribute('data-go','inf');b.innerHTML='<b>⭐ Influenceurs</b>Demandes et comptes <span id="infN"></span>';tl.appendChild(b);infCount()}}catch(e){}};
+VIEWS.inf=async function(el){
+el.innerHTML='<button class="back" data-go="home">← Retour</button><h2 style="margin-top:4px">Demandes influenceurs</h2><p id="infMsg" class="ok"></p><div id="infL"><p class="ok">Chargement…</p></div><h2 style="margin-top:18px">Influenceurs actifs</h2><div id="infA"></div>';
+var L=await api('GET','/rest/v1/influencer_requests?select=id,user_id,nom,description,statut,created_at&order=created_at.desc&limit=50');
+var AC=await api('GET','/rest/v1/influencer_accounts?select=user_id,nom&order=created_at.desc&limit=50');
+L=Array.isArray(L)?L:[];AC=Array.isArray(AC)?AC:[];
+var nm={};try{var ids=L.map(function(r){return r.user_id}).concat(AC.map(function(a){return a.user_id})).filter(function(x,i,a){return a.indexOf(x)===i});if(ids.length){var P=await api('GET','/rest/v1/profiles?select=id,pseudo&id=in.('+ids.join(',')+')');P.forEach(function(p){nm[p.id]=p.pseudo})}}catch(e){}
+var ST={en_attente:'⏳ En attente',acceptee:'✅ Acceptée',approuvee:'✅ Acceptée',refusee:'❌ Refusée'};
+$('infL').innerHTML=L.length?L.map(function(r){var w=r.statut==='en_attente';return '<div class="sec"><h3>'+esc(r.nom)+'</h3><p class="sub">'+esc(nm[r.user_id]||('Utilisateur '+String(r.user_id).slice(0,8)))+' · '+new Date(r.created_at).toLocaleString('fr-FR')+'</p><p>'+esc(r.description||'Sans description')+'</p><p class="'+(r.statut==='refusee'?'err':'ok')+'">'+(ST[r.statut]||esc(r.statut))+'</p>'+(w?'<div class="grid"><button data-inf="'+r.id+'" data-ok="1">Accepter</button><button class="ghost" data-inf="'+r.id+'" data-ok="0">Refuser</button></div>':'')+'</div>'}).join(''):'<p class="sub">Aucune demande pour le moment.</p>';
+$('infA').innerHTML=AC.length?AC.map(function(a){return '<div class="sec"><h3>⭐ '+esc(a.nom)+'</h3><p class="sub">'+esc(nm[a.user_id]||String(a.user_id).slice(0,8))+'</p><button class="ghost" data-ir="'+a.user_id+'">Retirer le badge</button></div>'}).join(''):'<p class="sub">Aucun influenceur actif.</p>';
+function lock(v){el.querySelectorAll('[data-inf],[data-ir]').forEach(function(x){x.disabled=v})}
+function fin(act,tb,id){try{audit(act,tb,{id:id,par:ME.email})}catch(e){}VIEWS.inf(el)}
+function fail(e){lock(false);msg('infMsg',(e&&e.message)||'Erreur')}
+el.querySelectorAll('[data-inf]').forEach(function(b){b.onclick=async function(){var ok=b.getAttribute('data-ok')==='1',id=b.getAttribute('data-inf');lock(true);try{await rpc('admin_influenceur_decider',{req:id,accepter:ok});fin(ok?'influenceur_accepte':'influenceur_refuse','influencer_requests',id)}catch(e){if(/JSON|Unexpected end/i.test(String(e&&e.message)))fin(ok?'influenceur_accepte':'influenceur_refuse','influencer_requests',id);else fail(e)}}});
+el.querySelectorAll('[data-ir]').forEach(function(b){b.onclick=async function(){var u=b.getAttribute('data-ir');lock(true);try{await rpc('admin_influenceur_retirer',{uid:u});fin('influenceur_retire','influencer_accounts',u)}catch(e){if(/JSON|Unexpected end/i.test(String(e&&e.message)))fin('influenceur_retire','influencer_accounts',u);else fail(e)}}})};
+
 ACT.annpub=async function(){var t=($('annTxt').value||'').trim();if(!t){msg('annMsg',"Écris le texte de l'annonce");return}
   try{await api('POST','/rest/v1/statuts_admin',{texte:t,expire_le:new Date(Date.now()+parseInt($('annDur').value,10)*3600000).toISOString(),actif:true},{Prefer:'return=minimal'});await audit('annonce_publiee','statuts_admin',{par:ME.email});$('annTxt').value='';msg('annMsg','Annonce publiée',1)}catch(e){msg('annMsg',e.message)}};
 ACT.annret=async function(){try{await api('PATCH','/rest/v1/statuts_admin?actif=eq.true',{actif:false},{Prefer:'return=minimal'});await audit('annonce_retiree','statuts_admin',{par:ME.email});msg('annMsg','Annonce retirée',1)}catch(e){msg('annMsg',e.message)}};
