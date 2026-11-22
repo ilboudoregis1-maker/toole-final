@@ -1,0 +1,11 @@
+#nvx{background:radial-gradient(1200px 500px at 50% -10%,#0b2a66 0,#050b18 60%)!important;color:#e6f4ff!important}
+#nvx::before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(0,194,224,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,194,224,.06) 1px,transparent 1px);background-size:32px 32px}
+#nvx .top h1{color:#00e5ff!important;text-shadow:0 0 14px rgba(0,229,255,.6);letter-spacing:2px;text-transform:uppercase;font-size:20px!important}
+#nvx .sec{color:#00e5ff!important;text-transform:uppercase;letter-spacing:1.5px;font-size:13px!important}
+#nvx .nvc{background:rgba(255,255,255,.05)!important;color:#9fd8ff!important;box-shadow:inset 0 0 0 1px rgba(0,229,255,.25)!important}
+#nvx .nvc.on{background:linear-gradient(135deg,#00c2e0,#2f6fe0)!important;color:#fff!important;box-shadow:0 0 16px rgba(0,229,255,.5)!important}
+#nvx .card,#nvx .app,#nvx .une,#nvx .pi,#nvx .ct{background:rgba(255,255,255,.05)!important;border:1px solid rgba(0,229,255,.22)!important;color:#e6f4ff!important;backdrop-filter:blur(8px);box-shadow:0 0 18px rgba(0,194,224,.12)!important}
+#nvx .req{box-shadow:0 0 18px rgba(0,229,255,.55)!important}
+#nvx .vide{color:#7fb6e6!important}
+.nvback{width:40px;height:40px;flex:none;border:1px solid rgba(0,229,255,.5);border-radius:12px;background:rgba(0,229,255,.1);color:#00e5ff;display:flex;align-items:center;justify-content:center;box-shadow:0 0 14px rgba(0,229,255,.35)}
+.nvback:active{transform:scale(.92);background:rgba(0,229,255,.25)}
