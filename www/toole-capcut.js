@@ -2,7 +2,7 @@
    v2 : chargement vidéo robuste (plus d'écran noir), vignettes, Annuler, Dupliquer,
         export annulable avec progression, en-tête corrigé, repli propre si vidéo illisible. */
 (function(){"use strict";if(window.__tcp)return;window.__tcp=2;
-var D=document,ORIG=null,W=540,H=960,CV,X,BC,BX,R,PH,G=[],cur=-1,raf=0,actx=null,gain=null,dest=null,hist=[],urls=[];
+var D=document,ORIG=null,W=540,H=960,RW=360,RH=640,bgT=0,lastDT=-1,lastUi=0,BGC,BGX,CV,X,BC,BX,R,PH,G=[],cur=-1,raf=0,actx=null,gain=null,dest=null,hist=[],urls=[];
 var l=D.createElement("link");l.rel="stylesheet";l.href="toole-capcut.css?v=2";D.head.appendChild(l);
 var F=[["Normal",""],["N&B","grayscale(1) contrast(1.1)"],["Chaud","sepia(.3) saturate(1.5) hue-rotate(-12deg) brightness(1.05)"],["Froid","hue-rotate(18deg) saturate(1.2) brightness(1.05)"],["Vintage","sepia(.55) contrast(1.1) brightness(.95) saturate(1.2)"],["Contraste","contrast(1.4) saturate(1.3)"],["Vif","saturate(1.9) contrast(1.08)"],["Néon","saturate(2.2) contrast(1.2) hue-rotate(160deg)"]];
 var S={clips:[],texts:[],sel:0,t:0,playing:false,fit:"fit",ex:false,ts:-1,tool:"",lim:30,done:null,onend:null,msg:"",busy:0,cancel:0};
@@ -74,17 +74,25 @@ catch(e){actx=null;gain=null;dest=null}}
 function setVol(c){if(gain)gain.gain.value=c.vol;else V.volume=Math.min(1,c.vol)}
 
 /* ── rendu ── */
-function draw(){if(!X)return;var c=S.clips[cur];X.filter="none";X.fillStyle="#000";X.fillRect(0,0,W,H);
-if(c&&V.videoWidth){var vw=V.videoWidth,vh=V.videoHeight,fl=F[c.fl][1]||"none";
-if(S.fit==="fit"){var s0=Math.max(BC.width/vw,BC.height/vh);BX.drawImage(V,(BC.width-vw*s0)/2,(BC.height-vh*s0)/2,vw*s0,vh*s0);
-X.globalAlpha=.55;X.drawImage(BC,0,0,W,H);X.globalAlpha=1;
-var s1=Math.min(W/vw,H/vh);X.filter=fl;X.drawImage(V,(W-vw*s1)/2,(H-vh*s1)/2,vw*s1,vh*s1)}
-else{var s2=Math.max(W/vw,H/vh);X.filter=fl;X.drawImage(V,(W-vw*s2)/2,(H-vh*s2)/2,vw*s2,vh*s2)}
-X.filter="none"}
-S.texts.forEach(function(o){if(S.t<o.a||S.t>o.b)return;X.font="800 "+o.s+"px sans-serif";X.textAlign="center";X.lineJoin="round";X.lineWidth=7;X.strokeStyle="#000";X.fillStyle=o.c;var y=o.p*H;X.strokeText(o.t,W/2,y,W-40);X.fillText(o.t,W/2,y,W-40)})}
+function setRes(w,h){RW=w;RH=h;CV.width=w;CV.height=h;if(BGC){BGC.width=w;BGC.height=h}bgT=0}
+function draw(){if(!X)return;var c=S.clips[cur],fl=c?(F[c.fl][1]||"none"):"none";
+/* aperçu : filtre appliqué par le CSS (GPU) ; export : filtre dans le canvas */
+if(S.ex){X.filter=fl;CV.style.filter="";CV.__f=""}else{X.filter="none";var cf=fl==="none"?"":fl;if(CV.__f!==cf){CV.__f=cf;CV.style.filter=cf}}
+if(c&&V.videoWidth){var vw=V.videoWidth,vh=V.videoHeight;
+if(S.fit==="fit"){var now=performance.now();
+if(!bgT||now-bgT>(S.ex?120:300)){bgT=now;var s0=Math.max(BC.width/vw,BC.height/vh);BX.drawImage(V,(BC.width-vw*s0)/2,(BC.height-vh*s0)/2,vw*s0,vh*s0);
+BGX.fillStyle="#000";BGX.fillRect(0,0,RW,RH);BGX.globalAlpha=.55;BGX.drawImage(BC,0,0,RW,RH);BGX.globalAlpha=1}
+var s1=Math.min(RW/vw,RH/vh),dw=vw*s1,dh=vh*s1,dx=(RW-dw)/2,dy=(RH-dh)/2;
+if(dx>.5){X.drawImage(BGC,0,0,dx,RH,0,0,dx,RH);X.drawImage(BGC,dx+dw,0,RW-dx-dw,RH,dx+dw,0,RW-dx-dw,RH)}
+if(dy>.5){X.drawImage(BGC,0,0,RW,dy,0,0,RW,dy);X.drawImage(BGC,0,dy+dh,RW,RH-dy-dh,0,dy+dh,RW,RH-dy-dh)}
+X.drawImage(V,dx,dy,dw,dh)}
+else{var s2=Math.max(RW/vw,RH/vh);X.drawImage(V,(RW-vw*s2)/2,(RH-vh*s2)/2,vw*s2,vh*s2)}}
+else{X.fillStyle="#000";X.fillRect(0,0,RW,RH)}
+X.filter="none";var k=RW/W;
+S.texts.forEach(function(o){if(S.t<o.a||S.t>o.b)return;X.font="800 "+(o.s*k)+"px sans-serif";X.textAlign="center";X.lineJoin="round";X.lineWidth=7*k;X.strokeStyle="#000";X.fillStyle=o.c;var y=o.p*RH;X.strokeText(o.t,RW/2,y,RW-40*k);X.fillText(o.t,RW/2,y,RW-40*k)})}
 function goto(t){var T=total();S.t=Math.max(0,Math.min(t,Math.max(0,T-.001)));var q=locate(S.t);if(!q)return;
 var c=S.clips[q.i],pos=c.in+q.off*c.sp;V.defaultPlaybackRate=c.sp;setVol(c);
-if(cur!==q.i){cur=q.i;V.src=c.u;var f=function(){V.removeEventListener("loadedmetadata",f);V.playbackRate=c.sp;try{V.currentTime=pos}catch(e){}};V.addEventListener("loadedmetadata",f);V.load();var ci=cur;setTimeout(function(){if(R&&cur===ci&&V.readyState<2&&!V.error)toast("Aperçu lent… readyState="+V.readyState+" réseau="+V.networkState,5000)},3500)}
+if(cur!==q.i){cur=q.i;bgT=0;V.src=c.u;var f=function(){V.removeEventListener("loadedmetadata",f);V.playbackRate=c.sp;try{V.currentTime=pos}catch(e){}};V.addEventListener("loadedmetadata",f);V.load();var ci=cur;setTimeout(function(){if(R&&cur===ci&&V.readyState<2&&!V.error)toast("Aperçu lent… readyState="+V.readyState+" réseau="+V.networkState,5000)},3500)}
 else{V.playbackRate=c.sp;try{V.currentTime=pos}catch(e){}}
 ui()}
 function play(){if(!S.clips.length)return;if(S.t>=total()-.05)goto(0);S.playing=true;var p=V.play();if(p&&p.catch)p.catch(function(){});aud();tick();ui()}
@@ -93,7 +101,9 @@ function tick(){if(!S.playing)return;var c=S.clips[cur];
 if(c){var st=startOf(cur);S.t=Math.max(st,st+(V.currentTime-c.in)/c.sp);
 if(V.currentTime>=c.out-.03||V.ended){if(cur<S.clips.length-1){goto(startOf(cur+1));var p=V.play();if(p&&p.catch)p.catch(function(){})}else{S.t=total();pause();draw();if(S.onend)S.onend();return}}}
 if(S.ex&&S.t>=S.lim){pause();draw();if(S.onend)S.onend();return}
-draw();ui();raf=requestAnimationFrame(tick)}
+if(V.currentTime!==lastDT){lastDT=V.currentTime;draw()}
+var nw=performance.now();if(nw-lastUi>120){lastUi=nw;ui()}
+raf=requestAnimationFrame(tick)}
 
 /* ── timeline ── */
 function xOfT(t){for(var i=0;i<G.length;i++){var n=cl(S.clips[i]);if(t<G[i].s+n||i===G.length-1)return G[i].x+Math.min(1,(t-G[i].s)/n)*G[i].w}return 12}
@@ -109,7 +119,7 @@ function rngs(){var c=S.clips[S.sel];if(!c)return;var a=Q(".ri"),b=Q(".ro");a.mi
 function ui(){if(!R)return;var T=total(),M=MAXS();
 Q(".tt").textContent=S.msg||(mm1(S.t)+" / "+mm1(T)+(T>M?"  · max "+M+" s":""));
 Q(".pp").textContent=S.playing?"❚❚":"▶";
-if(PH&&G.length){var x=xOfT(S.t);PH.style.left=x+"px";if(S.playing){var tl=Q(".tl"),vx=x-tl.scrollLeft;if(vx>tl.clientWidth-40||vx<20)tl.scrollLeft=x-60}}
+if(PH&&G.length){var x=xOfT(S.t);PH.style.transform="translateX("+x+"px)";if(S.playing){var tl=Q(".tl"),vx=x-tl.scrollLeft;if(vx>tl.clientWidth-40||vx<20)tl.scrollLeft=x-60}}
 if(S.ex){var p=Math.min(100,Math.round(S.t/Math.max(.1,S.lim)*100));Q(".pg i").style.width=p+"%";Q(".pg span").textContent="Export du montage… "+p+" %"}}
 function ask(ph,cb){var a=E("div","as"),i=E("input"),b=E("button","ok","OK");i.placeholder=ph;a.appendChild(i);a.appendChild(b);R.appendChild(a);i.focus();
 var go=function(){var v=i.value.trim();a.remove();if(v)cb(v)};b.onclick=go;i.onkeydown=function(e){if(e.key==="Enter")go()}}
@@ -152,7 +162,7 @@ layout();draw()})}}
 function build(){R=E("div");R.id="tcp";
 R.innerHTML='<div class="h"><button class="bx">✕</button><b>STUDIO PRO</b><button class="bs">Stickers ›</button><button class="ok bk">Publier</button></div><div class="pv"><canvas></canvas></div><div class="ctl"><button class="pp">▶</button><span class="tt"></span></div><div class="tl"><div class="trk"></div></div><div class="rg"><label>Début<input class="ri" type="range"></label><label>Fin<input class="ro" type="range"></label></div><div class="sub"></div><div class="tools"></div><div class="pg"><span>Export du montage…</span><div><i></i></div><button class="cx">Annuler</button></div>';
 D.body.appendChild(R);R.appendChild(V);PRE=E("pre","dbgp");R.appendChild(PRE);
-CV=Q("canvas");CV.width=W;CV.height=H;X=CV.getContext("2d");BC=E("canvas");BC.width=27;BC.height=48;BX=BC.getContext("2d");
+CV=Q("canvas");CV.width=RW;CV.height=RH;X=CV.getContext("2d");BC=E("canvas");BC.width=27;BC.height=48;BX=BC.getContext("2d");BGC=E("canvas");BGC.width=RW;BGC.height=RH;BGX=BGC.getContext("2d");
 var T=[["plus","＋","Clip"],["cut","✂","Diviser"],["del","⌫","Suppr."],["dup","⧉","Dupl."],["un","↶","Annuler"],["sp","»","Vitesse"],["vo","♪","Volume"],["fl","◐","Filtre"],["tx","T","Texte"],["ft","▭","Format"]],tb=Q(".tools");
 T.forEach(function(t){var b=E("button");b.innerHTML="<i>"+t[1]+"</i>"+t[2];b.onclick=function(){tool(t[0])};tb.appendChild(b)});
 Q(".pp").onclick=function(){S.playing?pause():play()};
@@ -172,11 +182,11 @@ function shut(){PRE=null;pause();urls.forEach(function(u){try{window.URL.revokeO
 /* ── export ── */
 async function exp(){if(!S.clips.length)return null;
 pause();await aud();var M=MAXS();if(total()>M+.3)toast("Durée limitée à "+M+" s : la fin sera coupée",4200);
-S.ex=true;S.cancel=0;S.lim=Math.min(total(),M);Q(".pg").classList.add("on");
+S.ex=true;S.cancel=0;S.lim=Math.min(total(),M);setRes(W,H);Q(".pg").classList.add("on");
 var cs=CV.captureStream(30);if(dest)dest.stream.getAudioTracks().forEach(function(t){cs.addTrack(t)});
 var mt=pickMime(),rec,ch=[],res=null;
 try{rec=new MediaRecorder(cs,mt?{mimeType:mt,videoBitsPerSecond:2500000}:{videoBitsPerSecond:2500000})}
-catch(e){toast("Export impossible ici");S.ex=false;if(R)Q(".pg").classList.remove("on");return null}
+catch(e){toast("Export impossible ici");S.ex=false;setRes(360,640);if(R)Q(".pg").classList.remove("on");return null}
 rec.ondataavailable=function(e){if(e.data&&e.data.size)ch.push(e.data)};
 var stopped=new Promise(function(ok){rec.onstop=ok});
 if(gain&&actx)try{gain.disconnect(actx.destination)}catch(e){}
@@ -188,7 +198,7 @@ try{
     if(b.size>0)res=new File([b],"montage-"+Date.now()+".webm",{type:b.type});else toast("Export vide : réessaie")}
 }catch(e){toast("Export impossible : "+((e&&e.message)||e))}
 if(gain&&actx)try{gain.connect(actx.destination)}catch(e){}
-S.ex=false;S.onend=null;if(R)Q(".pg").classList.remove("on");
+S.ex=false;S.onend=null;setRes(360,640);if(R)Q(".pg").classList.remove("on");draw();
 return res}
 async function fin(chain){if(S.busy)return;S.busy=1;
 try{var f=await exp();if(!f)return;var d=S.done;shut();if(chain&&ORIG&&ORIG!==mine)ORIG(f,d);else if(d)d(f)}
@@ -196,7 +206,7 @@ finally{S.busy=0}}
 function mine(f,done){if(D.getElementById("tcp"))return;
 S.clips=[];S.texts=[];S.sel=0;S.t=0;S.playing=false;S.fit="fit";S.ex=false;S.ts=-1;S.tool="";S.msg="";S.busy=0;S.cancel=0;S.done=done||function(){};cur=-1;hist=[];urls=[];
 LG=[];t0=performance.now();
-try{build();L("v2.5 build ok");L("fichier "+(f&&f.name)+" "+(f&&f.size)+" o type="+(f&&f.type));
+try{build();L("v2.7 build ok");L("fichier "+(f&&f.name)+" "+(f&&f.size)+" o type="+(f&&f.type));
 if(!V.__lg){V.__lg=1;["loadstart","loadedmetadata","loadeddata","canplay","seeked","stalled","suspend","emptied","error"].forEach(function(n){V.addEventListener(n,function(){L("V:"+n+" rs="+V.readyState+" "+V.videoWidth+"x"+V.videoHeight)})})}
 if(!window.__tcpErr){window.__tcpErr=1;window.addEventListener("error",function(e){L("ERR "+e.message)});window.addEventListener("unhandledrejection",function(e){L("REJET "+((e.reason&&e.reason.message)||e.reason))})}
 V.onseeked=V.onloadeddata=V.oncanplay=function(){draw()};
