@@ -50,3 +50,4 @@ html body #tcp .h b{flex:1 1 0!important;min-width:0;overflow:hidden;text-overfl
 #tcp .dg{position:absolute;inset:0;z-index:6;background:#fff;padding:18px;display:flex;flex-direction:column;gap:10px;overflow:auto}
 #tcp .dg pre{flex:1;margin:0;white-space:pre-wrap;word-break:break-word;font:12px monospace;color:#0a2a66;user-select:text}
 #tcp .dg button{height:46px;font-size:14px}
+#tcp .dbgp{position:absolute;left:6px;right:6px;top:58px;z-index:5;margin:0;padding:5px 6px;font:10px/1.25 monospace;background:rgba(0,0,0,.72);color:#7CFC00;max-height:38%;overflow:hidden;pointer-events:none;white-space:pre-wrap;word-break:break-all;border-radius:8px}

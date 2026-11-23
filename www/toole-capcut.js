@@ -7,6 +7,7 @@ var l=D.createElement("link");l.rel="stylesheet";l.href="toole-capcut.css?v=2";D
 var F=[["Normal",""],["N&B","grayscale(1) contrast(1.1)"],["Chaud","sepia(.3) saturate(1.5) hue-rotate(-12deg) brightness(1.05)"],["Froid","hue-rotate(18deg) saturate(1.2) brightness(1.05)"],["Vintage","sepia(.55) contrast(1.1) brightness(.95) saturate(1.2)"],["Contraste","contrast(1.4) saturate(1.3)"],["Vif","saturate(1.9) contrast(1.08)"],["Néon","saturate(2.2) contrast(1.2) hue-rotate(160deg)"]];
 var S={clips:[],texts:[],sel:0,t:0,playing:false,fit:"fit",ex:false,ts:-1,tool:"",lim:30,done:null,onend:null,msg:"",busy:0,cancel:0};
 var V=D.createElement("video");V.playsInline=true;V.setAttribute("playsinline","");V.preload="auto";V.dataset.tcp="1";V.className="vh";
+var LG=[],t0=0,PRE=null;function L(m){LG.push(((performance.now()-t0)/1000).toFixed(1)+" "+m);if(LG.length>16)LG.shift();if(PRE)PRE.textContent=LG.join("\n")}
 function MAXS(){try{return window.__tvDur?window.__tvDur():30}catch(e){return 30}}
 function E(t,c,x){var e=D.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
 function Q(s){return R&&R.querySelector(s)}
@@ -37,7 +38,7 @@ if(d===Infinity||isNaN(d)){v.ondurationchange=function(){if(isFinite(v.duration)
 else ready()};
 v.onloadeddata=function(){log.push("loadeddata");ready()};
 v.onerror=function(){var e=v.error;log.push("ERREUR code="+(e?e.code:"?")+" "+(e&&e.message||""));end({d:0,w:0,h:0,th:null,err:"erreur"})};
-tm=setTimeout(function(){log.push("DELAI 9s readyState="+v.readyState+" networkState="+v.networkState);info(null,"délai")},9000);
+tm=setTimeout(function(){L("meta DELAI");log.push("DELAI 9s readyState="+v.readyState+" networkState="+v.networkState);info(null,"délai")},9000);
 v.src=u;try{v.load()}catch(e){}})}
 
 function diag(f,log,first){
@@ -51,16 +52,16 @@ b1.onclick=function(){shut();if(d)d(f)};b2.onclick=function(){shut();if(d)d(null
 o.appendChild(pre);o.appendChild(b1);o.appendChild(b2);R.appendChild(o)}
 async function addFile(f,first){
 var log=["essai 1 : fichier tel quel"],u=URL.createObjectURL(f);urls.push(u);S.msg="Chargement de la vidéo…";ui();
-var m=await meta(u,log);
-if(R&&!m.d){log.push("essai 2 : type forcé video/mp4");var f2=new File([f],f.name||"video.mp4",{type:"video/mp4"});u=URL.createObjectURL(f2);urls.push(u);m=await meta(u,log);if(m.d)f=f2}
+var m=await meta(u,log);L("essai1 d="+m.d+" "+m.w+"x"+m.h+" "+(m.err||"ok"));
+if(R&&!m.d){log.push("essai 2 : type forcé video/mp4");var f2=new File([f],f.name||"video.mp4",{type:"video/mp4"});u=URL.createObjectURL(f2);urls.push(u);m=await meta(u,log);L("essai2 d="+m.d+" "+(m.err||"ok"));if(m.d)f=f2}
 S.msg="";
 if(!R)return;
 if(!m.d){
   if(first){diag(f,log,first);return}
   toast("Vidéo illisible : "+(log[log.length-1]||""),4500);ui();return}
 if(S.clips.length)snap();
-S.clips.push({u:u,d:m.d,in:0,out:m.d,sp:1,vol:1,fl:0,th:m.th});
-S.sel=S.clips.length-1;layout();rngs();goto(startOf(S.sel))}
+S.clips.push({u:u,d:m.d,in:0,out:m.d,sp:1,vol:1,fl:0,th:m.th});L("clip ajouté, miniature="+(m.th?"oui":"non"));
+S.sel=S.clips.length-1;layout();L("layout ok");rngs();L("rngs ok");goto(startOf(S.sel));L("goto ok")}
 
 /* ── audio ── */
 async function aud(){
@@ -150,7 +151,7 @@ layout();draw()})}}
 /* ── interface ── */
 function build(){R=E("div");R.id="tcp";
 R.innerHTML='<div class="h"><button class="bx">✕</button><b>STUDIO PRO</b><button class="bs">Stickers ›</button><button class="ok bk">Publier</button></div><div class="pv"><canvas></canvas></div><div class="ctl"><button class="pp">▶</button><span class="tt"></span></div><div class="tl"><div class="trk"></div></div><div class="rg"><label>Début<input class="ri" type="range"></label><label>Fin<input class="ro" type="range"></label></div><div class="sub"></div><div class="tools"></div><div class="pg"><span>Export du montage…</span><div><i></i></div><button class="cx">Annuler</button></div>';
-D.body.appendChild(R);R.appendChild(V);
+D.body.appendChild(R);R.appendChild(V);PRE=E("pre","dbgp");R.appendChild(PRE);
 CV=Q("canvas");CV.width=W;CV.height=H;X=CV.getContext("2d");BC=E("canvas");BC.width=27;BC.height=48;BX=BC.getContext("2d");
 var T=[["plus","＋","Clip"],["cut","✂","Diviser"],["del","⌫","Suppr."],["dup","⧉","Dupl."],["un","↶","Annuler"],["sp","»","Vitesse"],["vo","♪","Volume"],["fl","◐","Filtre"],["tx","T","Texte"],["ft","▭","Format"]],tb=Q(".tools");
 T.forEach(function(t){var b=E("button");b.innerHTML="<i>"+t[1]+"</i>"+t[2];b.onclick=function(){tool(t[0])};tb.appendChild(b)});
@@ -166,7 +167,7 @@ Q(".bk").onclick=function(){fin(false)};
 Q(".bs").onclick=function(){fin(true)};
 Q(".cx").onclick=function(){S.cancel=1;pause();if(S.onend)S.onend()};
 if(!ORIG)Q(".bs").style.display="none"}
-function shut(){pause();urls.forEach(function(u){try{URL.revokeObjectURL(u)}catch(e){}});urls=[];hist=[];try{V.removeAttribute("src");V.load()}catch(e){}cur=-1;if(R){R.remove();R=null}S.clips=[];S.texts=[];S.msg=""}
+function shut(){PRE=null;pause();urls.forEach(function(u){try{URL.revokeObjectURL(u)}catch(e){}});urls=[];hist=[];try{V.removeAttribute("src");V.load()}catch(e){}cur=-1;if(R){R.remove();R=null}S.clips=[];S.texts=[];S.msg=""}
 
 /* ── export ── */
 async function exp(){if(!S.clips.length)return null;
@@ -194,9 +195,14 @@ try{var f=await exp();if(!f)return;var d=S.done;shut();if(chain&&ORIG&&ORIG!==mi
 finally{S.busy=0}}
 function mine(f,done){if(D.getElementById("tcp"))return;
 S.clips=[];S.texts=[];S.sel=0;S.t=0;S.playing=false;S.fit="fit";S.ex=false;S.ts=-1;S.tool="";S.msg="";S.busy=0;S.cancel=0;S.done=done||function(){};cur=-1;hist=[];urls=[];
-build();V.onseeked=V.onloadeddata=V.oncanplay=function(){draw()};
+LG=[];t0=performance.now();
+try{build();L("v2.4 build ok");L("fichier "+(f&&f.name)+" "+(f&&f.size)+" o type="+(f&&f.type));
+if(!V.__lg){V.__lg=1;["loadstart","loadedmetadata","loadeddata","canplay","seeked","stalled","suspend","emptied","error"].forEach(function(n){V.addEventListener(n,function(){L("V:"+n+" rs="+V.readyState+" "+V.videoWidth+"x"+V.videoHeight)})})}
+if(!window.__tcpErr){window.__tcpErr=1;window.addEventListener("error",function(e){L("ERR "+e.message)});window.addEventListener("unhandledrejection",function(e){L("REJET "+((e.reason&&e.reason.message)||e.reason))})}
+V.onseeked=V.onloadeddata=V.oncanplay=function(){draw()};
 V.onerror=function(){var e=V.error;toast("Lecture impossible pour ce clip (code "+(e?e.code:"?")+")",5000)};
-addFile(f,true)}
+addFile(f,true).catch(function(e){L("ERR addFile: "+((e&&e.message)||e))})}
+catch(e){L("ERR mine: "+((e&&e.message)||e))}}
 setInterval(function(){if(window.tooleEdit!==mine){ORIG=window.tooleEdit;window.tooleEdit=mine}},800);
 })();
 /* Pendant le montage, coupe le son/lecture des vidéos du fil (sauf celles du studio) */
