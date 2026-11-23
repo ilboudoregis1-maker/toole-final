@@ -52,7 +52,7 @@
       if (localStorage.getItem("toole_readconf") !== "0" && rows.some(function (m) { return m.receiver === id && !m.read_at; })) {
         window.api("/rest/v1/messages?receiver=eq." + id + "&sender=eq." + pid + "&read_at=is.null", {
           method: "PATCH", headers: { Prefer: "return=minimal" }, body: JSON.stringify({ read_at: new Date().toISOString() })
-        }).then(function(){if(window.tnlClear)window.tnlClear(pid)}).catch(function () { });
+        }).then(function(){if(window.tnlClear)window.tnlClear(pid)}).catch(function(e){var d=document.createElement("div");d.textContent="Lecture non enregistrée : "+e;d.style.cssText="position:fixed;top:8px;left:8px;right:8px;z-index:99999;background:#e5484d;color:#fff;padding:8px;font:12px sans-serif";document.body.appendChild(d);setTimeout(function(){d.remove()},8000)});
       }
     } catch (e) { }
   }
