@@ -63,7 +63,13 @@ S.clips.push({u:u,d:m.d,in:0,out:m.d,sp:1,vol:1,fl:0,th:m.th});
 S.sel=S.clips.length-1;layout();rngs();goto(startOf(S.sel))}
 
 /* ── audio ── */
-function aud(){if(actx)return;try{actx=new(window.AudioContext||window.webkitAudioContext)();var s=actx.createMediaElementSource(V);gain=actx.createGain();dest=actx.createMediaStreamDestination();s.connect(gain);gain.connect(dest);gain.connect(actx.destination)}catch(e){actx=null;gain=null}}
+async function aud(){
+if(actx&&gain){try{await actx.resume()}catch(e){}return}
+try{var A=window.AudioContext||window.webkitAudioContext,c=new A();try{await c.resume()}catch(e){}
+if(c.state!=="running"){try{c.close()}catch(e){}return}
+var s=c.createMediaElementSource(V),g=c.createGain(),d=c.createMediaStreamDestination();
+s.connect(g);g.connect(d);g.connect(c.destination);actx=c;gain=g;dest=d;V.volume=1;var k=S.clips[cur];if(k)setVol(k)}
+catch(e){actx=null;gain=null;dest=null}}
 function setVol(c){if(gain)gain.gain.value=c.vol;else V.volume=Math.min(1,c.vol)}
 
 /* ── rendu ── */
@@ -77,10 +83,10 @@ X.filter="none"}
 S.texts.forEach(function(o){if(S.t<o.a||S.t>o.b)return;X.font="800 "+o.s+"px sans-serif";X.textAlign="center";X.lineJoin="round";X.lineWidth=7;X.strokeStyle="#000";X.fillStyle=o.c;var y=o.p*H;X.strokeText(o.t,W/2,y,W-40);X.fillText(o.t,W/2,y,W-40)})}
 function goto(t){var T=total();S.t=Math.max(0,Math.min(t,Math.max(0,T-.001)));var q=locate(S.t);if(!q)return;
 var c=S.clips[q.i],pos=c.in+q.off*c.sp;V.defaultPlaybackRate=c.sp;setVol(c);
-if(cur!==q.i){cur=q.i;V.src=c.u;var f=function(){V.removeEventListener("loadedmetadata",f);V.playbackRate=c.sp;try{V.currentTime=pos}catch(e){}};V.addEventListener("loadedmetadata",f);V.load()}
+if(cur!==q.i){cur=q.i;V.src=c.u;var f=function(){V.removeEventListener("loadedmetadata",f);V.playbackRate=c.sp;try{V.currentTime=pos}catch(e){}};V.addEventListener("loadedmetadata",f);V.load();var ci=cur;setTimeout(function(){if(R&&cur===ci&&V.readyState<2&&!V.error)toast("Aperçu lent… readyState="+V.readyState+" réseau="+V.networkState,5000)},3500)}
 else{V.playbackRate=c.sp;try{V.currentTime=pos}catch(e){}}
 ui()}
-function play(){if(!S.clips.length)return;if(S.t>=total()-.05)goto(0);S.playing=true;aud();if(actx&&actx.resume)actx.resume();var p=V.play();if(p&&p.catch)p.catch(function(){});tick();ui()}
+function play(){if(!S.clips.length)return;if(S.t>=total()-.05)goto(0);S.playing=true;var p=V.play();if(p&&p.catch)p.catch(function(){});aud();tick();ui()}
 function pause(){S.playing=false;try{V.pause()}catch(e){}cancelAnimationFrame(raf);ui()}
 function tick(){if(!S.playing)return;var c=S.clips[cur];
 if(c){var st=startOf(cur);S.t=Math.max(st,st+(V.currentTime-c.in)/c.sp);
@@ -164,7 +170,7 @@ function shut(){pause();urls.forEach(function(u){try{URL.revokeObjectURL(u)}catc
 
 /* ── export ── */
 async function exp(){if(!S.clips.length)return null;
-pause();aud();var M=MAXS();if(total()>M+.3)toast("Durée limitée à "+M+" s : la fin sera coupée",4200);
+pause();await aud();var M=MAXS();if(total()>M+.3)toast("Durée limitée à "+M+" s : la fin sera coupée",4200);
 S.ex=true;S.cancel=0;S.lim=Math.min(total(),M);Q(".pg").classList.add("on");
 var cs=CV.captureStream(30);if(dest)dest.stream.getAudioTracks().forEach(function(t){cs.addTrack(t)});
 var mt=pickMime(),rec,ch=[],res=null;
@@ -190,7 +196,7 @@ function mine(f,done){if(D.getElementById("tcp"))return;
 S.clips=[];S.texts=[];S.sel=0;S.t=0;S.playing=false;S.fit="fit";S.ex=false;S.ts=-1;S.tool="";S.msg="";S.busy=0;S.cancel=0;S.done=done||function(){};cur=-1;hist=[];urls=[];
 build();V.onseeked=V.onloadeddata=V.oncanplay=function(){draw()};
 V.onerror=function(){var e=V.error;toast("Lecture impossible pour ce clip (code "+(e?e.code:"?")+")",5000)};
-aud();addFile(f,true)}
+addFile(f,true)}
 setInterval(function(){if(window.tooleEdit!==mine){ORIG=window.tooleEdit;window.tooleEdit=mine}},800);
 })();
 /* Pendant le montage, coupe le son/lecture des vidéos du fil (sauf celles du studio) */
