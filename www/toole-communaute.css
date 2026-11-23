@@ -1,0 +1,17 @@
+#scrGroupes .body{padding-bottom:90px}
+.cm-hero{margin:12px 14px;padding:18px 16px;border-radius:22px;color:#fff;background:linear-gradient(135deg,#0b6fb8,#13c2d6 60%,#27d6a0);box-shadow:0 10px 28px rgba(19,194,214,.28)}
+.cm-hero h2{margin:0;font:700 21px 'Exo 2',sans-serif;color:#fff}
+.cm-hero p{margin:4px 0 14px;font-size:13px;opacity:.92;color:#fff}
+.cm-hero button{width:100%;border:0;border-radius:14px;padding:12px;font-weight:700;font-size:15px;background:#fff;color:#0a4d8c}
+.cm-tools{padding:0 14px}
+.cm-q{width:100%;box-sizing:border-box;border:1px solid var(--pro-line,#dbe8f0);background:var(--pro-surface,#fff);color:var(--pro-ink,#0a2a66);border-radius:14px;padding:11px 14px;font-size:14px;outline:none}
+.cm-chips{display:flex;gap:8px;margin:10px 0 4px;overflow-x:auto}
+.cm-chips button{flex:none;border:1px solid var(--pro-line,#dbe8f0);background:var(--pro-surface,#fff);color:var(--pro-muted,#5b6f86);border-radius:20px;padding:7px 14px;font-size:13px;font-weight:600}
+.cm-chips button.on{background:#13c2d6;border-color:#13c2d6;color:#fff}
+html body #scrGroupes #gNew{display:none}
+html body #gRows{background:none!important;border:0!important;box-shadow:none!important;padding:8px 14px;display:grid;gap:10px}
+html body #gRows .sx-row{border-radius:18px;padding:12px;display:flex;align-items:center;gap:12px;box-shadow:0 6px 18px rgba(10,60,120,.08);transition:transform .12s}
+html body #gRows .sx-row:active{transform:scale(.98)}
+html body #gRows .sx-av{width:54px;height:54px;border-radius:18px;flex:none;font-weight:700}
+html body #gRows .sx-n{font-weight:700;font-size:15px}
+html body #gRows .sx-s{font-size:12.5px;margin-top:2px}
