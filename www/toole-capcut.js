@@ -69,7 +69,7 @@ if(actx&&gain){try{await actx.resume()}catch(e){}return}
 try{var A=window.AudioContext||window.webkitAudioContext,c=new A();try{await c.resume()}catch(e){}
 if(c.state!=="running"){try{c.close()}catch(e){}return}
 var s=c.createMediaElementSource(V),g=c.createGain(),d=c.createMediaStreamDestination();
-s.connect(g);g.connect(d);g.connect(c.destination);actx=c;gain=g;dest=d;V.volume=1;var k=S.clips[cur];if(k)setVol(k)}
+var dl=c.createDelay(1);dl.delayTime.value=0.12;s.connect(g);g.connect(dl);dl.connect(d);g.connect(c.destination);actx=c;gain=g;dest=d;V.volume=1;var k=S.clips[cur];if(k)setVol(k)}
 catch(e){actx=null;gain=null;dest=null}}
 function setVol(c){if(gain)gain.gain.value=c.vol;else V.volume=Math.min(1,c.vol)}
 
@@ -161,7 +161,7 @@ layout();draw()})}}
 /* ── interface ── */
 function build(){R=E("div");R.id="tcp";
 R.innerHTML='<div class="h"><button class="bx">✕</button><b>STUDIO PRO</b><button class="bs">Stickers ›</button><button class="ok bk">Publier</button></div><div class="pv"><canvas></canvas></div><div class="ctl"><button class="pp">▶</button><span class="tt"></span></div><div class="tl"><div class="trk"></div></div><div class="rg"><label>Début<input class="ri" type="range"></label><label>Fin<input class="ro" type="range"></label></div><div class="sub"></div><div class="tools"></div><div class="pg"><span>Export du montage…</span><div><i></i></div><button class="cx">Annuler</button></div>';
-D.body.appendChild(R);R.appendChild(V);PRE=E("pre","dbgp");R.appendChild(PRE);
+D.body.appendChild(R);R.appendChild(V);PRE=E("pre","dbgp");PRE.style.display="none";R.appendChild(PRE);
 CV=Q("canvas");CV.width=RW;CV.height=RH;X=CV.getContext("2d");BC=E("canvas");BC.width=27;BC.height=48;BX=BC.getContext("2d");BGC=E("canvas");BGC.width=RW;BGC.height=RH;BGX=BGC.getContext("2d");
 var T=[["plus","＋","Clip"],["cut","✂","Diviser"],["del","⌫","Suppr."],["dup","⧉","Dupl."],["un","↶","Annuler"],["sp","»","Vitesse"],["vo","♪","Volume"],["fl","◐","Filtre"],["tx","T","Texte"],["ft","▭","Format"]],tb=Q(".tools");
 T.forEach(function(t){var b=E("button");b.innerHTML="<i>"+t[1]+"</i>"+t[2];b.onclick=function(){tool(t[0])};tb.appendChild(b)});

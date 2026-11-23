@@ -52,7 +52,7 @@ window.renderUnread=async function(){
     if(my!==tk)return;
     box.innerHTML='';
     pr.forEach(function(p){box.appendChild(homeRow(p.pseudo||'?',EN()?'New messages':'Nouveaux messages',String(cnt[p.id]),function(){openChat(p.id,p.pseudo||'?')}))});
-  }catch(e){if(my!==tk)return;box.innerHTML='';msg(EN()?'You are offline. Reconnect to see unread messages.':'Hors ligne. Reconnecte-toi pour voir les messages non lus.')}
+  }catch(e){if(my!==tk)return;box.innerHTML='';msg(EN()?'':'')}
 };
 var MAP=[[/^Compte vérifié ✓$/,'Account verified ✓'],[/^Compte vérifié( · .*)$/,'Account verified$1'],[/^Compte vérifié$/,'Account verified'],[/^Non vérifié$/,'Not verified']];
 function tr(root){
