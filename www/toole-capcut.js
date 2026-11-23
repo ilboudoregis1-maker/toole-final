@@ -61,7 +61,7 @@ if(!m.d){
   toast("Vidéo illisible : "+(log[log.length-1]||""),4500);ui();return}
 if(S.clips.length)snap();
 S.clips.push({u:u,d:m.d,in:0,out:m.d,sp:1,vol:1,fl:0,th:m.th});L("clip ajouté, miniature="+(m.th?"oui":"non"));
-S.sel=S.clips.length-1;layout();L("layout ok");rngs();L("rngs ok");goto(startOf(S.sel));L("goto ok");setTimeout(function(){if(PRE&&!/ERR|REJET|DELAI/.test(LG.join(" ")))PRE.style.display="none"},4000)}
+S.sel=S.clips.length-1;layout();L("layout ok");rngs();L("rngs ok");goto(startOf(S.sel));L("goto ok");setTimeout(function(){if(PRE)PRE.style.display="none"},4000)}
 
 /* ── audio ── */
 async function aud(){
