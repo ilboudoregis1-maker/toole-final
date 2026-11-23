@@ -97,7 +97,7 @@
     }
     return "G1." + b64(TE.encode(JSON.stringify({ s: me0, i: b64(iv), c: b64(new Uint8Array(ct)), k: k })));
   }
-  async function decStr(str, again) {
+  async function decStr0(str, again) {
     try {
       var me0 = uid(), pt;
       if (str.slice(0, 3) === "E1.") {
@@ -124,6 +124,22 @@
       return null;
     }
   }
+  function pget(c) { try { var m = JSON.parse(localStorage.getItem("e2e_plain") || "{}"); return m[c]; } catch (e) { return undefined; } }
+  function pset(c, t) {
+    try {
+      var m = JSON.parse(localStorage.getItem("e2e_plain") || "{}"); m[c] = t;
+      var ks = Object.keys(m); if (ks.length > 1500) ks.slice(0, ks.length - 1500).forEach(function (k) { delete m[k]; });
+      localStorage.setItem("e2e_plain", JSON.stringify(m));
+    } catch (e) { }
+  }
+  async function decStr(str, again) {
+    if (typeof str === "string" && (str.slice(0, 3) === "E1." || str.slice(0, 3) === "G1.")) {
+      var c0 = pget(str); if (typeof c0 === "string") return c0;
+    }
+    var r = await decStr0(str, again);
+    if (typeof r === "string" && typeof str === "string" && (str.slice(0, 3) === "E1." || str.slice(0, 3) === "G1.")) pset(str, r);
+    return r;
+  }
   window.__e2eDec = decStr;
   async function walk(x) {
     if (Array.isArray(x)) { await Promise.all(x.map(walk)); return; }
@@ -143,10 +159,12 @@
       if (!window.__e2eWarned) { window.__e2eWarned = 1; try { toast("Contact pas à jour : message envoyé sans chiffrement"); } catch (x) { } }
       return;
     }
+    var orig = row.body;
     var plain = JSON.stringify({ b: row.body, m: mkFor(row) }), ids = group ? await members(row.group_id) : null;
     var rt = typeof row.reply_text === "string" && row.reply_text ? JSON.stringify({ b: row.reply_text }) : null;
     if (group) { row.body = await encG(ids, plain); if (rt) row.reply_text = await encG(ids, rt); }
     else { row.body = await enc1(row.receiver, plain); if (rt) row.reply_text = await enc1(row.receiver, rt); }
+    pset(row.body, orig);
   }
   window.__e2eHasKey = async function (id) { try { return !!(await shared(id)); } catch (x) { return false; } };
   var prev = window.fetch.bind(window);
