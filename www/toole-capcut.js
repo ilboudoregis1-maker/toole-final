@@ -51,9 +51,9 @@ var pre=E("pre","",t);var b1=E("button","ok","Publier sans montage"),b2=E("butto
 b1.onclick=function(){shut();if(d)d(f)};b2.onclick=function(){shut();if(d)d(null)};
 o.appendChild(pre);o.appendChild(b1);o.appendChild(b2);R.appendChild(o)}
 async function addFile(f,first){
-var log=["essai 1 : fichier tel quel"],u=URL.createObjectURL(f);urls.push(u);S.msg="Chargement de la vidéo…";ui();
+var log=["essai 1 : fichier tel quel"],u=window.URL.createObjectURL(f);urls.push(u);S.msg="Chargement de la vidéo…";ui();
 var m=await meta(u,log);L("essai1 d="+m.d+" "+m.w+"x"+m.h+" "+(m.err||"ok"));
-if(R&&!m.d){log.push("essai 2 : type forcé video/mp4");var f2=new File([f],f.name||"video.mp4",{type:"video/mp4"});u=URL.createObjectURL(f2);urls.push(u);m=await meta(u,log);L("essai2 d="+m.d+" "+(m.err||"ok"));if(m.d)f=f2}
+if(R&&!m.d){log.push("essai 2 : type forcé video/mp4");var f2=new File([f],f.name||"video.mp4",{type:"video/mp4"});u=window.URL.createObjectURL(f2);urls.push(u);m=await meta(u,log);L("essai2 d="+m.d+" "+(m.err||"ok"));if(m.d)f=f2}
 S.msg="";
 if(!R)return;
 if(!m.d){
@@ -61,7 +61,7 @@ if(!m.d){
   toast("Vidéo illisible : "+(log[log.length-1]||""),4500);ui();return}
 if(S.clips.length)snap();
 S.clips.push({u:u,d:m.d,in:0,out:m.d,sp:1,vol:1,fl:0,th:m.th});L("clip ajouté, miniature="+(m.th?"oui":"non"));
-S.sel=S.clips.length-1;layout();L("layout ok");rngs();L("rngs ok");goto(startOf(S.sel));L("goto ok")}
+S.sel=S.clips.length-1;layout();L("layout ok");rngs();L("rngs ok");goto(startOf(S.sel));L("goto ok");setTimeout(function(){if(PRE&&!/ERR|REJET|DELAI/.test(LG.join(" ")))PRE.style.display="none"},4000)}
 
 /* ── audio ── */
 async function aud(){
@@ -167,7 +167,7 @@ Q(".bk").onclick=function(){fin(false)};
 Q(".bs").onclick=function(){fin(true)};
 Q(".cx").onclick=function(){S.cancel=1;pause();if(S.onend)S.onend()};
 if(!ORIG)Q(".bs").style.display="none"}
-function shut(){PRE=null;pause();urls.forEach(function(u){try{URL.revokeObjectURL(u)}catch(e){}});urls=[];hist=[];try{V.removeAttribute("src");V.load()}catch(e){}cur=-1;if(R){R.remove();R=null}S.clips=[];S.texts=[];S.msg=""}
+function shut(){PRE=null;pause();urls.forEach(function(u){try{window.URL.revokeObjectURL(u)}catch(e){}});urls=[];hist=[];try{V.removeAttribute("src");V.load()}catch(e){}cur=-1;if(R){R.remove();R=null}S.clips=[];S.texts=[];S.msg=""}
 
 /* ── export ── */
 async function exp(){if(!S.clips.length)return null;
@@ -196,7 +196,7 @@ finally{S.busy=0}}
 function mine(f,done){if(D.getElementById("tcp"))return;
 S.clips=[];S.texts=[];S.sel=0;S.t=0;S.playing=false;S.fit="fit";S.ex=false;S.ts=-1;S.tool="";S.msg="";S.busy=0;S.cancel=0;S.done=done||function(){};cur=-1;hist=[];urls=[];
 LG=[];t0=performance.now();
-try{build();L("v2.4 build ok");L("fichier "+(f&&f.name)+" "+(f&&f.size)+" o type="+(f&&f.type));
+try{build();L("v2.5 build ok");L("fichier "+(f&&f.name)+" "+(f&&f.size)+" o type="+(f&&f.type));
 if(!V.__lg){V.__lg=1;["loadstart","loadedmetadata","loadeddata","canplay","seeked","stalled","suspend","emptied","error"].forEach(function(n){V.addEventListener(n,function(){L("V:"+n+" rs="+V.readyState+" "+V.videoWidth+"x"+V.videoHeight)})})}
 if(!window.__tcpErr){window.__tcpErr=1;window.addEventListener("error",function(e){L("ERR "+e.message)});window.addEventListener("unhandledrejection",function(e){L("REJET "+((e.reason&&e.reason.message)||e.reason))})}
 V.onseeked=V.onloadeddata=V.oncanplay=function(){draw()};
