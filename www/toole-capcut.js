@@ -69,7 +69,7 @@ if(actx&&gain){try{await actx.resume()}catch(e){}return}
 try{var A=window.AudioContext||window.webkitAudioContext,c=new A();try{await c.resume()}catch(e){}
 if(c.state!=="running"){try{c.close()}catch(e){}return}
 var s=c.createMediaElementSource(V),g=c.createGain(),d=c.createMediaStreamDestination();
-var dl=c.createDelay(1);dl.delayTime.value=0.12;s.connect(g);g.connect(dl);dl.connect(d);g.connect(c.destination);actx=c;gain=g;dest=d;V.volume=1;var k=S.clips[cur];if(k)setVol(k)}
+var dl=c.createDelay(1);dl.delayTime.value=0.12;s.connect(dl);dl.connect(g);g.connect(d);g.connect(c.destination);actx=c;gain=g;dest=d;V.volume=1;var k=S.clips[cur];if(k)setVol(k)}
 catch(e){actx=null;gain=null;dest=null}}
 function setVol(c){if(gain)gain.gain.value=c.vol;else V.volume=Math.min(1,c.vol)}
 
