@@ -22,6 +22,7 @@ if(!b){var foreign=[].some.call(r.children,function(c){return c.tagName==="SPAN"
 b=document.createElement("span");b.className="tnl-b";var st=null;for(var j=0;j<r.children.length;j++){var c=r.children[j];if(c.classList.contains("v5star")||c.classList.contains("v4star")){st=c;break}}r.insertBefore(b,st)}
 var t=n>99?"99+":String(n);if(b.textContent!==t)b.textContent=t;
 if(!r.classList.contains("tnl"))r.classList.add("tnl")})}
+window.tnlClear=function(p){CNT[p]=0;later()};
 function later(){if(pend)return;pend=1;requestAnimationFrame(function(){pend=0;try{paint()}catch(e){}})}
 function refresh(){var m=myId();if(busy||!m||typeof window.api!=="function")return;try{if(localStorage.getItem("toole_readconf")==="0")return}catch(e){}
 busy=1;window.api("/rest/v1/messages?select=sender&receiver=eq."+m+"&read_at=is.null&limit=1000").then(function(rows){var c={};(Array.isArray(rows)?rows:[]).forEach(function(r){c[r.sender]=(c[r.sender]||0)+1});CNT=c;paint()}).catch(function(){}).then(function(){busy=0})}

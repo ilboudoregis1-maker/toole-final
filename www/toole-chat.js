@@ -52,7 +52,7 @@
       if (localStorage.getItem("toole_readconf") !== "0" && rows.some(function (m) { return m.receiver === id && !m.read_at; })) {
         window.api("/rest/v1/messages?receiver=eq." + id + "&sender=eq." + pid + "&read_at=is.null", {
           method: "PATCH", headers: { Prefer: "return=minimal" }, body: JSON.stringify({ read_at: new Date().toISOString() })
-        }).catch(function () { });
+        }).then(function(){if(window.tnlClear)window.tnlClear(pid)}).catch(function () { });
       }
     } catch (e) { }
   }
