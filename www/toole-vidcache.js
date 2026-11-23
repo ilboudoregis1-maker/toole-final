@@ -142,9 +142,9 @@
         el.__tvc = v;
         tgBlob(v, m).then(function (b) {
           if (el.__tvc !== v) return;
-          var u = URL.createObjectURL(b), old = el.__tvu; el.__tvu = u;
+          var u = window.URL.createObjectURL(b), old = el.__tvu; el.__tvu = u;
           D.set.call(el, u);
-          if (old) setTimeout(function () { URL.revokeObjectURL(old); }, 3000);
+          if (old) setTimeout(function () { window.URL.revokeObjectURL(old); }, 3000);
         }, function () { if (el.__tvc === v) D.set.call(el, v); });
       }
     });

@@ -174,7 +174,7 @@ function pickAudio(cb){
   i.onchange=function(){var f=i.files&&i.files[0];if(f)cb(f);setTimeout(function(){i.remove()},60000)};i.click()}
 
 window.tooleEdit=function(f,done){
-  var u=URL.createObjectURL(f),L=Lmax(),o=E("div");o.id="tzEd";
+  var u=window.URL.createObjectURL(f),L=Lmax(),o=E("div");o.id="tzEd";
   var sw=E("div","sw"),stage=E("div","stage"),v=E("video"),ovl=E("div","ovl"),pp=E("div","pp","▶");
   v.setAttribute("playsinline","");v.src=u;v.loop=false;v.muted=false;v.preload="auto";
   stage.appendChild(v);stage.appendChild(ovl);sw.appendChild(stage);sw.appendChild(pp);
@@ -190,7 +190,7 @@ window.tooleEdit=function(f,done){
   var A=0,B=0,Dd=0,fi=0,items=[],selIt=null,cur=null,vo=1,vm=.8,mus=null,au=null,as=null,exporting=false,ctl={abort:0},inited=false,ro=null;
   function end(r){exporting=false;try{v.pause()}catch(e){}musStop();try{if(au){au.pause();au.removeAttribute("src");au.load()}}catch(e){}
     try{if(ro)ro.disconnect()}catch(e){}try{if(ac)ac.close()}catch(e){}ac=null;dst=null;vs=vg=vpv=mg=mpv=null;
-    try{v.removeAttribute("src");v.load()}catch(e){}try{URL.revokeObjectURL(u)}catch(e){}o.remove();done(r)}
+    try{v.removeAttribute("src");v.load()}catch(e){}try{window.URL.revokeObjectURL(u)}catch(e){}o.remove();done(r)}
   xb.onclick=function(){end(null)};
   /* ajustement stage */
   function fit(){var W=sw.clientWidth,H=sw.clientHeight,ar=(v.videoWidth||9)/(v.videoHeight||16);if(!W||!H)return;var w=Math.min(W,H*ar),h=w/ar;stage.style.width=w+"px";stage.style.height=h+"px";stage.style.setProperty("--sw",w+"px")}
@@ -266,7 +266,7 @@ window.tooleEdit=function(f,done){
     if(!m){mchip.textContent="🎵 Ajouter un son";return}
     if(!graph()){mus=null;toast("Musique indisponible sur cet appareil");return}
     mchip.textContent="🎵 "+m.n;
-    if(m.file){au=new Audio();au.loop=true;au.preload="auto";au.src=URL.createObjectURL(m.file);m.url=au.src;wireAu()}
+    if(m.file){au=new Audio();au.loop=true;au.preload="auto";au.src=window.URL.createObjectURL(m.file);m.url=au.src;wireAu()}
     if(!v.paused)musPlay()}
   function musPlay(){if(!mus)return;if(ac&&ac.resume)ac.resume();if(mus.file){if(au){au.currentTime=0;au.play().catch(function(){})}}else if(!sch.on)synStart(mus.tr)}
   function musStop(){if(au)try{au.pause()}catch(e){}synStop()}
