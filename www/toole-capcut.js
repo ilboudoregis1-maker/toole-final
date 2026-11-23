@@ -38,7 +38,7 @@ if(d===Infinity||isNaN(d)){v.ondurationchange=function(){if(isFinite(v.duration)
 else ready()};
 v.onloadeddata=function(){log.push("loadeddata");ready()};
 v.onerror=function(){var e=v.error;log.push("ERREUR code="+(e?e.code:"?")+" "+(e&&e.message||""));end({d:0,w:0,h:0,th:null,err:"erreur"})};
-tm=setTimeout(function(){L("meta DELAI");log.push("DELAI 9s readyState="+v.readyState+" networkState="+v.networkState);info(null,"délai")},9000);
+tm=setTimeout(function(){L("meta DELAI");log.push("DELAI 9s readyState="+v.readyState+" networkState="+v.networkState);info(null,"délai")},4000);
 v.src=u;try{v.load()}catch(e){}})}
 
 function diag(f,log,first){
@@ -53,7 +53,7 @@ o.appendChild(pre);o.appendChild(b1);o.appendChild(b2);R.appendChild(o)}
 async function addFile(f,first){
 var log=["essai 1 : fichier tel quel"],u=window.URL.createObjectURL(f);urls.push(u);S.msg="Chargement de la vidéo…";ui();
 var m=await meta(u,log);L("essai1 d="+m.d+" "+m.w+"x"+m.h+" "+(m.err||"ok"));
-if(R&&!m.d){log.push("essai 2 : type forcé video/mp4");var f2=new File([f],f.name||"video.mp4",{type:"video/mp4"});u=window.URL.createObjectURL(f2);urls.push(u);m=await meta(u,log);L("essai2 d="+m.d+" "+(m.err||"ok"));if(m.d)f=f2}
+if(R&&!m.d&&!/webm/.test(f.type||"")){log.push("essai 2 : type forcé video/mp4");var f2=new File([f],f.name||"video.mp4",{type:"video/mp4"});u=window.URL.createObjectURL(f2);urls.push(u);m=await meta(u,log);L("essai2 d="+m.d+" "+(m.err||"ok"));if(m.d)f=f2}
 S.msg="";
 if(!R)return;
 if(!m.d){
