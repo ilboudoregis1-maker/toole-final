@@ -82,12 +82,7 @@ sh.appendChild(gs);
 var ta=E("textarea");ta.maxLength=200;ta.placeholder="Un petit mot (facultatif)";sh.appendChild(ta);
 var go=E("button","go",ic("gift",22)+"<span>Choisis un cadeau</span>");go.type="button";go.disabled=true;sh.appendChild(go);
 var er=E("div","er");sh.appendChild(er);o.appendChild(sh);document.body.appendChild(o);
-go.onclick=async function(){if(!sel)return;go.disabled=true;er.textContent="";
-try{var r=await A("/rest/v1/gift_orders",{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify({from_user:me0,to_user:to,gift:sel.id,prix:sel.p,message:ta.value.trim()||null})});
-if(r&&!Array.isArray(r)&&(r.code||r.message))throw new Error(r.code||r.message);
-sh.innerHTML="";sh.appendChild(E("div","gp"));var ok=E("div","ok",'<i>'+ic("check",34)+'</i><h3>Cadeau enregistré</h3><p>'+esc(sel.n)+' pour <b>'+esc(name)+'</b> · '+sel.p+' FCFA</p><p>'+esc(PAY_INFO)+'</p>');sh.appendChild(ok);
-var fin=E("button","go","Terminé");fin.type="button";fin.onclick=function(){o.remove()};sh.appendChild(fin)}
-catch(e){go.disabled=false;er.textContent="Envoi impossible. Réessaie dans un instant."}}}
+go.onclick=async function(){if(!sel)return;go.disabled=true;er.textContent="";try{var r=await A("/rest/v1/gift_orders",{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify({from_user:me0,to_user:to,gift:sel.id,prix:sel.p,message:ta.value.trim()||null,statut:"en_attente"})});if(r&&!Array.isArray(r)&&(r.code||r.message))throw new Error(r.code||r.message);o.remove();if(window.openChat)window.openChat(to,name);var msg="🎁 Cadeau : "+sel.n+" · "+sel.p+" FCFA"+(ta.value.trim()?"\n"+ta.value.trim():"");setTimeout(function(){var i=document.querySelector("#scrChat .bar input");if(i){i.value=msg;i.dispatchEvent(new Event("input",{bubbles:true}));i.focus()}},600)}catch(e){go.disabled=false;er.textContent="Envoi impossible. Réessaie dans un instant."}}
 /* ---------- lecteur simple ---------- */
 function player(v){var o=E("div");o.id="tcpl";var vd=E("video");vd.setAttribute("playsinline","");vd.controls=true;vd.autoplay=true;vd.loop=true;
 try{vd.src=window.tgUrl(v.path,"video")}catch(e){}
