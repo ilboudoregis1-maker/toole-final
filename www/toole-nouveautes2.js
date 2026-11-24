@@ -148,3 +148,5 @@ setInterval(function(){try{mount()}catch(e){}},900);
 ;(function(){var s=document.createElement("style");s.id="gapp-fix";s.textContent=".gapp{width:100%!important;height:100%!important;max-height:none!important;object-fit:cover!important;border-radius:0!important;display:block!important}";document.head.appendChild(s)})();
 
 ;(function(){var s=document.createElement("style");s.id="gapp-fix";s.textContent=".gapp{width:100%!important;height:100%!important;max-height:none!important;object-fit:cover!important;border-radius:0!important;display:block!important}";document.head.appendChild(s)})();
+
+;(function(){var s=document.createElement("style");s.id="nv-nodl";s.textContent="body:has(#nvx) .v9-dl,body:has(#nvx) .v9-dl.v9-x,body:has(#nvx) .v9-dl.v9-bot{display:none!important}";document.head.appendChild(s)})();
