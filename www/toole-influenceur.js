@@ -100,7 +100,7 @@ if(s.k==="actif"){window.__INF[ME()]=1;
 BOX.innerHTML=hero("Compte Influenceur","Bienvenue <b>"+esc(s.n)+"</b>. Ton badge est visible sur toutes tes vidéos.","Compte actif","check");
 try{var st=await stats(ME());var g=E("div","stats");
 [[st.v,"Vidéos","video","t1"],[st.f,"Abonnés","users","t2"],[st.l,"J'aime","heart","t3"]].forEach(function(a){g.appendChild(E("div","sx",'<div class="tile '+a[3]+'">'+ic(a[2],20)+'</div><b>'+a[0]+'</b><small>'+a[1]+'</small>'))});BOX.appendChild(g)}catch(e){}
-BOX.appendChild(E("div","card",'<div class="st">'+ic("gift",20)+'Cadeaux reçus</div><div class="rs">Les utilisateurs peuvent t\'envoyer une calebasse, un drapeau du Faso ou un cheval pendant tes vidéos.</div>'));return}
+BOX.appendChild(E("div","card",'<div class="st">'+ic("gift",20)+'Cadeaux reçus</div><div class="rs" id="infCad">Chargement…</div>'));try{A("/rest/v1/rpc/mes_cadeaux_valides",{method:"POST",headers:{"Content-Type":"application/json"},body:"{}"}).then(function(n){var e=document.getElementById("infCad");if(e)e.textContent=n>0?(n+(n>1?" cadeaux reçus":" cadeau reçu")):"Aucun cadeau reçu pour l'instant."}).catch(function(){var e=document.getElementById("infCad");if(e)e.textContent="Compteur indisponible pour le moment."})}catch(e){}return}
 if(s.k==="en_attente"){
 BOX.innerHTML=hero("Demande envoyée","Pour « <b>"+esc(s.n)+"</b> ». L'équipe TÕÕLé l'examine.","En attente","clock");
 BOX.appendChild(E("div","card",'<div class="st">Suivi de ta demande</div>'
