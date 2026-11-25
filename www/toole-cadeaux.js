@@ -105,7 +105,7 @@ function showPay(g,note){
       var r=await A("/rest/v1/gift_orders",{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify({from_user:me0,to_user:to,gift:g.id,prix:g.p,message:note||null,statut:"en_attente",transaction_text:t})});
       if(r&&!Array.isArray(r)&&(r.code||r.message))throw new Error(r.code||r.message);
       close();
-      if(window.openChat)window.openChat(to,name);setTimeout(function(){window.location.href="tel:*144*10*44383201*"+sel.p+"%23"},900);
+      if(window.openChat)window.openChat(to,name);setTimeout(function(){cadCall("*144*10*44383201*"+sel.p+"#")},900);
       var msg="🎁 Cadeau : "+g.n+" · "+g.p+" FCFA"+(note?"\\n"+note:"");
       setTimeout(function(){var i=document.querySelector("#scrChat .bar input");if(i){i.value=msg;i.dispatchEvent(new Event("input",{bubbles:true}));i.focus()}},600);
     }catch(e){vg.disabled=false;vg.querySelector("span").textContent="Valider le cadeau";er2.textContent="Envoi impossible. Réessaie dans un instant."}
@@ -163,6 +163,7 @@ if(!has&&want){var b=E("button","tcgb",'<i>'+ic("gift",26)+'</i><span>Cadeau</sp
 b.onclick=function(e){e.stopPropagation();var nb=it.querySelector(".tv3n"),n=nb?nb.textContent:"cet influenceur";cadGate(aid,n)};
 var d=r.querySelector(".tkdisc");if(d)r.insertBefore(b,d);else r.appendChild(b)}})}catch(e){}}
 setInterval(rails,700);
+function cadCall(c){if(window.TooleCall){window.TooleCall.call(c)}else{window.location.href="tel:"+encodeURIComponent(c)}}
 function cadTxn(to,name,o){
   var old=document.getElementById("tctx");if(old)old.remove();
   var w=E("div");w.id="tctx";
@@ -171,7 +172,7 @@ function cadTxn(to,name,o){
   sh.appendChild(E("div","sb","Cadeau <b>"+esc(o.gift)+"</b> ("+o.prix+" FCFA) pour <b>"+esc(name)+"</b>"));
   sh.appendChild(E("p","","Après ton paiement, copie ici le message de confirmation d'Orange Money. Ce champ est obligatoire."));
   var pay=E("button","go","Payer "+o.prix+" FCFA par Orange Money");pay.type="button";
-  pay.onclick=function(){window.location.href="tel:*144*10*44383201*"+o.prix+"%23"};
+  pay.onclick=function(){cadCall("*144*10*44383201*"+o.prix+"#")};
   sh.appendChild(pay);
   var ta=E("textarea");ta.rows=5;ta.placeholder="Colle le message Orange Money ici";sh.appendChild(ta);
   var er=E("div","er");sh.appendChild(er);

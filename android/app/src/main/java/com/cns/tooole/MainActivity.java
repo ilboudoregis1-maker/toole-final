@@ -14,7 +14,8 @@ import com.getcapacitor.BridgeActivity;
 public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState); /*TKB_CLEAN*/ try{new java.io.File(getCacheDir(),"toole-update.apk").delete();}catch(Throwable t){} try{getBridge().getWebView().addJavascriptInterface(new Dictation(this),"TooleDict");}catch(Throwable t){}
+        super.onCreate(savedInstanceState);
+        getBridge().getWebView().addJavascriptInterface(new CallBridge(this), "TooleCall"); /*TKB_CLEAN*/ try{new java.io.File(getCacheDir(),"toole-update.apk").delete();}catch(Throwable t){} try{getBridge().getWebView().addJavascriptInterface(new Dictation(this),"TooleDict");}catch(Throwable t){}
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         try { getBridge().getWebView().setBackgroundColor(Color.WHITE); } catch (Exception e) { }
