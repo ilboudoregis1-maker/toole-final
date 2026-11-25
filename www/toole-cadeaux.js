@@ -72,17 +72,48 @@ function toast(m){var d=E("div","",esc(m));d.style.cssText="position:fixed;left:
 function giftSheet(to,name){var me0=ME();if(!me0)return toast("Connecte-toi pour envoyer un cadeau");if(to===me0)return toast("Tu ne peux pas t'envoyer un cadeau");
 var old=document.getElementById("tcgo");if(old)old.remove();
 var sel=null,o=E("div");o.id="tcgo";o.onclick=function(e){if(e.target===o)o.remove()};
-var sh=E("div","sh");sh.appendChild(E("div","gp"));
-var x=E("button","x",ic("close",20));x.type="button";x.onclick=function(){o.remove()};sh.appendChild(x);
-sh.appendChild(E("h3","","Envoyer un cadeau"));sh.appendChild(E("div","sb","à <b>"+esc(name)+"</b>"));
-var gs=E("div","gs"),btns={};
-GL(to).forEach(function(g){var b=E("button","g"+(g.sp?" sp":""),'<div class="ga">'+art(g.a)+'</div><div class="gn">'+g.n+'</div><span class="gpx">'+g.p+' FCFA</span>');b.type="button";
-b.onclick=function(){sel=g;Object.keys(btns).forEach(function(k){btns[k].classList.remove("on")});b.classList.add("on");go.disabled=false;go.querySelector("span").textContent="Envoyer · "+g.p+" FCFA"};btns[g.id]=b;gs.appendChild(b)});
-sh.appendChild(gs);
-var ta=E("textarea");ta.maxLength=200;ta.placeholder="Un petit mot (facultatif)";sh.appendChild(ta);
-var go=E("button","go",ic("gift",22)+"<span>Choisis un cadeau</span>");go.type="button";go.disabled=true;sh.appendChild(go);
-var er=E("div","er");sh.appendChild(er);o.appendChild(sh);document.body.appendChild(o);
-go.onclick=async function(){if(!sel)return;go.disabled=true;er.textContent="";try{var r=await A("/rest/v1/gift_orders",{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify({from_user:me0,to_user:to,gift:sel.id,prix:sel.p,message:ta.value.trim()||null,statut:"en_attente"})});if(r&&!Array.isArray(r)&&(r.code||r.message))throw new Error(r.code||r.message);o.remove();if(window.openChat)window.openChat(to,name);var msg="🎁 Cadeau : "+sel.n+" · "+sel.p+" FCFA"+(ta.value.trim()?"\n"+ta.value.trim():"");setTimeout(function(){var i=document.querySelector("#scrChat .bar input");if(i){i.value=msg;i.dispatchEvent(new Event("input",{bubbles:true}));i.focus()}},600)}catch(e){go.disabled=false;er.textContent="Envoi impossible. Réessaie dans un instant."}}
+var sh=E("div","sh");
+function close(){o.remove()}
+function showPick(){
+  sh.innerHTML="";sh.appendChild(E("div","gp"));
+  var x=E("button","x",ic("close",20));x.type="button";x.onclick=close;sh.appendChild(x);
+  sh.appendChild(E("h3","","Envoyer un cadeau"));sh.appendChild(E("div","sb","à <b>"+esc(name)+"</b>"));
+  var gs=E("div","gs"),btns={};
+  GL(to).forEach(function(g){var b=E("button","g"+(g.sp?" sp":""),'<div class="ga">'+art(g.a)+'</div><div class="gn">'+g.n+'</div><span class="gpx">'+g.p+' FCFA</span>');b.type="button";
+    b.onclick=function(){sel=g;Object.keys(btns).forEach(function(k){btns[k].classList.remove("on")});b.classList.add("on");go.disabled=false;go.querySelector("span").textContent="Envoyer · "+g.p+" FCFA"};btns[g.id]=b;gs.appendChild(b)});
+  sh.appendChild(gs);
+  var ta=E("textarea");ta.maxLength=200;ta.placeholder="Un petit mot (facultatif)";sh.appendChild(ta);
+  var go=E("button","go",ic("gift",22)+"<span>Choisis un cadeau</span>");go.type="button";go.disabled=true;sh.appendChild(go);
+  go.onclick=function(){if(!sel)return;showPay(sel,ta.value.trim())};
+}
+function showPay(g,note){
+  sh.innerHTML="";sh.appendChild(E("div","gp"));
+  var x=E("button","x",ic("close",20));x.type="button";x.onclick=close;sh.appendChild(x);
+  sh.appendChild(E("h3","","Confirmer ton paiement"));
+  sh.appendChild(E("div","sb","Cadeau <b>"+esc(g.n)+"</b> · <b>"+g.p+" FCFA</b> pour <b>"+esc(name)+"</b>"));
+  sh.appendChild(E("div","sb","1. Paie "+g.p+" FCFA par Orange Money au numéro indiqué par l'équipe TÕÕLé.<br>2. Copie le message de confirmation envoyé par Orange.<br>3. Colle-le ci-dessous. Ce champ est obligatoire."));
+  sh.appendChild(E("div","sb","<b>Message de la transaction</b>"));
+  var tx=E("textarea");tx.maxLength=600;tx.placeholder="Colle ici le message de confirmation Orange Money";tx.style.minHeight="120px";sh.appendChild(tx);
+  var vg=E("button","go",ic("check",22)+"<span>Valider le cadeau</span>");vg.type="button";vg.disabled=true;sh.appendChild(vg);
+  var er2=E("div","er");sh.appendChild(er2);
+  tx.oninput=function(){vg.disabled=tx.value.trim().length<20};
+  vg.onclick=async function(){
+    var t=tx.value.trim();
+    if(t.length<20){er2.textContent="Colle le message de confirmation complet.";return}
+    vg.disabled=true;vg.querySelector("span").textContent="Envoi…";er2.textContent="";
+    try{
+      var r=await A("/rest/v1/gift_orders",{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify({from_user:me0,to_user:to,gift:g.id,prix:g.p,message:note||null,statut:"en_attente",transaction_text:t})});
+      if(r&&!Array.isArray(r)&&(r.code||r.message))throw new Error(r.code||r.message);
+      close();
+      if(window.openChat)window.openChat(to,name);
+      var msg="🎁 Cadeau : "+g.n+" · "+g.p+" FCFA"+(note?"\\n"+note:"");
+      setTimeout(function(){var i=document.querySelector("#scrChat .bar input");if(i){i.value=msg;i.dispatchEvent(new Event("input",{bubbles:true}));i.focus()}},600);
+    }catch(e){vg.disabled=false;vg.querySelector("span").textContent="Valider le cadeau";er2.textContent="Envoi impossible. Réessaie dans un instant."}
+  };
+}
+o.appendChild(sh);document.body.appendChild(o);showPick();
+}
+
 /* ---------- lecteur simple ---------- */
 function player(v){var o=E("div");o.id="tcpl";var vd=E("video");vd.setAttribute("playsinline","");vd.controls=true;vd.autoplay=true;vd.loop=true;
 try{vd.src=window.tgUrl(v.path,"video")}catch(e){}
