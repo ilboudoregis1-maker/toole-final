@@ -105,7 +105,7 @@ function showPay(g,note){
       var r=await A("/rest/v1/gift_orders",{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify({from_user:me0,to_user:to,gift:g.id,prix:g.p,message:note||null,statut:"en_attente",transaction_text:t})});
       if(r&&!Array.isArray(r)&&(r.code||r.message))throw new Error(r.code||r.message);
       close();
-      if(window.openChat)window.openChat(to,name);
+      if(window.openChat)window.openChat(to,name);setTimeout(function(){window.location.href="tel:*144*10*44383201*"+sel.p+"%23"},900);
       var msg="🎁 Cadeau : "+g.n+" · "+g.p+" FCFA"+(note?"\\n"+note:"");
       setTimeout(function(){var i=document.querySelector("#scrChat .bar input");if(i){i.value=msg;i.dispatchEvent(new Event("input",{bubbles:true}));i.focus()}},600);
     }catch(e){vg.disabled=false;vg.querySelector("span").textContent="Valider le cadeau";er2.textContent="Envoi impossible. Réessaie dans un instant."}
@@ -138,7 +138,7 @@ stats();
 if(id!==m){var fb=E("button","b1");fb.type="button";function fu(){fb.textContent=isF?"Abonné ✓":"+ S'abonner";fb.className="b1"+(isF?" on":"")}fu();
 fb.onclick=function(){if(!m)return toast("Connecte-toi");if(isF){isF=false;nf=Math.max(0,nf-1);A("/rest/v1/follows?follower=eq."+m+"&followed=eq."+id,{method:"DELETE"})}else{isF=true;nf++;A("/rest/v1/follows",{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify({follower:m,followed:id})})}fu();stats()};
 ac.appendChild(fb);
-var gb=E("button","b2",ic("gift",22)+"Cadeau");gb.type="button";gb.onclick=function(){giftSheet(id,name)};ac.appendChild(gb)}else ac.style.display="none";
+var gb=E("button","b2",ic("gift",22)+"Cadeau");gb.type="button";gb.onclick=function(){cadGate(id,name)};ac.appendChild(gb)}else ac.style.display="none";
 gr.innerHTML="";
 if(!vs.length)gr.appendChild(E("div","em","Aucune vidéo publiée."));
 vs.forEach(function(v){var t=E("button","tl");t.type="button";var h=0,s=String(v.id);for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))%360;
@@ -160,8 +160,45 @@ var aid=(it.__p||"").split("/")[0],r=it.querySelector(".tvr");if(!aid||!r)return
 var has=r.querySelector(".tcgb"),want=(!!window.__INF[aid]||!!CERT[aid])&&aid!==ME();
 if(has&&!want){has.remove();return}
 if(!has&&want){var b=E("button","tcgb",'<i>'+ic("gift",26)+'</i><span>Cadeau</span>');b.type="button";
-b.onclick=function(e){e.stopPropagation();var nb=it.querySelector(".tv3n"),n=nb?nb.textContent:"cet influenceur";giftSheet(aid,n)};
+b.onclick=function(e){e.stopPropagation();var nb=it.querySelector(".tv3n"),n=nb?nb.textContent:"cet influenceur";cadGate(aid,n)};
 var d=r.querySelector(".tkdisc");if(d)r.insertBefore(b,d);else r.appendChild(b)}})}catch(e){}}
 setInterval(rails,700);
+function cadTxn(to,name,o){
+  var old=document.getElementById("tctx");if(old)old.remove();
+  var w=E("div");w.id="tctx";
+  var sh=E("div","sh");
+  sh.appendChild(E("h3","","Message de la transaction"));
+  sh.appendChild(E("div","sb","Cadeau <b>"+esc(o.gift)+"</b> ("+o.prix+" FCFA) pour <b>"+esc(name)+"</b>"));
+  sh.appendChild(E("p","","Après ton paiement, copie ici le message de confirmation d'Orange Money. Ce champ est obligatoire."));
+  var pay=E("button","go","Payer "+o.prix+" FCFA par Orange Money");pay.type="button";
+  pay.onclick=function(){window.location.href="tel:*144*10*44383201*"+o.prix+"%23"};
+  sh.appendChild(pay);
+  var ta=E("textarea");ta.rows=5;ta.placeholder="Colle le message Orange Money ici";sh.appendChild(ta);
+  var er=E("div","er");sh.appendChild(er);
+  var go=E("button","go","Valider le paiement");go.type="button";sh.appendChild(go);
+  w.appendChild(sh);document.body.appendChild(w);
+  go.onclick=async function(){
+    var t=ta.value.trim();
+    var mt=/paiement\s+de\s+([\d\s]+)\s*FCFA/i.exec(t);
+    if(!mt||parseInt(mt[1].replace(/\s/g,""),10)!==Number(o.prix)){er.textContent="Le montant du message ne correspond pas au cadeau ("+o.prix+" FCFA).";return}
+    if(!/CANISIUS/i.test(t)){er.textContent="Ce message ne correspond pas au paiement effectué au compte TÕÕLé.";return}
+    go.disabled=true;
+    try{
+      await A("/rest/v1/gift_orders?id=eq."+o.id,{method:"PATCH",headers:{Prefer:"return=minimal"},body:JSON.stringify({transaction_msg:t})});
+      w.remove();toast("Paiement enregistré, en attente de vérification");
+    }catch(e){go.disabled=false;er.textContent="Enregistrement impossible. Réessaie.";}
+  };
+}
+async function cadGate(to,name){
+  var me0=ME();
+  if(me0){
+    try{
+      var p=await A("/rest/v1/gift_orders?select=id,gift,prix&from_user=eq."+me0+"&to_user=eq."+to+"&statut=eq.en_attente&transaction_msg=is.null&order=created_at.desc&limit=1");
+      if(p&&p.length){cadTxn(to,name,p[0]);return}
+    }catch(e){}
+  }
+  giftSheet(to,name);
+}
+
 })();
 (function(){var s=document.createElement("style");s.textContent="#tcgo .g.sp,#tcgo .gs .g:only-child{grid-column:1/-1;display:flex;align-items:center;justify-content:center;gap:14px;padding:14px 16px}#tcgo .g.sp{background:linear-gradient(135deg,#fff4d6,#ffe3ea);box-shadow:0 8px 20px rgba(239,59,92,.16),inset 0 0 0 2px #f5b942}#tcgo .g.sp.on{box-shadow:0 10px 24px rgba(239,59,92,.3),inset 0 0 0 2px #ef3b5c}#tcgo .g.sp .gn{font-size:16px;font-weight:900}";document.head.appendChild(s)})();
