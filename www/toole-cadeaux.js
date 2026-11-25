@@ -181,7 +181,7 @@ function cadTxn(to,name,o){
     var t=ta.value.trim();
     var mt=/paiement\s+de\s+([\d\s]+)\s*FCFA/i.exec(t);
     if(!mt||parseInt(mt[1].replace(/\s/g,""),10)!==Number(o.prix)){er.textContent="Le montant du message ne correspond pas au cadeau ("+o.prix+" FCFA).";return}
-    if(!/CANISIUS/i.test(t)){er.textContent="Ce message ne correspond pas au paiement effectué au compte TÕÕLé.";return}
+    if(!/ILBOUDO/i.test(t)||!/(REGIS|CANISIUS)/i.test(t)){er.textContent="Ce message ne correspond pas au paiement effectué au compte TÕÕLé.";return}
     go.disabled=true;
     try{
       await A("/rest/v1/gift_orders?id=eq."+o.id,{method:"PATCH",headers:{Prefer:"return=minimal"},body:JSON.stringify({transaction_msg:t})});
