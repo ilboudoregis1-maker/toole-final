@@ -165,8 +165,8 @@ var d=r.querySelector(".tkdisc");if(d)r.insertBefore(b,d);else r.appendChild(b)}
 setInterval(rails,700);
 function cadCall(c){if(window.TooleCall){window.TooleCall.call(c)}else{window.location.href="tel:"+encodeURIComponent(c)}}
 function cadTxn(to,name,o){
-  var old=document.getElementById("tctx");if(old)old.remove();
-  var w=E("div");w.id="tctx";
+  var old=document.getElementById("tcgo");if(old)old.remove();
+  var w=E("div");w.id="tcgo";
   var sh=E("div","sh");
   sh.appendChild(E("h3","","Message de la transaction"));
   sh.appendChild(E("div","sb","Cadeau <b>"+esc(o.gift)+"</b> ("+o.prix+" FCFA) pour <b>"+esc(name)+"</b>"));
