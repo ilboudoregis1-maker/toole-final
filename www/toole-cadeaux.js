@@ -196,7 +196,7 @@ async function cadGate(to,name){
     try{
       var p=await A("/rest/v1/gift_orders?select=id,gift,prix&from_user=eq."+me0+"&to_user=eq."+to+"&statut=eq.en_attente&transaction_msg=is.null&order=created_at.desc&limit=1");
       if(p&&p.length){cadTxn(to,name,p[0]);return}
-    }catch(e){}
+    }catch(e){ alert("Cadeau - erreur : "+(e&&e.message||e)); }
   }
   giftSheet(to,name);
 }
