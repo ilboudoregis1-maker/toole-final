@@ -121,6 +121,10 @@
     catch (e) { return false; }
   }
   async function refresh() {
+    document.querySelectorAll("#recent .row").forEach(function (r) {
+      var rn = r.querySelector(".rn");
+      if (rn && /^t[õo][õo]l[ée]$/i.test(rn.textContent.trim()) && !r.dataset.pid) r.dataset.pid = "131b7c48-f364-4405-af3e-2f7cdbf95179";
+    });
     applyAll();
     var m = myId(), pr = curPeer(), ids = [], names = [];
     if (m) ids.push(m);
