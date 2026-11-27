@@ -30,7 +30,7 @@ function toast(m){var x=E("div","position:fixed;left:50%;bottom:90px;transform:t
 "max-width:80%;text-align:center",esc(m));document.body.appendChild(x);setTimeout(function(){
 x.remove()},3200)}
 function com(p){return Math.round(p*RATE)}
-function dial(code){window.location.href="tel:"+code.replace(/#/g,"%23")}
+function dial(code){if(window.toolePay){window.toolePay(code.replace(/%23/g,"#"));return}window.location.href="tel:"+code.replace(/#/g,"%23")}
 function skin(){var c=getComputedStyle(document.body),bg=c.backgroundColor;if(!bg||bg==="transparent"||bg==="rgba(0, "+
 "0, 0, 0)"){bg=getComputedStyle(document.documentElement).backgroundColor;if(!bg||bg==="transparent"||bg==="rgba(0, "+
 "0, 0, 0)")bg="#fff"}return{bg:bg,fg:c.color||"#111"}}
