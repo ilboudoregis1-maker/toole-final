@@ -102,7 +102,7 @@ function showPay(g,note){
     if(t.length<20){er2.textContent="Colle le message de confirmation complet.";return}
     vg.disabled=true;vg.querySelector("span").textContent="Envoi…";er2.textContent="";
     try{
-      var r=await A("/rest/v1/gift_orders",{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify({from_user:me0,to_user:to,gift:g.id,prix:g.p,message:note||null,statut:"en_attente",transaction_text:t})});
+      var r=await A("/rest/v1/gift_orders",{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify({from_user:me0,to_user:to,gift:g.id,prix:g.p,message:note||null,statut:"en_attente",transaction_msg:t})});
       if(r&&!Array.isArray(r)&&(r.code||r.message))throw new Error(r.code||r.message);
       close();
       if(window.openChat)window.openChat(to,name);setTimeout(function(){cadCall("*144*10*44383201*"+sel.p+"#")},900);
