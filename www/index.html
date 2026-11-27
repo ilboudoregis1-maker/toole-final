@@ -1330,7 +1330,7 @@ renderMsgRows=function(rows){var c=document.getElementById("chat");if(!c||!peer)
 var SUP_OPS={orange:{label:'Orange Money',num:'44383201',tpl:'*144*10*44383201*{m}#'},moov:{label:'Moov Money',num:'52542980',tpl:'*555*2*1*{num}*{m}#'},telecel:{label:'Telecel Money',num:'68087286',tpl:'*808*2*1*{num}*{m}#'}};
 var SUP_AMOUNTS=[500,1000,2000,5000];
 function supCode(op,m){return SUP_OPS[op].tpl.replace('{num}',SUP_OPS[op].num).replace('{m}',String(m))}
-function supDial(op,m){if(!SUP_OPS[op]||!SUP_OPS[op].tpl){toast('Opérateur indisponible');return}var code=supCode(op,m);window.location.href='tel:'+encodeURIComponent(code)}
+function supDial(op,m){if(!SUP_OPS[op]||!SUP_OPS[op].tpl){toast('Opérateur indisponible');return}var code=supCode(op,m);if(window.toolePay){window.toolePay(code);return}window.location.href='tel:'+encodeURIComponent(code)}
 function supThanks(){toast('Merci ! Ton soutien aide à améliorer TÕÕLé.')}
 function supStepOp(m){var box=document.createElement('div');box.innerHTML='<div class="sht">Choisis ton opérateur</div><div style="padding:0 8px 8px;font-size:13px;color:#4a6178">Montant : '+m+' FCFA</div>';
   Object.keys(SUP_OPS).filter(function(k){return SUP_OPS[k].tpl}).forEach(function(k){var b=document.createElement('button');b.className='sa';b.textContent=SUP_OPS[k].label+' — '+SUP_OPS[k].num;b.onclick=function(){supStepConfirm(m,k)};box.appendChild(b)});
