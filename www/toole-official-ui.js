@@ -11,12 +11,23 @@
   function addBadge(el){
     if(el && !el.querySelector(".tlb")) el.insertAdjacentHTML("beforeend",'<span class="tlb">'+BADGE+'</span>');
   }
+  function hideHeader(){
+    var w=window.innerWidth;
+    document.querySelectorAll("#scrChat button,#scrChat [role=button]").forEach(function(b){
+      var r=b.getBoundingClientRect();
+      if(r.top<120 && r.left>w*0.7 && b.style.display!=="none") b.style.display="none";
+    });
+    document.querySelectorAll("#scrChat *").forEach(function(e){
+      if(e.children.length===0 && e.textContent && e.textContent.trim()==="Discussion") e.style.display="none";
+    });
+  }
   function tick(){
     var onOff = curId()===OFF;
     document.body.classList.toggle("tl-off", onOff);
     if(onOff){
       var pn = document.getElementById("peerName");
       if(pn) addBadge(pn);
+      hideHeader();
     }
     document.querySelectorAll("#recent .row").forEach(function(r){
       if(r.dataset && r.dataset.pid===OFF) addBadge(r.querySelector(".rn"));
