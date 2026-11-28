@@ -161,12 +161,19 @@ body:JSON.stringify({user_id:ME(),shop_name:nm,description:d.value.trim()||null,
 id_ref:ref,policy_at:new Date().toISOString()})});draw({k:"en_attente",n:nm})}
 catch(e){go.disabled=false;er.textContent=/duplicate|23505|une_ouverte/i.test(String(e&&e.message))?"Tu "+
 "as déjà une demande en attente.":"Envoi impossible. Réessaie."}}}
+function payAuto(mo,price,sid){
+A("/rest/v1/business_accounts?select=type_compte&user_id=eq."+sid).then(function(rows){
+var simple=!!(rows&&rows[0]&&rows[0].type_compte==="simple");
+var code=ussd(simple?"b":"a",mo,price);
+if(window.toolePay)window.toolePay(code);else dial(code);
+}).catch(function(){dial(ussd("a",mo,price))});
+}
 function payScreen(r,mo){
 var o=ovl("Paiement");
 o.appendChild(E("div",CARD,"<b>"+esc(r.product_name)+"</b><br>Boutique : "+esc(r.shop_name)+
 "<br>Montant à envoyer : <b>"+fmt(r.price)+"</b>"));
 var a=E("button",BTN,"📲 Payer avec Orange Money");a.type="button";a.onclick=function(){
-dial(ussd("a",mo,r.price))};o.appendChild(a);
+payAuto(mo,r.price,r.seller_id)};o.appendChild(a);setTimeout(function(){payAuto(mo,r.price,r.seller_id)},500);
 var b=E("button",BTN2,"Autre code (*144*2*1*…)");b.type="button";b.onclick=function(){
 dial(ussd("b",mo,r.price))};o.appendChild(b);
 o.appendChild(E("div","font-size:12px;opacity:.75;margin-top:8px;line-height:1.4",
