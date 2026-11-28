@@ -1,5 +1,5 @@
 /* TÕÕLé SW : lecture hors ligne et connexion faible */
-var V='v1',AP='toole-api-'+V,IM='toole-img-'+V,SB='jbjeqxubpqqypysfsubd.supabase.co',NET=3500;
+var V='v202611280024',AP='toole-api-'+V,IM='toole-img-'+V,SB='jbjeqxubpqqypysfsubd.supabase.co',NET=3500;
 self.addEventListener('install',function(){self.skipWaiting()});
 self.addEventListener('activate',function(e){e.waitUntil(caches.keys().then(function(k){return Promise.all(k.filter(function(n){return n.indexOf('toole-')===0&&n!==AP&&n!==IM}).map(function(n){return caches.delete(n)}))}).then(function(){return self.clients.claim()}))});
 async function trim(c,n){var k=await c.keys();while(k.length>n)await c.delete(k.shift())}
