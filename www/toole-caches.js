@@ -173,6 +173,6 @@ function boot(){entry();var s=$("scrParam");
 if(s)new MutationObserver(function(){if(!s.classList.contains("hide")){entry();sum()}})
 .observe(s,{attributes:true,attributeFilter:["class"]});
 setInterval(entry,2000)}
-window.__tcOpen=open;
+window.__tcCachesOpen=open;
 if(D.readyState==="loading")D.addEventListener("DOMContentLoaded",boot);else boot();
 })();
