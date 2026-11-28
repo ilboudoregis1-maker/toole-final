@@ -54,7 +54,7 @@
       hideSubtitle();
       killMenu();
     }
-    document.querySelectorAll("#recent .row").forEach(function(r){
+    document.querySelectorAll("#recent .row[data-pid='131b7c48-f364-4405-af3e-2f7cdbf95179']").forEach(function(r){
       if(r.dataset && r.dataset.pid===OFF) putBadge(r.querySelector(".rn"));
     });
   }
