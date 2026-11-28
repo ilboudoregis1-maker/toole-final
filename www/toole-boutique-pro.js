@@ -51,10 +51,14 @@
     };
   }
   function addButton(){
-    if(document.getElementById("bMomoBtn")) return;
+    var shop=document.querySelector("#scrBoutique, #scrShop, [id*=outique]");
+    var visible=!!shop && !shop.classList.contains("hide") && shop.offsetParent!==null;
+    var old=document.getElementById("bMomoBtn");
+    if(!visible){ if(old) old.remove(); return; }
+    if(old) return;
     var b=document.createElement("button");
     b.id="bMomoBtn"; b.textContent="Numéro de réception";
-    b.style.cssText="position:fixed;right:12px;bottom:92px;z-index:9998;padding:10px 14px;border:0;border-radius:999px;background:#2563eb;color:#fff;font-weight:700;font-size:13px;box-shadow:0 6px 16px rgba(37,99,235,.35)";
+    b.style.cssText="position:fixed;right:14px;bottom:96px;z-index:9998;padding:9px 14px;border:0;border-radius:999px;background:#2563eb;color:#fff;font-weight:700;font-size:13px;width:auto;max-width:200px;box-shadow:0 6px 16px rgba(37,99,235,.35)";
     b.onclick=openSheet;
     document.body.appendChild(b);
   }
