@@ -1,4 +1,4 @@
-/* TÕÕLé — guide « Comment ça marche » détaillé (FR/EN) + icône Explorer colorée */
+/* TÕÕLé — guide « À propos » détaillé (FR/EN) + icône Explorer colorée */
 (function(){"use strict";if(window.__tguide)return;window.__tguide=1;
 var I={
 chat:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
@@ -94,7 +94,7 @@ function sec(x,l,g,o){var d=x[l];
 return '<details'+(o?' open':'')+'><summary><span class="tg-n" style="background:linear-gradient(135deg,'+g+')">'+sv(x.i,22)+'</span><span class="tg-x"><b>'+d.t+'</b><small>'+d.s+'</small></span><span class="tg-ch">'+sv("down",18,"#64748b")+'</span></summary><div class="tg-bd"><'+(x.u?"ul":"ol")+'>'+d.st.map(function(t){return "<li>"+t+"</li>"}).join("")+'</'+(x.u?"ul":"ol")+'>'+(d.tip?'<div class="tg-tip">'+sv("bulb",16,"#2563eb")+'<span>'+d.tip+'</span></div>':"")+'</div></details>'}
 function openG(){if(document.getElementById("tg-ov"))return;var en=isEn(),l=en?"e":"f";
 var o=document.createElement("div");o.id="tg-ov";
-var h='<div class="tg-h"><button id="tg-x" type="button" aria-label="Back">'+sv("back",22)+'</button><span>'+(en?"How it works":"Comment ça marche")+'</span></div><div class="tg-b">'+
+var h='<div class="tg-h"><button id="tg-x" type="button" aria-label="Back">'+sv("back",22)+'</button><span>'+(en?"How it works":"À propos")+'</span></div><div class="tg-b">'+
 '<div class="tg-t">'+(en?"Welcome to TÕÕLé! Tap a topic below to see, step by step, how it works. No experience needed.":"Bienvenue sur TÕÕLé ! Touche une rubrique ci-dessous pour voir, étape par étape, comment ça marche. Aucune expérience n'est nécessaire.")+'</div>'+
 '<div class="tg-k">'+(en?"Using the app":"Utiliser l'application")+'</div>';
 S.forEach(function(s,i){h+=sec(s,l,G[i],i===0)});
@@ -107,7 +107,7 @@ var en=isEn(),r=document.getElementById("tg-row");
 if(!r){r=document.createElement("div");r.id="tg-row";r.onclick=openG;b.insertBefore(r,b.firstChild)}
 var l=en?"en":"fr";
 if(r.getAttribute("data-l")!==l){r.setAttribute("data-l",l);
-r.innerHTML='<div class="tg-i">'+sv("help",22)+'</div><div><b>'+(en?"How it works":"Comment ça marche")+'</b><small>'+(en?"A simple step-by-step guide":"Un guide simple, étape par étape")+'</small></div><span class="tg-c">'+sv("next",20,"#0f172a")+'</span>'}}
+r.innerHTML='<div class="tg-i">'+sv("help",22)+'</div><div><b>'+(en?"How it works":"À propos")+'</b><small>'+(en?"A simple step-by-step guide":"Mises à jour et fonctionnement de TÕÕLé")+'</small></div><span class="tg-c">'+sv("next",20,"#0f172a")+'</span>'}}
 function P(e,k,v){e.style.setProperty(k,v,"important")}
 function colorize(){var b=document.querySelector("#scrList .hdr .zd-ic");if(!b)return;
 P(b,"background","linear-gradient(135deg,#06b6d4,#2563eb)");P(b,"color","#fff");P(b,"opacity","1");P(b,"filter","none");
