@@ -15,7 +15,6 @@ public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startForegroundService(new android.content.Intent(this, KeepAliveService.class));
         getBridge().getWebView().addJavascriptInterface(new CallBridge(this), "TooleCall"); /*TKB_CLEAN*/ try{new java.io.File(getCacheDir(),"toole-update.apk").delete();}catch(Throwable t){} try{getBridge().getWebView().addJavascriptInterface(new Dictation(this),"TooleDict");}catch(Throwable t){}
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);

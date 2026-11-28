@@ -4,9 +4,6 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <queries><intent><action android:name="android.speech.RecognitionService"/></intent></queries><uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
@@ -60,8 +57,7 @@
                 android:resource="@xml/file_paths"></meta-data>
         </provider>
             <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@drawable/ic_stat_toole" />
-    <receiver android:name=".InstallReceiver" android:exported="false"/><service android:name=".KeepAliveService" android:foregroundServiceType="dataSync" android:exported="false" />
-</application>
+    <receiver android:name=".InstallReceiver" android:exported="false"/></application>
 
     <!-- Permissions -->
 
