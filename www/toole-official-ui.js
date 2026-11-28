@@ -17,6 +17,20 @@
   st.id="tl-off-css";
   st.textContent="body.tl-off #scrChat .bar,body.tl-off #scrChat form,body.tl-off #scrChat .tools,body.tl-off #scrChat .sugg,body.tl-off #scrChat .fab{display:none!important}";
   document.head.appendChild(st);
+  function menuBtn(){
+    var sc=document.getElementById("scrChat"); if(!sc) return null;
+    var r=sc.getBoundingClientRect(), found=null;
+    sc.querySelectorAll("button,[role=button],div,span").forEach(function(e){
+      if(e.children.length>2) return;
+      var b=e.getBoundingClientRect();
+      if(b.width>0 && b.width<90 && b.top<r.top+120 && b.left>r.right-110 && b.right>r.right-20) found=e;
+    });
+    return found;
+  }
+  function killMenu(){
+    var b=menuBtn(); if(!b) return;
+    b.style.visibility="hidden"; b.style.pointerEvents="none";
+  }
   function block(e){
     if(curId()!==OFF) return;
     var sc=document.getElementById("scrChat"); if(!sc) return;
@@ -38,6 +52,7 @@
     if(on){
       putBadge(document.getElementById("peerName"));
       hideSubtitle();
+      killMenu();
     }
     document.querySelectorAll("#recent .row").forEach(function(r){
       if(r.dataset && r.dataset.pid===OFF) putBadge(r.querySelector(".rn"));
